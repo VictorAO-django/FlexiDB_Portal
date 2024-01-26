@@ -25,6 +25,7 @@ from authentication import BearerTokenAuthentication
 from connections import connect_db
 from exceptions import *
 from helper import generate
+from decorator import ensure_db_permission
 
 
 
@@ -213,33 +214,17 @@ class DataTables(APIView):
     authentication_classes = [BearerTokenAuthentication]
     permission_classes = [IsAuthenticated, IsVerified, IpIsValid]
     
+    @ensure_db_permission('read')
     @swagger_auto_schema(
         operation_summary="Retrieve Tables Endpoint",
         operation_id="tables",
     )
-    def get(self, request):
+    def get(self, request,*args, **kwargs):
         data = {}
-        database_id = request.query_params.get('database_id', None)
+        user = kwargs['user'] #get the user instance
+        database = kwargs['database']
         
-        user = Token.objects.get(key=request.auth).user #get the user instance
-        try:
-            assert database_id is not None, "No database_id provided"
-            
-            database = DatabaseConfig.objects.get(database_id=database_id)
-            if database.user == user: #if this request is made by the owner of the database
-                pass
-            else:
-                DatabasePermission(database, user).check_permission() #ensure the user has appropriate permission
-            
-            database_url = database.url #get the database url
-            
-            connect = connect_db(database_url).retrieve_table_names() #retrieve table names
-    
-            data['detail'] = connect
-            return Response(data, status=status.HTTP_200_OK)
-
-        except AssertionError as err:
-            return Response({'detail':str(err)}, status=status.HTTP_403_FORBIDDEN)
+        connect = connect_db(database.url).retrieve_data_from_table
+        data['detail'] = connect
+        return Response(data, status=status.HTTP_200_OK)
         
-        except DatabaseConfig.DoesNotExist:
-            raise NoSuchDatabase()

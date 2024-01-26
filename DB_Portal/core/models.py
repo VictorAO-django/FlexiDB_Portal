@@ -33,12 +33,12 @@ class DatabaseConfig(models.Model):
     
 class Permission(models.Model):
     PERMISSIONS = (
-        ('readonly', 'readonly'),
+        ('read', 'read'),
         ('read-edit', 'read-edit'),
         ('read-edit-create', 'read-edit-create'),
         ('read-edit-create-delete', 'read-edit-create-delete')
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     database = models.ForeignKey(DatabaseConfig, on_delete=models.CASCADE)
-    permission = models.CharField(choices = PERMISSIONS, default='readonly', max_length=255)
+    permission = models.CharField(choices = PERMISSIONS, default='read', max_length=255)
 # Create your models here.
