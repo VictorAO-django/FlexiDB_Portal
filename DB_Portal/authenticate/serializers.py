@@ -1,13 +1,13 @@
 import random
 from rest_framework import serializers
-from account.models import User
+from .models import User
 
 class RegistrationSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(style={ "input_type":"password"}, write_only=True)
 
     class Meta:
         model = User
-        fields = ["email", "first_name", "last_name", "is_developer", "organization", "password", "password2"]
+        fields = ["email", "first_name", "last_name", "gender", "is_developer", "organization", "password", "password2"]
         extra_kwargs = {
             "password" : {"write_only": True}
         }
@@ -16,6 +16,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         email = self.validated_data["email"]
         first_name = self.validated_data["first_name"]
         last_name = self.validated_data["last_name"]
+        gender = self.validated_data["gender"]
         is_developer = self.validated_data["is_developer"]
         organization = self.validated_data["organization"]
         #generate username from the user first and last name and attach a random integer to the username
@@ -38,11 +39,12 @@ class RegistrationSerializer(serializers.ModelSerializer):
             email=email,
             first_name=first_name, 
             last_name=last_name, 
+            gender=gender,
             is_developer=is_developer,
             organization=organization,
             ip_address = ip_address,
-            password=password1
         ) 
+        user.set_password(password1)
         user.save()
         return user
     
@@ -57,3 +59,20 @@ class ChangePasswordSerializer(serializers.Serializer):
 class DeleteAccountSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
+    
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["email", "first_name", "last_name", "username", "gender", "organization", "is_developer", "organization"]
+        
+    def save(self, *args, **kwargs):
+        first_name = self.validated_data["first_name"]
+        last_name = self.validated_data["last_name"]
+        self.validated_data["username"] = f"{first_name}-{last_name}-{random.randint(5643, 55573)}"
+        
+        return super(UserSerializer, self).save(*args, **kwargs)
+
+class SearchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['user_id', 'username', 'is_developer', 'organization']

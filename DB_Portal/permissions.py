@@ -30,9 +30,10 @@ class DatabasePermission:
             
     def check_permission(self):
         try:
-            DbPermission = Permission.objects.get(user=user_instance, database=database_instance)
+            DbPermission = Permission.objects.get(user=self.user_instance, database=self.database_instance)
             DbPermission = DbPermission.permission 
             assert DbPermission == self.permission
+            return True
         except Permission.DoesNotExist:
             raise NotPermitted()
         except AssertionError:

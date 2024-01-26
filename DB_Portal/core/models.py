@@ -1,13 +1,13 @@
 import uuid
 
 from django.db import models
-from account.models import User
+from authenticate.models import User
 
 
 class DatabaseConfig(models.Model):
     ENGINE = (
         ("mysql","mysql"),
-        ("postgresql","postgresql"),
+        ("postgres","postgres"),
         ("mssql+pyodbc","mssql+pyodbc"),
         ("cx_oracle","cx_orcle"),
         ("mariadb","mariadb"),

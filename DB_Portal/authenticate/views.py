@@ -17,12 +17,12 @@ from rest_framework.exceptions import AuthenticationFailed
 
 from .serializers import *
 from helper import *
-from account.models import *
+from authenticate.models import *
 
 from permissions import IsVerified, IpIsValid
 from authentication import BearerTokenAuthentication
 from exceptions import *
-from mailer import portal_send_mail
+from mailer import portal_send_mail, Mailer
 
 
 class RegistrationView(APIView): 
@@ -46,11 +46,9 @@ class RegistrationView(APIView):
         if serializer.is_valid():
             serializer.validated_data['ip_address'] = ip
             user = serializer.save()
-            token, created = Token.objects.get_or_create(user=user)
             
             data["status"]='success'
             data["message"]=f'{user.first_name}, mail is sent to your email address for your account verification'
-            data["token"]=token.key
             return Response(data,status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_403_FORBIDDEN)
@@ -91,12 +89,13 @@ class LoginView(APIView):
                     #if ip is the same as the registered ip
                     if ip == user.ip_address: 
                         pass
-                    #if ip has attempted login once and has been denied
-                    elif ip in user.denied_ip:
-                        raise NewIpAddress()
                     #if ip has been banned
                     elif ip in user.banned_ip:
-                        raise  LoginFailed()
+                        raise LoginFailed()
+                    else:
+                        mailer = Mailer([user.email]).ip_access()
+                        data["message"] = f"{user.first_name}, a message has been sent to your email to confirm login from this strange device"
+                        return Response(data, status=status.HTTP_403_FORBIDDEN)
                     
                     token, created= Token.objects.get_or_create(user=user)
                     if created:
@@ -118,7 +117,55 @@ class LoginView(APIView):
             data["message"] = "No user found with this email"
             return Response(data, status=status.HTTP_404_NOT_FOUND)
         
+
+class IpAccess(APIView):
+    permission_classes = [AllowAny]
+    
+    @swagger_auto_schema(
+        operation_summary="access-ban Ip",
+        operation_description="action can be - 'grant' | 'ban'",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'encoded_id': openapi.Schema(type=openapi.TYPE_STRING),
+                'user_id': openapi.Schema(type=openapi.TYPE_STRING),
+                'ip': openapi.Schema(type=openapi.TYPE_STRING),
+                'action': openapi.Schema(type=openapi.TYPE_STRING),
+            },
+            required=['encoded_id', 'user_id', 'ip', 'action'],
+        ),
+        operation_id="access-ban Ip",
+        responses={
+            200: "Successful, Reset link has been sent to email!",
+            404: "No user found with this email",
+        }
+    )
+    def post(self, request):
+        #tuple of possible actions 
+        ACTIONS = ('grant', 'ban')
         
+        encoded_id = request.data['encoded_id']
+        user_id = request.data['user_id']
+        ip = request.data['ip']
+        action = request.data['action']
+        #decode the id
+        decoded_id = str(urlsafe_base64_decode(encoded_id), encoding="utf-16")
+        try:
+            user = User.objects.get(id=decoded_id, user_id=user_id)
+            #ensure its a valid action
+            assert action in ACTIONS
+            if action == 'grant':
+                user.ip_address += f',{ip}'
+            if action == 'ban':
+                user.banned_ip  += f',{ip}'          
+            user.save() #save the instance
+            return Response({'detail': f'{action} successful'})
+        
+        except AssertionError:
+            raise CannotBeProcessed()
+        except User.DoesNotExist:
+            raise CannotBeProcessed()
+
         
 class ForgetPasswordView(APIView):
     permission_classes=[AllowAny]
@@ -186,8 +233,8 @@ class PasswordResetView(APIView):
         if serializer.is_valid():
             try:
                 #decode the uniqueID from base64
-                unique_id = str(urlsafe_base64_decode(encoded_id), encoding="utf-16")
-                user = User.objects.get(id=unique_id)
+                decoded_id = str(urlsafe_base64_decode(encoded_id), encoding="utf-16")
+                user = User.objects.get(id=decoded_id)
 
                 if default_token_generator.check_token(user,token):
                     new_password = serializer.validated_data['new_password']
@@ -250,9 +297,9 @@ class DeleteAccountView(APIView):
     permission_classes = [IsAuthenticated, IsVerified, IpIsValid]
     
     @swagger_auto_schema(
-        operation_summary="Change Password Endpoint",
+        operation_summary="Delete Account Endpoint",
         operation_description="Authentication token is required",
-        operation_id="change-password",
+        operation_id="delete-account",
         request_body=DeleteAccountSerializer,
         responses={
             200: "Successful, Account Deleted!",
@@ -260,7 +307,7 @@ class DeleteAccountView(APIView):
             400: "BadRequest - Invalid parameters"
         }
     )
-    def post(self,request):
+    def delete(self,request):
         serializer = DeleteAccountSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -284,4 +331,52 @@ class DeleteAccountView(APIView):
         else:
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
         
+        
+        
+        
+class RetrieveDataView(RetrieveUpdateAPIView):
+    authentication_classes = [BearerTokenAuthentication]
+    permission_classes = [IsAuthenticated, IsVerified, IpIsValid]
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    http_method_names = ['get', 'patch']
+    
+    def get_object(self):
+        user = Token.objects.get(key=self.request.auth).user
+        return user
+
+
+
+class SearchUser(ListAPIView):
+    #authentication_classes = [BearerTokenAuthentication]
+    #permission_classes = [IsAuthenticated, IsVerified, IpIsValid]
+    queryset = User.objects.all()
+    serializer_class = SearchSerializer
+    
+    def get_queryset(self):
+        filter = {self.filter_key : self.filter_value}
+        queryset = User.objects.filter(**filter)
+        return queryset
+    
+    @swagger_auto_schema(
+        operation_summary="Search User Endpoint",
+        operation_description="key can be first_name, username, email, organization",
+        operation_id="search-user",
+        manual_parameters=[
+            openapi.Parameter('key', in_=openapi.IN_QUERY, type=openapi.TYPE_STRING),
+            openapi.Parameter('value', in_=openapi.IN_QUERY, type=openapi.TYPE_STRING),
+        ],
+    )
+    def get(self, request, *args, **kwargs):
+        KEYS = ("first_name", "username", "email", "organization")
+        self.filter_key = self.request.query_params.get('key', None)
+        self.filter_value = self.request.query_params.get('value', None)
+        try:
+            assert self.filter_key is not None, "No key"
+            assert self.filter_value is not None, "No value"
+            assert self.filter_key in KEYS , "you passed an invalid key"
+        except AssertionError as err:
+            return Response({'detail': str(err)}, status=status.HTTP_406_NOT_ACCEPTABLE)
+    
+        return super().get(request, *args, **kwargs)
 # Create your views here.

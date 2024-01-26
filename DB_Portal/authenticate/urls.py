@@ -23,5 +23,12 @@ urlpatterns = [
     path('forget-password/', ForgetPasswordView.as_view()),
     path('reset-password/<str:encoded_id>/<str:token>/', PasswordResetView.as_view()),
     path('change-password/', ChangePasswordView.as_view()),
-    path('delete-account/', DeleteAccountView.as_view())
+    path('delete-account/', DeleteAccountView.as_view()),
+    path('details/', RetrieveDataView.as_view()),
+    
+    #ip actions
+    path('ip/', IpAccess.as_view()),
+    
+    #search
+    path('search-user/', SearchUser.as_view())
 ]

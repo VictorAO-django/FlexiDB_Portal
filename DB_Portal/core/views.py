@@ -16,7 +16,7 @@ from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from rest_framework.exceptions import AuthenticationFailed
 
-from account.models import *
+from authenticate.models import *
 from .serializers import *
 from .models import DatabaseConfig
 
@@ -114,7 +114,6 @@ class Connect_To_DB(APIView):
         except DatabaseConfig.DoesNotExist:
             raise NoSuchDatabase()
     
-
 
 
 class GrantPermission(CreateAPIView):

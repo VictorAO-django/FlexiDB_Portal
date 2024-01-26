@@ -3,11 +3,7 @@ from rest_framework import status
     
 class LoginFailed(APIException):
     status_code = status.HTTP_403_FORBIDDEN
-    default_detail = "login failed"
-    
-class NewIpAddress(APIException):
-    status_code = status.HTTP_417_EXPECTATION_FAILED
-    default_detail = "a message has been sent to your mail to allow allow this device to login"
+    default_detail = "Ip has been banned from login to this account"
     
 class InvalidUser(APIException):
     status_code = status.HTTP_403_FORBIDDEN
@@ -40,3 +36,7 @@ class InvalidPermission(APIException):
 class NotPermitted(APIException):
     status_code = status.HTTP_403_FORBIDDEN
     default_detail = "You're not permitted to perform this operation"
+    
+class CannotBeProcessed(APIException):
+    status_code = status.HTTP_400_BAD_REQUEST
+    default_detail = "This request cannot be processed"

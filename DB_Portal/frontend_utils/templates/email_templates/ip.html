@@ -1,0 +1,19 @@
+{% extends "base_email.html" %}
+{% load static %}
+
+{% block subject %}
+    <h2>Unknown Ip Address</h2>
+{% endblock %}
+
+{% block message %}
+    <p>An unknown device tried to login to your account. Was it you? <br>Kindly grant or ban this device.</p>
+    <p><span id="note">NOTE:</span> once you ban a ip address, you can't undo it yourself.</p>
+{% endblock %}
+
+{% block content %}
+    <div id="options">
+        <a href="" id="option">Accept</a>
+        <a href="" id="option">Deny</a>
+    </div>
+    <a href=""><i>learn more about this</i></a>
+{% endblock %}

@@ -20,8 +20,14 @@ from .serializers import *
 
 
 def RegistrationView(request):
-    template = 'register.html'
-    return render(request, template)
+    template = 'email_templates/ip.html'
+    context = {
+        'title':'registration',
+        'recipent_name': 'HayWhy',
+        'subject': 'Unknow Ip address',
+        'message': 'An unknown device tried to login to your account. Was it you?\n Kindly grant or ban this device'
+    }
+    return render(request, template, context=context)
 
 
 def LoginView(request):

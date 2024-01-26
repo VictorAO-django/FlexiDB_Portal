@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+    <head>
+        <title>{{ title }}</title>
+        <meta charset="UTF-8">
+        <meta name="viewport", content="width=device-width, initial-scale=1.0">
+        <style>
+            @font-face {
+                font-family: 'MontserratRegular';
+                src: url("{% static 'fonts/Montserrat-Regular.ttf' %}") format('truetype');
+            }
+
+            h1{
+                font-family: MontserratRegular;
+                font-size: 15px
+            }
+
+            body{
+                width: 90%;
+                margin: auto;
+            }
+
+            section{
+                display: flex;
+                flex-flow: column nowrap;
+                justify-content: space-around;
+                align-items: center;
+                border: 1px solid red;
+            }
+
+            #options{
+                display: flex;
+                flex-flow: column nowrap;
+                justify-content: space-around;
+                width: 80%;
+                margin-bottom: 10px;
+            }
+
+            #option{
+                background-color: #1212128a;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                padding: 10px 15px;
+                text-decoration: none;
+                font-family: MontserratRegular;
+                color: white;
+                text-transform: uppercase;
+                border-radius: 5px;
+                margin: 6px;
+                transition-property: all;
+                transition-timing-function: linear;
+                transition-duration: 0.4s;
+            }
+
+            #option:hover{
+                background-color: #121212;
+                transition-property: all;
+                transition-timing-function: linear;
+                transition-duration: 0.4s;
+            }
+            
+            #note{
+                color: red;
+                font-family: MontserratRegular;
+                font-size: 14 px;
+                margin: auto;   
+            }
+        </style>
+    </head>
+    <body>
+        <nav>
+            <ul>
+                <li>
+                    FlexiDB Portal
+                </li>
+            </ul>
+        </nav>
+        <h1>Hello {{ recipent_name }}</h1> 
+
+        {% block subject %}
+        {% endblock subject %}
+
+        {% block message %}
+        {% endblock message %}
+
+        <section>
+            {% block content %}
+            {% endblock content %}
+        </section>
+    </body>
+</html>
