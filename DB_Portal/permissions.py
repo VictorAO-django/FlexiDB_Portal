@@ -17,25 +17,31 @@ class IpIsValid(BasePermission):
         return ip in request.user.ip_address
 
 class DatabasePermission:
-    def __init__(self, db_instance, user_instance, permission):
+    def __init__(self, db_instance, user_instance, **kwargs):
         self.choices = ["readonly", "read-edit", "read-edit-create", "read-edit-create-delete"]
         self.db_instance = db_instance
         self.user_instance = user_instance
-        self.permission = permission
+        self.permission = kwargs.get('permission', None)
         
         try:
-            assert self.permission in self.choices , "Invalid Permission Type"
+            if self.permission:
+                assert self.permission in self.choices , "Invalid Permission Type"
+            
         except AssertionError as err:
             raise InvalidPermission()
             
     def check_permission(self):
         try:
-            DbPermission = Permission.objects.get(user=self.user_instance, database=self.database_instance)
-            DbPermission = DbPermission.permission 
-            assert DbPermission == self.permission
-            return True
+            #check if the user has permission to accss this database
+            DbPermission = Permission.objects.get(user=self.user_instance, database=self.db_instance)
+            DbPermission = DbPermission.permission #get the user permission on this database
+            if self.permission: #if permission is provided
+                assert DbPermission == self.permission #ensure the user has the permission
+            pass
+        
         except Permission.DoesNotExist:
             raise NotPermitted()
+        
         except AssertionError:
             raise NotPermitted()
             

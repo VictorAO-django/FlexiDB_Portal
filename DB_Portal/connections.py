@@ -45,18 +45,22 @@ class connect_db:
             'mysql': self.retrieve_table_names_mysql(),
             'oracle': self.retrieve_table_names_oracle(),
         }
+        print(self.engine)
         return ENGINES[self.engine]
     
     def retrieve_table_names_postgres(self):
-        try:
-            with connections['user_database'].cursor() as cursor:
-                cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';")
-                tables_name = cursor.fetchall()
-                for tables in tables_name:
-                    print(tables[0])
-                return True
-        except Exception as err:
-            raise CannotConnect()
+        #try:
+        with connections['user_database'].cursor() as cursor:
+            cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';")
+            table_names = cursor.fetchall()
+            data = []
+            for table in table_names:
+                print(table)
+                data.append(table)
+            return data
+        #except Exception as err:
+           ## print(err)
+            #raise CannotConnect()
         
     def retrieve_table_names_mysql(self):
         try:

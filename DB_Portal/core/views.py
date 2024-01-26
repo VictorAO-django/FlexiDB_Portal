@@ -20,7 +20,7 @@ from authenticate.models import *
 from .serializers import *
 from .models import DatabaseConfig
 
-from permissions import IsVerified, IpIsValid
+from permissions import IsVerified, IpIsValid, DatabasePermission
 from authentication import BearerTokenAuthentication
 from connections import connect_db
 from exceptions import *
@@ -57,35 +57,6 @@ class CreateDatabaseInstance(CreateAPIView):
             serializer.validated_data['base_url'] = base_url
             serializer.validated_data['url'] = url
             return super().perform_create(serializer)
-            
-
-
-
-class TryConnect(APIView):
-    #authentication_classes = [BearerTokenAuthentication]
-    #permission_classes = [IsAuthenticated, IsVerified, IpIsValid]'
-    @swagger_auto_schema(
-        operation_summary="Test connection",
-        operation_id="try-connecting",
-        request_body=TryConnectionSerializer,
-        responses={
-            201: "Successful, Product added to cart!",
-            400: "No product_id is provided in request body, and invaid product_id",
-            404: "NotFound - This is because the product no longer exist in the inventory",
-            409: "Conflit - Product already in the cart"
-        }
-    )
-    def post(self, request):
-        data = {}
-        serializer = TryConnectionSerializer(data=request.data) 
-        serializer.is_valid()
-        database = serializer.validated_data['database']
-        
-        #test the database connection
-        connect_db(database).try_connect() 
-        
-        data['detail'] = "Connection Successful"
-        return Response(data, status=status.HTTP_200_OK)
         
         
         
@@ -94,6 +65,11 @@ class Connect_To_DB(APIView):
     authentication_classes = [BearerTokenAuthentication]
     permission_classes = [IsAuthenticated, IsVerified, IpIsValid]
     
+    @swagger_auto_schema(
+        operation_summary="Connection Endpoint",
+        operation_id="connect",
+        request_body=ConnectionSerializer,
+    )
     def post(self, request):
         data = {}
         serializer = ConnectionSerializer(data=request.data)
@@ -103,14 +79,13 @@ class Connect_To_DB(APIView):
         user = Token.objects.get(key=request.auth).user 
         try:
             #get the database url
-            database = DatabaseConfig.objects.get(user=user, database_id=database_id).generate_url()
-            #try connecting to the database
-            connect = connect_db(database)
-            if connect == True:
-                data['detail'] = "Connection Successful"
-                return Response(data, status=status.HTTP_200_OK)
-            else:
-                raise CannotConnect
+            database = DatabaseConfig.objects.get(user=user, database_id=database_id).url
+            
+            connect_db(database).try_connect() #try connecting to the database
+            
+            data['detail'] = "Connection Successful"
+            return Response(data, status=status.HTTP_200_OK)
+            
         except DatabaseConfig.DoesNotExist:
             raise NoSuchDatabase()
     
@@ -128,14 +103,14 @@ class GrantPermission(CreateAPIView):
             developer = User.objects.get(user_id = serializer.validated_data['user'])
             database = DatabaseConfig.objects.get(database_id = serializer.validated_data['database'])
             
-            assert database.user == user
+            assert database.user == user, "you don't have access to give permission on this database"
             
             serializer.validated_data['user'] = developer
             serializer.validated_data['database'] = database
             return super().perform_create(serializer)
     
-        except AssertionError:
-            return Response({"detail":"you don't have access to give permission on this database"}, status=status.HTTP_401_UNAUTHORIZED)
+        except AssertionError as err:
+            return Response({"detail":str(err)}, status=status.HTTP_401_UNAUTHORIZED)
         
         except User.DoesNotExist:
             raise InvalidUser()
@@ -174,12 +149,6 @@ class Get_UpdatePermission(APIView):
             required=['developer', 'database', 'permission'],
         ),
         operation_id="login",
-        responses={
-            200: "Login successful, User Authenticated!",
-            400: "Wrong Password",
-            401: "Email not verified",
-            404: "No user found with this email",
-        }
     )
     def patch(self, request):
         user = Token.objects.get(key=self.request.auth).user
@@ -204,3 +173,73 @@ class Get_UpdatePermission(APIView):
         
         except Permission.DoesNotExist:
             return Response({'detail':'the developer does not have permission to use the database'}, status=status.HTTP_403_FORBIDDEN)
+        
+        
+        
+        
+class DatabasesList(ListAPIView):
+    authentication_classes = [BearerTokenAuthentication]
+    permission_classes = [IsAuthenticated, IsVerified, IpIsValid]
+    serializer_class = DatabaseSerializer
+    
+    @swagger_auto_schema(
+        operation_summary="Update Database Permission Endpoint",
+        operation_id="login",
+        responses={
+            200: "OK", 
+            'owned':DatabaseSerializer(many=True).data, 
+            'permitted': GetDataFromPermissionSerializer(many=True).data
+        }
+    )
+    def list(self, request, *args, **kwargs):
+        user = Token.objects.get(key=self.request.auth).user
+        queryset_1 = DatabaseConfig.objects.filter(user=user)
+        queryset_2 = Permission.objects.filter(user=user)
+        
+        serializer_1 = DatabaseSerializer(queryset_1, many=True)
+        serializer_2 = GetDataFromPermissionSerializer(queryset_2, many=True)
+        
+        response = {
+            'owned':serializer_1.data,
+            'permitted': serializer_2.data
+        }
+        
+        return Response(response,status=status.HTTP_200_OK)
+    
+    
+    
+
+class DataTables(APIView):
+    authentication_classes = [BearerTokenAuthentication]
+    permission_classes = [IsAuthenticated, IsVerified, IpIsValid]
+    
+    @swagger_auto_schema(
+        operation_summary="Retrieve Tables Endpoint",
+        operation_id="tables",
+    )
+    def get(self, request):
+        data = {}
+        database_id = request.query_params.get('database_id', None)
+        
+        user = Token.objects.get(key=request.auth).user #get the user instance
+        try:
+            assert database_id is not None, "No database_id provided"
+            
+            database = DatabaseConfig.objects.get(database_id=database_id)
+            if database.user == user: #if this request is made by the owner of the database
+                pass
+            else:
+                DatabasePermission(database, user).check_permission() #ensure the user has appropriate permission
+            
+            database_url = database.url #get the database url
+            
+            connect = connect_db(database_url).retrieve_table_names() #retrieve table names
+    
+            data['detail'] = connect
+            return Response(data, status=status.HTTP_200_OK)
+
+        except AssertionError as err:
+            return Response({'detail':str(err)}, status=status.HTTP_403_FORBIDDEN)
+        
+        except DatabaseConfig.DoesNotExist:
+            raise NoSuchDatabase()

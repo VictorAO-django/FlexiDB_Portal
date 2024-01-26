@@ -20,8 +20,12 @@ from .views import *
 
 urlpatterns = [
     path('create_db/', CreateDatabaseInstance.as_view()),
-    path('try_connect_db/', TryConnect.as_view()),
+    #path('try_connect_db/', TryConnect.as_view()),
     path('connect_db/', Connect_To_DB.as_view()),
     path('permission/grant/', GrantPermission.as_view()),
-    path('permission/', Get_UpdatePermission().as_view())
+    path('permission/', Get_UpdatePermission().as_view()),
+    
+    #databases
+    path('databases/', DatabasesList.as_view()),
+    path('database/tables/', DataTables.as_view()),
 ]

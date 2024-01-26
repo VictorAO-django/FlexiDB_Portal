@@ -46,6 +46,6 @@ class User(AbstractUser):
     objects = UserManager()
     
     def __str__(self):
-        return self.username
+        return self.email
     
 # Create your models here.
