@@ -26,6 +26,8 @@ class DatabaseConfig(models.Model):
     parameters = models.CharField(max_length=50, blank=True, null=True)
     base_url = models.URLField(blank=False)
     url = models.URLField(blank=False)
+
+    table_whitelist = models.JsonField(blank=True, null=True)
               
     def __str__(self):
         return self.url
