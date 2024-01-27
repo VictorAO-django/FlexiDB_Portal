@@ -1,5 +1,6 @@
 import dj_database_url
 from django.db import connections
+from rest_framework.response import Response
 
 from exceptions import *
 
@@ -37,30 +38,32 @@ class connect_db:
                 rows = cursor.fetchall()
                 return rows
         except Exception as err:
+            #return Response({'detail':str(err)}, status=status.HTTP_403_FORBIDDEN)
+            print(str(err))
             raise CannotConnect()
     
     def retrieve_table_names(self):
-        ENGINES = {
-            'postgres': self.retrieve_table_names_postgres(),
-            'mysql': self.retrieve_table_names_mysql(),
-            'oracle': self.retrieve_table_names_oracle(),
-        }
         print(self.engine)
-        return ENGINES[self.engine]
+        ENGINES = {
+            'postgres': "self.retrieve_table_names_postgres()",
+            'mysql': "self.retrieve_table_names_mysql()",
+            'oracle': "self.retrieve_table_names_oracle()",
+        }
+        
+        return eval(ENGINES[self.engine])
     
     def retrieve_table_names_postgres(self):
-        #try:
-        with connections['user_database'].cursor() as cursor:
-            cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';")
-            table_names = cursor.fetchall()
-            data = []
-            for table in table_names:
-                print(table)
-                data.append(table)
-            return data
-        #except Exception as err:
-           ## print(err)
-            #raise CannotConnect()
+        try:
+            with connections['user_database'].cursor() as cursor:
+                cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';")
+                table_names = cursor.fetchall()
+                data = []
+                for table in table_names:
+                    data.append(table)
+                return data
+            
+        except Exception as err:
+           raise CannotConnect()
         
     def retrieve_table_names_mysql(self):
         try:

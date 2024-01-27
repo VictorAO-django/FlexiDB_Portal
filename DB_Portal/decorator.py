@@ -1,11 +1,9 @@
-import json
-
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import status
 
 from core.models import DatabaseConfig, Permission
-from permissions return DatabasePermission
+from permissions import DatabasePermission
 
 def ensure_db_permission(permission_type):
     def my_decorator(func):
@@ -27,7 +25,7 @@ def ensure_db_permission(permission_type):
                    
                 kwargs['database'] = database
                 kwargs['user'] = user
-                return Response(json.dumps(func(self, request, *args, **kwargs)))
+                return  func(self, request, *args, **kwargs)
         
             except AssertionError as err:
                 return Response({'detail':str(err)}, status=status.HTTP_403_FORBIDDEN)

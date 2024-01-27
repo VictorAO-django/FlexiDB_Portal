@@ -27,5 +27,5 @@ urlpatterns = [
     
     #databases
     path('databases/', DatabasesList.as_view()),
-    path('database/tables/', DataTables.as_view()),
+    path('database/tables/', DatabaseTablesList.as_view()),
 ]

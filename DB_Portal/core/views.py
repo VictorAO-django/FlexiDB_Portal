@@ -210,21 +210,50 @@ class DatabasesList(ListAPIView):
     
     
 
-class DataTables(APIView):
+class DatabaseTablesList(APIView):
     authentication_classes = [BearerTokenAuthentication]
     permission_classes = [IsAuthenticated, IsVerified, IpIsValid]
     
-    @ensure_db_permission('read')
     @swagger_auto_schema(
         operation_summary="Retrieve Tables Endpoint",
         operation_id="tables",
     )
+    @ensure_db_permission('read')
     def get(self, request,*args, **kwargs):
         data = {}
         user = kwargs['user'] #get the user instance
-        database = kwargs['database']
+        database = kwargs['database'] #get the database instance
         
-        connect = connect_db(database.url).retrieve_data_from_table
+        connect = connect_db(database.url).retrieve_table_names()
         data['detail'] = connect
         return Response(data, status=status.HTTP_200_OK)
+    
+    
+
+
+class TableData(APIView):
+    authentication_classes = [BearerTokenAuthentication]
+    permission_classes = [IsAuthenticated, IsVerified, IpIsValid]
+    
+    @swagger_auto_schema(
+        operation_summary="Retrieve Tables Endpoint",
+        operation_id="tables",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'developer': openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_EMAIL),
+                'database': openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_PASSWORD),
+                'permission': openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_PASSWORD),
+            },
+            required=['developer', 'database', 'permission'],
+        ),
+    )
+    @ensure_db_permission('read')
+    def get(self, request,*args, **kwargs):
+        data = {}
+        user = kwargs['user'] #get the user instance
+        database = kwargs['database'] #get the database instance
         
+        connect = connect_db(database.url).retrieve_data_from_table()
+        data['detail'] = connect
+        return Response(data, status=status.HTTP_200_OK)

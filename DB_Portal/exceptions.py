@@ -31,7 +31,7 @@ class RegisteredBySomeone(APIException):
 
 class InvalidPermission(APIException):
     status_code = status.HTTP_403_FORBIDDEN
-    default_detail = "this permission type cannot be recognized"
+    default_detail = "cannot recognize permission type, which include 'read', 'read-edit', 'read-edit-create', 'read-edit-create-delete'"
 
 class NotPermitted(APIException):
     status_code = status.HTTP_403_FORBIDDEN

@@ -1,4 +1,5 @@
 from rest_framework.permissions import BasePermission
+from rest_framework.response import Response
 from helper import get_client_ip
 from exceptions import *
 
@@ -17,7 +18,7 @@ class IpIsValid(BasePermission):
         return ip in request.user.ip_address
 
 class DatabasePermission:
-    def __init__(self, db_instance, user_instance, permission):
+    def __init__(self, user_instance, db_instance, permission):
         self.types = {
             'read': ['read'],
             'read-edit': ['read', 'read-edit'],
@@ -36,7 +37,7 @@ class DatabasePermission:
             
     def check_permission(self):
         try:
-            assert db_instance.user == user_instance
+            assert self.db_instance.user == self.user_instance
             return self.owner_permission()
             
         except AssertionError as err:
