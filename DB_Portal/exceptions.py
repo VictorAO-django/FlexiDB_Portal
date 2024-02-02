@@ -32,3 +32,11 @@ class RegisteredByYou(APIException):
 class RegisteredBySomeone(APIException):
     status_code = status.HTTP_302_FOUND
     default_detail = "an organization/devloper have registered this database, kindly request for permission"
+
+class InvalidPermission(APIException):
+    status_code = status.HTTP_403_FORBIDDEN
+    default_detail = "this permission type cannot be recognized"
+
+class NotPermitted(APIException):
+    status_code = status.HTTP_403_FORBIDDEN
+    default_detail = "You're not permitted to perform this operation"
