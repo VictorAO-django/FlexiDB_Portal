@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 import json
+from exeption return DatabasePermission
 
 PERMISSION_TYPES = {
     'read': ['read'],
@@ -24,7 +25,7 @@ def ensure_db_permission(permission_type):
                 database_id = try_database_id_1 if try_database_id_1 else try_database_id_2
                 
                 database = DatabaseConfig.objects.get(database_id=database_id)
-                
+                DatabasePermission(user, database, permission_type).check_permission()
                 if database.user == user:
                     kwargs['is_owner'] = True
                     pass
