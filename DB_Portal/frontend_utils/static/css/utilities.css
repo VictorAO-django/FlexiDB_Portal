@@ -60,3 +60,25 @@ body li[class='focus']>a{
     color: #fff;
 }
 
+
+
+
+
+/**********ALERT***********/
+div[id='alert']{
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 4px 0px;
+    background-color: red;
+}
+
+p[id='alertMessage']{
+    margin: 0px;
+    font-family: MontserratRegular;
+    color: #fff;
+    font-size: 14px;
+}

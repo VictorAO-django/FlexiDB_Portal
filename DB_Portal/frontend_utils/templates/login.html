@@ -5,16 +5,18 @@
         <meta charset="UTF-8">
         <meta name="viewport", content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="{% static 'css/login.css' %}">
+        <link rel="stylesheet" href="{% static 'css/utilities.css' %}">
         <script defer type="module" role="application" src="{% static 'javascript/login.js' %}"></script>
 </head>
 <body>
     <main>
         <section class="login-section">
-            <img src="" alt="FlexiDb">
+            <img src="{% static 'png/logo.svg' %}" alt="FlexiDb">
             <div>
                 <p>Welcome back</p>
                 <span>Please enter your details</span>
                 <form id="login-form">
+                    {% csrf_token %}
                     <label for="email">Email</label>
                     <input type="text" name="email" placeholder="Enter your email">
 
@@ -25,7 +27,7 @@
                         <p><input type="checkbox" name="" id="">Remember for 30days</p>
                         <a href="">Forgot password</a>
                     </div>
-                    <input type="submit" value="Sign in" name="submit" id="submit">
+                    <a id="submit">Sign in</a>
                 </form>
                 <p id="no-account">Don't have an account? <a href="">Sign up</a></p>
             </div>

@@ -27,16 +27,21 @@ main{
 section[class='login-section']{
     display: flex;
     flex-flow: column nowrap;
-    width:60%;
+    justify-content: space-between;
+    width:100%;
     padding: 20px;
+}
+
+section[class='login-section']>img{
+    width: 120px;
 }
 
 section[class='login-section']>div{
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    justify-content: space-around;
-    margin: 100px;
+    justify-content: space-between;
+    transform: translate(0px, -80px);
 }
 
 section[class='login-section']>div>p{
@@ -67,7 +72,7 @@ label{
     font-family: MontserratMedium;
     margin: 20px 0px 0px 0px;
     font-size: 13px;
-    color: #466543;
+    color: rgb(70, 101, 67);
 }
 
 input{
@@ -96,12 +101,19 @@ form[id='login-form']>div>a{
     color: #466543;
 }
 
-input[id='submit']{
+a[id='submit']{
+    font-family: MontserratRegular;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    text-decoration: none;
     border: 1px solid transparent;
     background-color: #466543;
     color: #fff;
     padding: 5px 0px;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 #no-account{
