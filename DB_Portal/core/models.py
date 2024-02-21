@@ -24,10 +24,10 @@ class DatabaseConfig(models.Model):
     port = models.IntegerField()
     database = models.CharField(max_length=50, blank=True, null=True)
     parameters = models.CharField(max_length=50, blank=True, null=True)
-    base_url = models.URLField(blank=False)
-    url = models.URLField(blank=False)
+    base_url = models.URLField(blank=False, unique=True)
+    url = models.URLField(blank=False, unique=True)
 
-    table_whitelist = models.JsonField(blank=True, null=True)
+    table_whitelist = models.JSONField(blank=True, null=True)
               
     def __str__(self):
         return self.url

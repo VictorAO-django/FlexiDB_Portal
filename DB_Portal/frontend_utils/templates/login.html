@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<head>
+    <title>Login to FlexiBb</title>
+        <meta charset="UTF-8">
+        <meta name="viewport", content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'css/login.css' %}">
+        <script defer type="module" role="application" src="{% static 'javascript/login.js' %}"></script>
+</head>
+<body>
+    <main>
+        <section class="login-section">
+            <img src="" alt="FlexiDb">
+            <div>
+                <p>Welcome back</p>
+                <span>Please enter your details</span>
+                <form id="login-form">
+                    <label for="email">Email</label>
+                    <input type="text" name="email" placeholder="Enter your email">
+
+                    <label for="password">Password</label>
+                    <input type="password"  name="password">
+
+                    <div>
+                        <p><input type="checkbox" name="" id="">Remember for 30days</p>
+                        <a href="">Forgot password</a>
+                    </div>
+                    <input type="submit" value="Sign in" name="submit" id="submit">
+                </form>
+                <p id="no-account">Don't have an account? <a href="">Sign up</a></p>
+            </div>
+            <p class="bottom-statment">visualize & manage data</p>
+        </section>
+        <!---<section class="show-image">
+            <img src="{% static 'png/visualize.png' %}" alt="visualize">
+        </section>-->
+    </main>
+</body>
+</html>

@@ -1,0 +1,118 @@
+@font-face {
+    font-family: 'MontserratMedium';
+    src: url('fonts/Montserrat-Medium.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'MontserratRegular';
+    src: url('fonts/Montserrat-Regular.ttf') format('truetype');
+}
+
+body{
+    margin: 0px;
+    border: 0px;
+    background-color: #ffffff;
+}
+
+div[class='top']{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+    align-items: center;
+    padding: 13px 20px;
+    height: 30px;
+    background-color: #fff;
+    filter: drop-shadow(0px 0px 1px #969696da);
+}
+
+a[id='brand']{
+    border: 1px solid red;
+}
+
+div[class='center-top']{
+    max-height: 100%;
+    display: flex;
+    align-items: center;
+    border-right: 1px solid #12121249;
+}
+
+div[class='account']{
+    display: flex;
+    align-items: center;
+    margin:  0px 20px;
+    padding: 4px 6px;
+    border:  1px solid #9696962f;
+    filter: drop-shadow(0px 0px 1px #9696962f); 
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+div[class='account']>img:first-of-type{
+    border: 1px solid #07070715;
+    border-radius: 5px;
+}
+
+div[class='account']>p{
+    text-transform: capitalize;
+    font-family: MontserratMedium;
+    font-size: 13px;
+    line-height: 11px;
+    margin: 0 15px;
+    color: #344968;
+}
+
+span[id='role']{
+    text-transform: lowercase;
+    font-family: MontserratRegular;
+    font-size: 11px;
+}
+
+div[class='center-top']>a{
+    margin: 0px 20px;
+    text-decoration: none;
+    font-family: MontserratRegular;
+    font-size: 13px;
+    color: #344968;
+}
+
+div[class='search']{
+    display: flex;
+    align-items: center;
+}
+
+div[class='search']>div{
+    display: flex;
+    align-items: center;
+    font-family: MontserratRegular;
+    font-size: 13px;
+}
+
+div[class='search']>div>img{
+    cursor: pointer;
+    width: 20px;
+}
+
+div[class='search']>div>span{
+    margin-left: 5px;
+    border: 1px solid #969696da;
+    border-radius: 4px;
+    padding: 1px 2px;
+    font-size: 12px;
+}
+
+div[class='search']>img{
+    transform: translate(10px, 0px);   
+}
+
+div[class='search']>input{
+    height: 25px;
+    padding-left: 28px;
+    min-width: 250px;
+    border: 1px solid #969696da;
+    border-radius: 8px;
+    margin-left: -18px;
+}
+
+div[class='search']>input:focus{
+    outline: none;
+}

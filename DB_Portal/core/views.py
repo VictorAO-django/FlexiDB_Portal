@@ -211,15 +211,22 @@ class DatabasesList(ListAPIView):
     
 
 class DatabaseTablesList(APIView):
-    authentication_classes = [BearerTokenAuthentication]
-    permission_classes = [IsAuthenticated, IsVerified, IpIsValid]
+    #authentication_classes = [BearerTokenAuthentication]
+    #permission_classes = [IsAuthenticated, IsVerified, IpIsValid]
     
     @swagger_auto_schema(
         operation_summary="Retrieve Tables Endpoint",
         operation_id="tables",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'database': openapi.Schema(type=openapi.TYPE_STRING),
+            },
+            required=['database'],
+        ),
     )
     @ensure_db_permission('read')
-    def get(self, request,*args, **kwargs):
+    def post(self, request,*args, **kwargs):
         data = {}
         user = kwargs['user'] #get the user instance
         database = kwargs['database'] #get the database instance
@@ -241,9 +248,9 @@ class TableData(APIView):
         request_body=openapi.Schema(
             type=openapi.TYPE_OBJECT,
             properties={
-                'developer': openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_EMAIL),
-                'database': openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_PASSWORD),
-                'permission': openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_PASSWORD),
+                'developer': openapi.Schema(type=openapi.TYPE_STRING),
+                'database': openapi.Schema(type=openapi.TYPE_STRING),
+                'permission': openapi.Schema(type=openapi.TYPE_STRING),
             },
             required=['developer', 'database', 'permission'],
         ),

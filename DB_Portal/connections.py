@@ -2,6 +2,8 @@ import dj_database_url
 from django.db import connections
 from rest_framework.response import Response
 
+from core.models import DatabaseConfig
+
 from exceptions import *
 
 class connect_db:
@@ -24,6 +26,16 @@ class connect_db:
         #set user database config
         connections.databases['user_database'] = user_database_config
     
+    @property
+    def tables(self):
+        database = DatabaseConfig.objects.get(url=self.database)
+        return database.table_whitelist
+    
+    def whitelist_tables(self, table_list):
+        database = DatabaseConfig.objects.get(url=self.database)
+        database.table_whitelist = table_list
+        database.save()
+    
     def try_connect(self):
         try:
             with connections['user_database'].cursor() as cursor:
@@ -34,6 +46,7 @@ class connect_db:
     def retrieve_data_from_table(self):
         try:
             with connections['user_database'].cursor() as cursor:
+                assert self.table_name in self.tables
                 cursor.execute(f"SELECT * from {self.table_name}")
                 rows = cursor.fetchall()
                 return rows
@@ -41,6 +54,9 @@ class connect_db:
             #return Response({'detail':str(err)}, status=status.HTTP_403_FORBIDDEN)
             print(str(err))
             raise CannotConnect()
+        
+        #except AssertionError:
+            #raise Table
     
     def retrieve_table_names(self):
         print(self.engine)
@@ -60,19 +76,28 @@ class connect_db:
                 data = []
                 for table in table_names:
                     data.append(table)
+                    
+                #whitelist table names
+                self.whitelist_tables(data) 
                 return data
             
         except Exception as err:
-           raise CannotConnect()
+            print(str(err))
+            raise CannotConnect()
         
     def retrieve_table_names_mysql(self):
         try:
             with connections['user_database'].cursor() as cursor:
                 cursor.execute("SHOW TABLES;")
-                tables_name = cursor.fetchall()
-                for tables in tables_name:
-                    print(tables[0])
-                return True
+                table_names = cursor.fetchall()
+                data = []
+                for table in table_names:
+                    data.append(table)
+                    
+                #whitelist table names
+                self.whitelist_tables(data) 
+                return data
+            
         except Exception as err:
             return False
         
@@ -80,10 +105,15 @@ class connect_db:
         try:
             with connections['user_database'].cursor() as cursor:
                 cursor.execute("SELECT table_name FROM all_tables;")
-                tables_name = cursor.fetchall()
-                for tables in tables_name:
-                    print(tables[0])
-                return True
+                table_names = cursor.fetchall()
+                data = []
+                for table in table_names:
+                    data.append(table)
+                    
+                #whitelist table names
+                self.whitelist_tables(data) 
+                return data
+            
         except Exception as err:
             raise CannotConnect()
         

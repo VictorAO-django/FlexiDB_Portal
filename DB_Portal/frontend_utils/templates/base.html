@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+    <head>
+        <title>{{ title }}</title>
+        <meta charset="UTF-8">
+        <meta name="viewport", content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'css/base.css' %}">
+        <link rel="stylesheet" href="{% static 'css/utilities.css' %}">
+        <script defer type="module" role="application" src="{% static 'javascript/base.js' %}"></script>
+    </head>
+
+    <body>
+        <div class="top">
+            <a href="" id="brand">
+                <img src="" alt="FlexiDB">
+            </a>
+
+            <div class="center-top">
+                <div class="account">
+                    <img src="{% static 'png/account.svg' %}" alt="">
+                    <p> {{ username }} <br><span id="role">{{ role }}</span></p>
+                    <img src="{% static 'png/dropdown.svg' %}" alt="">
+                </div>
+                <a href="">Dashboard</a>
+                <a href="">Transition</a>
+                <a href="">Docs</a>
+            </div>
+
+            <div id="search" class="search">
+                <div class="filter">
+                    <img id="search-filter" src="{% static 'png/filter.svg' %}">
+                    <span id="filter-key">first name</span>
+                </div>
+                <img src="{% static 'png/search.svg' %}" alt="Search">
+                <input id="filter-value" type="search" placeholder="search....">
+            </div>
+            
+            <a href="">Logout</a>
+        </div>
+        
+    </body>
+</html>

@@ -1,0 +1,135 @@
+@font-face {
+    font-family: 'MontserratMedium';
+    src: url('fonts/Montserrat-Medium.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'MontserratRegular';
+    src: url('fonts/Montserrat-Regular.ttf') format('truetype');
+}
+
+
+body{
+    margin: 0px;
+    border: 0px;
+    background-color: #BFE1C9;
+}
+
+main{
+    display: flex;
+    flex-flow: row nowrap;
+    width: 100%;
+    background-color: #FAFFFB;
+    overflow: hidden;
+    filter: drop-shadow(0px 0px 8px #96969642);
+    height: 100vh;
+}
+
+section[class='login-section']{
+    display: flex;
+    flex-flow: column nowrap;
+    width:60%;
+    padding: 20px;
+}
+
+section[class='login-section']>div{
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: space-around;
+    margin: 100px;
+}
+
+section[class='login-section']>div>p{
+    font-family: MontserratMedium;
+    font-size: 18px;
+    margin-bottom: 0px;
+}
+
+section[class='login-section']>div>span{
+    font-family: MontserratRegular;
+    font-size: 13px;
+    color: #466543;
+}
+
+form[id='login-form']{
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+form[id='login-form']>div{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+label{
+    font-family: MontserratMedium;
+    margin: 20px 0px 0px 0px;
+    font-size: 13px;
+    color: #466543;
+}
+
+input{
+    font-family: MontserratRegular;
+    border: 1px solid #466543;
+    border-radius: 5px;
+    padding: 5px 2px;
+}
+
+input:focus{
+    outline: none;
+}
+
+form[id='login-form']>div>p{
+    margin-right: 40px;
+    font-family: MontserratRegular;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+}
+
+form[id='login-form']>div>a{
+    font-family: MontserratRegular;
+    font-size: 12px;
+    text-decoration: none;
+    color: #466543;
+}
+
+input[id='submit']{
+    border: 1px solid transparent;
+    background-color: #466543;
+    color: #fff;
+    padding: 5px 0px;
+    border-radius: 5px;
+}
+
+#no-account{
+    font-family: MontserratRegular;
+    font-size: 12px;
+}
+
+body p[id='no-account']>a{
+    font-family: MontserratRegular;
+    color: #466543;
+}
+
+p[class='bottom-statment']{
+    font-family: MontserratRegular;
+    font-size: 12px;
+    color: #466543;
+    justify-self: flex-end;
+}
+
+section[class='show-image']{
+    background-color: #DFF7E7;
+    width: 50%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-end;
+}
+
+section[class='show-image']>img{
+    max-width: 100%;
+    filter: drop-shadow(0px 0px 10px #9696965d);
+}

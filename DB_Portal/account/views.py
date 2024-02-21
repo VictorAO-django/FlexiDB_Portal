@@ -29,6 +29,13 @@ def RegistrationView(request):
     }
     return render(request, template, context=context)
 
+def HomeView(request):
+    template = 'base.html'
+    context = {
+        'username':'olusola',
+        'role': 'company',
+    }
+    return render(request, template, context=context)
 
 def LoginView(request):
     template = 'login.html'
