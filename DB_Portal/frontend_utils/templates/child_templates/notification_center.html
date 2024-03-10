@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Notification Center</title>
+{% endblock title%}
+
+{% block more_css %}
+<link rel="stylesheet" href="{% static 'css/notification.css' %}">
+{% endblock more_css %}
+
+{% block more_js %}
+<script defer type="module" role="application" src="{% static 'javascript/notification.js' %}"></script>
+{% endblock more_js %}
+
+{% block body %}
+    <section id="notification-center-body">
+        <div id="notification-center">
+            <p>Notification Center</p>
+            <div>
+                <img id="mark-all-as-read" src="{% static 'png/mark-as-read.svg' %}" alt="mark-as-read">
+                <div id="filter-section">
+                    <section id="filter-from">
+                        <p>From:</p>
+                        <select name="from-year" id="from-year"></select>
+                        <select name="from-month" id="from-month">
+                            <option value="">------------</option>
+                            <option value="01">January</option>
+                            <option value="02">February</option>
+                            <option value="03">March</option>
+                            <option value="04">April</option>
+                            <option value="05">May</option>
+                            <option value="06">June</option>
+                            <option value="07">July</option>
+                            <option value="08">August</option>
+                            <option value="09">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </section>
+
+                    <section id="filter-to">
+                        <p>To:</p>
+                        <select name="to-year" id="to-year"></select>
+                        <select name="to-month" id="to-month">
+                            <option value="">------------</option>
+                            <option value="01">January</option>
+                            <option value="02">February</option>
+                            <option value="03">March</option>
+                            <option value="04">April</option>
+                            <option value="05">May</option>
+                            <option value="06">June</option>
+                            <option value="07">July</option>
+                            <option value="08">August</option>
+                            <option value="09">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+        <div id="notification-lists">
+            <div>
+                <div id="prop-image">
+                    AT
+                </div>
+                <div id="details">
+                    <p>Abiodun Treasure</p>
+                    <p>Changes was made to your database... see more</p>
+                </div>
+                <img src="{% static 'png/unread.svg' %}" id="notification-status">
+                <img src="{% static 'png/remove.svg' %}" id="remove-notification">
+            </div>
+            <div>
+                <div id="prop-image">
+                    AT
+                </div>
+                <div id="details">
+                    <p>Abiodun Treasure</p>
+                    <p>Changes was made to your database... see more</p>
+                </div>
+                <img src="{% static 'png/read.svg' %}" id="notification-status">
+                <img src="{% static 'png/remove.svg' %}" id="remove-notification">
+            </div>
+            <div>
+                <div id="prop-image">
+                    AT
+                </div>
+                <div id="details">
+                    <p>Abiodun Treasure</p>
+                    <p>Changes was made to your database... see more</p>
+                </div>
+                <img src="{% static 'png/unread.svg' %}" id="notification-status">
+                <img src="{% static 'png/remove.svg' %}" id="remove-notification">
+            </div>
+        </div>
+    </section>
+    <!-- <p id="tool-tip">remove</p> -->
+{% endblock body%}

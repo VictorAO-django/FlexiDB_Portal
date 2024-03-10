@@ -1,42 +1,56 @@
 {% load static %}
 <!DOCTYPE html>
     <head>
-        <title>{{ title }}</title>
+        {% block title %}
+            <title>Dashboard</title>
+        {% endblock title %}
         <meta charset="UTF-8">
         <meta name="viewport", content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="{% static 'css/base.css' %}">
         <link rel="stylesheet" href="{% static 'css/utilities.css' %}">
+        {% block more_css %}
+        {% endblock more_css %}
         <script defer type="module" role="application" src="{% static 'javascript/base.js' %}"></script>
+        {% block more_js %}
+        {% endblock more_js %}
     </head>
 
     <body>
         <div class="top">
             <a href="" id="brand">
-                <img src="" alt="FlexiDB">
+                <img src="{% static 'png/logo.svg' %}" alt="FlexiDB">
             </a>
-
-            <div class="center-top">
-                <div class="account">
-                    <img src="{% static 'png/account.svg' %}" alt="">
-                    <p> {{ username }} <br><span id="role">{{ role }}</span></p>
-                    <img src="{% static 'png/dropdown.svg' %}" alt="">
+            <div class="sub-top">
+                <div class="center-top">
+                    <div class="account">
+                        <img src="{% static 'png/account.svg' %}" alt="">
+                        <p> {{ username }} <br><span id="role">{{ role }}</span></p>
+                        <img src="{% static 'png/dropdown.svg' %}" alt="">
+                    </div>
+                    <a href="/portal/dashboard/">Dashboard</a>
+                    <a href="">Transition</a>
+                    <a href="">Docs</a>
                 </div>
-                <a href="">Dashboard</a>
-                <a href="">Transition</a>
-                <a href="">Docs</a>
-            </div>
-
-            <div id="search" class="search">
-                <div class="filter">
-                    <img id="search-filter" src="{% static 'png/filter.svg' %}">
-                    <span id="filter-key">first name</span>
+    
+                <div id="search" class="search">
+                    <div class="filter">
+                        <img id="search-filter" src="{% static 'png/filter.svg' %}">
+                        <span id="filter-key">first_name</span>
+                    </div>
+                    <img src="{% static 'png/search.svg' %}" alt="Search">
+                    <input id="filter-value" type="search" placeholder="search....">
+                    {% csrf_token %}
                 </div>
-                <img src="{% static 'png/search.svg' %}" alt="Search">
-                <input id="filter-value" type="search" placeholder="search....">
+                <div class="notification">
+                    <img src="{% static 'png/notification.svg' %}">
+                    <a id="unread-count">13</a>
+                </div>
+                <a href="">Logout</a>
             </div>
-            
-            <a href="">Logout</a>
         </div>
         
+        {% block body %}
+        {% endblock body %}
+
     </body>
 </html>

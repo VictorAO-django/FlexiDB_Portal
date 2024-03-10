@@ -25,7 +25,23 @@ div[class='top']{
 }
 
 a[id='brand']{
-    border: 1px solid red;
+    width: 100px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+a[id='brand']>img{
+    max-width: 100%;
+}
+
+div[class='sub-top']{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+    align-items: center;
+    height: 30px;
+    flex-grow: 1;
 }
 
 div[class='center-top']{
@@ -115,4 +131,26 @@ div[class='search']>input{
 
 div[class='search']>input:focus{
     outline: none;
+}
+
+div[class='notification']{
+    display: flex;
+    width: 30px;
+    justify-content: space-around;
+    align-items: center;
+    cursor: pointer;
+}
+
+div[class='notification']>img{
+    max-width: 100%;
+}
+
+div[class='notification']>a{
+    color: #fff;
+    background-color: red;
+    border-radius: 100%;
+    padding: 2px 4px;
+    font-family: MontserratRegular;
+    font-size: 10px;
+    transform: translate(-15px, -7px);
 }

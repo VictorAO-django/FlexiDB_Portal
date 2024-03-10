@@ -40,3 +40,11 @@ def HomeView(request):
 def LoginView(request):
     template = 'login.html'
     return render(request, template)
+
+def NotificationView(request):
+    template = 'child_templates/notification_center.html'
+    return render(request, template)
+
+def ProfileView(request):
+    template = 'child_templates/profile.html'
+    return render(request, template)

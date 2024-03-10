@@ -13,8 +13,8 @@
         <section class="login-section">
             <img src="{% static 'png/logo.svg' %}" alt="FlexiDb">
             <div>
-                <p>Welcome back</p>
-                <span>Please enter your details</span>
+                <p id="statement">Welcome back</p>
+                <span id="statement-span">Please enter your details</span>
                 <form id="login-form">
                     {% csrf_token %}
                     <label for="email">Email</label>
@@ -25,11 +25,19 @@
 
                     <div>
                         <p><input type="checkbox" name="" id="">Remember for 30days</p>
-                        <a href="">Forgot password</a>
+                        <a id="forgotPW">Forgot password</a>
                     </div>
                     <a id="submit">Sign in</a>
                 </form>
-                <p id="no-account">Don't have an account? <a href="">Sign up</a></p>
+
+                <form id="forgotPW-form" style="display: none;">
+                    {% csrf_token %}
+                    <label for="email">Email</label>
+                    <input type="text" name="email" placeholder="Enter your email">
+                    <a id="submit-email">Enter</a>
+                </form>
+
+                <p id="no-account">Don't have an account? <a id="sign-up">Sign up</a></p>
             </div>
             <p class="bottom-statment">visualize & manage data</p>
         </section>

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Profile</title>
+{% endblock title%}
+
+{% block more_css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock more_css %}
+
+{% block more_js %}
+<!-- <script defer type="module" role="application" src="{% static 'javascript/notification.js' %}"></script> -->
+{% endblock more_js %}
+
+{% block body %}
+    <section id="profile-body">
+        <section id="profile-section">
+            <div class="img-name">
+                <div>OA</div>
+                <div class="names">
+                    <p>Olusola Ayomide</p>
+                    <p>he/him</p>
+                </div>
+            </div>
+        </section>
+        <section id="database-section">
+
+        </section>
+    </section>
+{% endblock body%}

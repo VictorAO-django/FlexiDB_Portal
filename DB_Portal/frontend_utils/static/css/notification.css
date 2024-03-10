@@ -1,0 +1,162 @@
+@font-face {
+    font-family: 'MontserratMedium';
+    src: url('fonts/Montserrat-Medium.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'MontserratRegular';
+    src: url('fonts/Montserrat-Regular.ttf') format('truetype');
+}
+
+section[id='notification-center-body']{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-around;
+    align-items: center;
+    width: 80%;
+    margin: auto;
+    margin-top: 50px;
+    padding: 0px 5px;
+}
+
+div[id='notification-center']{
+    display: flex;
+    flex-flow: row nowrap;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+}
+
+div[id='notification-center']>p{
+    font-family: MontserratMedium;
+    font-size: 20px;
+}
+
+div[id='notification-center']>div{
+    display: flex;
+    flex-flow: row nowrap;
+    margin-left: auto;
+}
+
+div[id='notification-center']>div>img{
+    width: 30px;
+    cursor: pointer;
+    border-right: 1px solid #1212122d;
+    padding-right: 5px;
+}
+
+div[id='filter-section']{
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+div[id='filter-section']>section{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+div[id='filter-section']>section>p{
+    font-family: MontserratMedium;
+    font-size: 13px;
+    margin-left: 8px;
+}
+
+div[id='filter-section']>section>select{
+    margin-right: 5px;
+    margin-left: 3px;
+    font-family: MontserratRegular;
+    border: 1px solid #12121225;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+div[id='filter-section']>section>select>option{
+    margin: 3px 0px;
+    font-family: MontserratRegular;
+}
+
+div[id='filter-section']>section>select:focus{
+    outline: none;
+}
+
+
+
+div[id='notification-lists']{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    border: 1px solid #12121217;
+    padding: 0px 10px;
+}
+
+div[id='notification-lists']>div{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 5px 10px;
+    width: 100%;
+    margin-bottom: 20px;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+div[id='notification-lists']>div:hover{
+    background-color: #12121217;
+}
+
+div[id='notification-lists']>div:first-of-type{
+    margin-top: 30px;
+}
+div[id='notification-lists']>div:nth-of-type(2){
+    background-color: #1212120a;
+}
+
+body div[id='notification-lists']>div:nth-of-type(2):hover{
+    background-color: #12121217;
+}
+
+div[id='prop-image']{
+    background-color: #121212;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 100%;
+    color: #fff;
+    font-family: MontserratMedium;
+    font-size: 20px;
+    margin-right: 15px;
+}
+
+div[id="details"]{
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+div[id="details"]>p:first-of-type{
+    font-family: MontserratMedium;
+    margin: 0px;
+    font-size: 14px;
+}
+
+div[id="details"]>p:nth-of-type(2){
+    font-family: MontserratRegular;
+    margin: 0px;
+    color: #1212129c;
+    font-size: 12px;
+}
+
+img[id="notification-status"]{
+    width: 20px;
+    margin-left: 50px;
+}
+
+img[id='remove-notification']{
+    width: 20px;
+    margin-left: auto;
+}

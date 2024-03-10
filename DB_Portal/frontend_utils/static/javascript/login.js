@@ -1,4 +1,4 @@
-import {Consumer, SetAuthToken, GetAuthToken} from './utilities.js'
+import {Consumer, SetAuthToken, GetAuthToken, CustomAlert, Redirect, delay} from './utilities.js'
 
 
 function showErr(msg,URL,lineNum,columnNo,error){
@@ -20,7 +20,7 @@ function showErr(msg,URL,lineNum,columnNo,error){
 window.onerror = showErr
 
 
-function Login(){
+async function Login(){
     var url = 'http://localhost:8000/portal/auth/login/'
     var LoginForm = document.getElementById('login-form')
     var email = LoginForm.elements["email"].value
@@ -29,14 +29,58 @@ function Login(){
         "email": email,
         "password": password
     }
-    var response = new Consumer(url, payload, 'POST')
-    var data = response.fetch_response()
-    alert(data)
+    var response = new Consumer(url, payload, 'POST', false, true)
+    var data = await response.fetch_response()
+    
+    SetAuthToken(data['token'])
+    var customAlert = new CustomAlert(data['detail'], 'green')
+    customAlert.raise()
+
+    await delay(2000)
+    Redirect('http://localhost:8000/portal/dashboard/')
 }
 
 
+async function ForgotPW(){
+    var url = 'http://localhost:8000/portal/auth/forget-password/'
+    var ForgotPWForm = document.getElementById('forgotPW-form')
+    var email = ForgotPWForm.elements["email"].value
+    var payload = {
+        "email": email,
+    }
+    var response = new Consumer(url, payload, 'POST', false)
+    var data = await response.fetch_response()
+
+    var customAlert = new CustomAlert(data['detail'], 'green')
+    customAlert.raise()
+}
+
+
+function forgotPasswordForm(){
+    var loginForm = document.getElementById('login-form')
+    var forgotPWForm = document.getElementById('forgotPW-form')
+    var statement = document.getElementById('statement')
+    var subStatement = document.getElementById('statement-span')
+
+    statement.innerText = 'Forgot password'
+    subStatement.innerText = "Enter your account's email address"
+
+    loginForm.style.display = 'none'
+    forgotPWForm.style.display = 'flex'
+}
 
 document.addEventListener("DOMContentLoaded",function(){
     var login = document.getElementById('submit');
     login.addEventListener('click', Login)
+
+    var forgotPwButton = document.getElementById('forgotPW');
+    forgotPwButton.addEventListener('click', forgotPasswordForm)
+
+    var forgotPw = document.getElementById('submit-email');
+    forgotPw.addEventListener('click', ForgotPW)
+
+    var signUp = document.getElementById('sign-up');
+    signUp.addEventListener('click', function(){
+        Redirect('http://localhost:8000/portal/portal/register/')
+    })
 })

@@ -48,7 +48,7 @@ class RegistrationView(APIView):
             user = serializer.save()
             
             data["status"]='success'
-            data["message"]=f'{user.first_name}, mail is sent to your email address for your account verification'
+            data["detail"]=f'{user.first_name}, mail is sent to your email address for your account verification'
             return Response(data,status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_403_FORBIDDEN)
@@ -104,7 +104,7 @@ class LoginView(APIView):
                         token.delete()
                         token = Token.objects.create(user=user)
                         
-                    data["detail"] = "Login successful, User Authenticated!"
+                    data["detail"] = "Login successful, we'll redirect you to dashboard"
                     data["token"] = token.key     
                     return Response(data,status=status.HTTP_200_OK)
                 else:
@@ -114,7 +114,7 @@ class LoginView(APIView):
                 data["detail"] = "Wrong Password"
                 return Response(data,status= status.HTTP_400_BAD_REQUEST)
         except User.DoesNotExist:
-            data["message"] = "No user found with this email"
+            data["detail"] = "No user found with this email"
             return Response(data, status=status.HTTP_404_NOT_FOUND)
         
 
@@ -319,7 +319,7 @@ class DeleteAccountView(APIView):
                 user = User.objects.get(email = email)
                 if user.check_password(password):
                     user.delete()
-                    data["detal"] = 'This account has been successfully deleted'
+                    data["detail"] = 'This account has been successfully deleted'
                     
                     return Response(data,status=status.HTTP_200_OK)
                 else:
@@ -375,6 +375,7 @@ class SearchUser(ListAPIView):
             assert self.filter_key is not None, "No key"
             assert self.filter_value is not None, "No value"
             assert self.filter_key in KEYS , "you passed an invalid key"
+            self.filter_key += '__icontains'
         except AssertionError as err:
             return Response({'detail': str(err)}, status=status.HTTP_406_NOT_ACCEPTABLE)
     

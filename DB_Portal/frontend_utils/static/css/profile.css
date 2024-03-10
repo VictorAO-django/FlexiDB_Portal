@@ -1,0 +1,17 @@
+section[id='profile-body']{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    border: 1px solid red;
+    padding: 10px 10px;
+}
+
+section[id="profile-section"]{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    border: 1px solid red;
+    flex-basis: 50%;
+}
