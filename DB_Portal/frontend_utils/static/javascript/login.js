@@ -1,4 +1,4 @@
-import {Consumer, SetAuthToken, GetAuthToken, CustomAlert, Redirect, delay} from './utilities.js'
+import {Consumer, SetAuthToken, GetAuthToken, CustomAlert, Redirect, delay, get_queryparams} from './utilities.js'
 
 
 function showErr(msg,URL,lineNum,columnNo,error){
@@ -37,7 +37,14 @@ async function Login(){
     customAlert.raise()
 
     await delay(2000)
-    Redirect('http://localhost:8000/portal/dashboard/')
+    
+    var nextURL = get_queryparams('next')
+    if (nextURL != null){
+        nextURL = 'http://localhost:8000/'+nextURL
+    }else{
+        nextURL = 'http://localhost:8000/portal/dashboard/'
+    }
+    Redirect(nextURL)
 }
 
 

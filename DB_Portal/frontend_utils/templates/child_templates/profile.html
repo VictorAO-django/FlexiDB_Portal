@@ -17,15 +17,135 @@
     <section id="profile-body">
         <section id="profile-section">
             <div class="img-name">
-                <div>OA</div>
+                <div>{{ prop_image }}</div>
                 <div class="names">
-                    <p>Olusola Ayomide</p>
-                    <p>he/him</p>
+                    <p>{{ profile_name }}</p>
+                    <p>@{{ profile_username }}</p>
+                    <p>{{ pronoun }}</p>
                 </div>
             </div>
-        </section>
-        <section id="database-section">
 
+            <p id="bio">{{ bio }}</p>
+
+            {% if owner %}
+            <a href="" id="edit-profile">Edit profile</a>
+            {% endif %}
+
+            <ul id="media-details">
+                {% if country != "" %}
+                <li>
+                    <img src="{% static 'png/mail.svg' %}" alt="">
+                    <a>{{ country }}</a>
+                </li>
+                {% endif %}
+
+                {% if email != "" %}
+                <li>
+                    <img src="{% static 'png/mail.svg' %}" alt="">
+                    <a href="{{ email }}">{{ email }}</a>
+                </li>
+                {% endif %}
+
+                {% if website != "" %}
+                <li>
+                    <img src="{% static 'png/website.svg' %}" alt="">
+                    <a href="{{ website }}">{{ website }}</a>
+                </li>
+                {% endif %}
+                
+                {% if linkedin != "" %}
+                <li>
+                    <img src="{% static 'png/linkedin.svg' %}" alt="">
+                    <a href="{{ linkedin }}">{{ linkedin }}</a>
+                </li>
+                {% endif %}
+                
+                {% if github != "" %}
+                <li>
+                    <img src="{% static 'png/github.svg' %}" alt="">
+                    <a href="{{ github }}">{{ github }}</a>
+                </li>
+                {% endif %}
+
+                {% if twitter != "" %}
+                <li>
+                    <img src="{% static 'png/twitter.svg' %}" alt="">
+                    <a href="{{ twitter }}">{{ twitter }}</a>
+                </li>
+                {% endif %}
+
+                {% if stackoverflow != "" %}
+                <li>
+                    <img src="{% static 'png/stack-overflow.svg' %}" alt="">
+                    <a href="{{ stackoverflow }}">{{ stackoverflow }}</a>
+                </li>
+                {% endif %}
+                
+            </ul>
+        </section>
+
+
+        <section id="database-section">
+            <p>Databases</p>
+            <div id="database-list">
+                <p>Owned</p>
+                <div id="database">
+                    <div>
+                        <p id="database-name">Babyduct inventory</p>
+                        <p id="database-type">postgres</p>
+                    </div>
+                    <div id="contributors">
+                        <div>
+                            <p>AV</p>
+                            <p>BO</p>
+                            <p>AJ</p>
+                            <p>AT</p>
+                            <p>AV</p>
+                            <p>BO</p>
+                            <p>AJ</p>
+                            <p>AT</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="database">
+                    <div>
+                        <p id="database-name">Babyduct inventory</p>
+                        <p id="database-type">postgres</p>
+                    </div>
+                    <div id="contributors">
+                        <div>
+                            <p>AV</p>
+                            <p>BO</p>
+                            <p>AJ</p>
+                            <p>AT</p>
+                            <p>AV</p>
+                            <p>BO</p>
+                            <p>AJ</p>
+                            <p>AT</p>
+                        </div>
+                    </div>
+                </div>
+
+                <p id="contibuting">Contributing</p>
+                <div id="database">
+                    <div>
+                        <p id="database-name">Babyduct inventory</p>
+                        <p id="database-type">postgres</p>
+                    </div>
+                    <div id="contributors">
+                        <div>
+                            <p>AV</p>
+                            <p>BO</p>
+                            <p>AJ</p>
+                            <p>AT</p>
+                            <p>AV</p>
+                            <p>BO</p>
+                            <p>AJ</p>
+                            <p>AT</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </section>
 {% endblock body%}

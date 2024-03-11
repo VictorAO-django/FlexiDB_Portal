@@ -5,6 +5,13 @@ function searchFilter(value){
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////++++ DropDown Function +++++++////////////////////////////
+export function CloseDropDown(){
+    if(document.getElementById('dropdown')){
+        var DropDown = document.getElementById('dropdown')
+        document.body.removeChild(DropDown)
+    }
+}
+
 export function DropDown(elem, fields, image, search_filter){
     this.elem = elem;
     this.fields = fields || {};
@@ -42,7 +49,11 @@ export function DropDown(elem, fields, image, search_filter){
                 if(this.search_filter == false){
                     Anchor.href = '/' + value
                 }else{
-                    this.Anchor += Anchor
+                    Anchor.addEventListener('click', function(){
+                        var filter_key = document.getElementById('filter-key')
+                        filter_key.innerText = this.innerText
+                        CloseDropDown()
+                    })
                 }
 
                 List.appendChild(Anchor)
@@ -56,11 +67,6 @@ export function DropDown(elem, fields, image, search_filter){
             DropDown.style.top =  coordinate.top + (this.elem.clientHeight) + "px"
         }
     }
-}
-
-export function CloseDropDown(){
-    var DropDown = document.getElementById('dropdown')
-    document.body.removeChild(DropDown)
 }
 
 
@@ -117,7 +123,6 @@ export function Assert(subject, verb, object, message){
 ////////////////////////////++++ AuthToken Function +++++++////////////////////////////
 export function SetAuthToken(token){
     document.cookie = 'authToken=' + token + ';path=/;'
-    alert('authToken=' + token + ';path=/')
 }
 
 
@@ -138,6 +143,10 @@ export function GetAuthToken(){
 
     Assert(check, 'is', true, 'Please Login')
     return authToken
+}
+
+export function DeleteAuthToken(){
+    document.cookie = 'authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 }
 
 
@@ -240,6 +249,90 @@ export function Search(key, value, url){
 }
 
 
+export function SearchHistoryManager(username){
+    this.username = username || ''
+    this.keyword = 'searchhistory'
+    this.new_history = ''
+
+    this.history_exist = function(){
+        if(document.cookie.includes(this.keyword)){
+            var COOKIES = document.cookie.split(';')
+            for(var i=0; i<COOKIES.length; i++){
+                if(COOKIES[i].includes(this.keyword)){
+                    var history = COOKIES[i].split('=')[1]
+                    if(history == ""){
+                        return false
+                    }
+                    break
+                }
+            }
+            return true
+        }
+        return false
+    }
+
+    this.fetch_history = function(){
+        if(document.cookie.includes(this.keyword)){
+            var COOKIES = document.cookie.split(';')
+            var history;
+            for(var i=0; i<COOKIES.length; i++){
+                if(COOKIES[i].includes(this.keyword)){
+                    history = COOKIES[i].split('=')[1]
+                    break;
+                }else{
+                    continue;
+                }
+            }
+            return history
+
+        }else{
+            document.cookie = this.keyword +"=" + ';path=/';
+            return ""
+        }
+        
+    }
+
+    this.process_history = function(){
+        var history = this.fetch_history().split('&')
+        var new_history = ""
+        for(var i=0; i<history.length; i++){
+            if(history[i] == this.username){
+                continue
+            }else{
+                if(i == (history.length - 1)){
+                    new_history += history[i]
+                }else{
+                    new_history += (history[i] + "&")
+                }
+            }
+        }
+        this.new_history = new_history
+    }
+
+    this.add_to_history = function(){
+        this.process_history()
+        document.cookie = this.keyword + "=" + this.new_history  + "&" + this.username + ';path=/';
+    }
+
+    this.remove_from_history = function(){
+        this.process_history()
+        document.cookie = this.keyword + "=" + this.new_history + ';path=/';
+    }
+
+    this.history_list = function(){
+        this.process_history()
+        var history = this.new_history.split('&')
+        var history_list = []
+        for(var i=0; i<history.length; i++){
+            history_list = history_list.concat(history[i])
+        }
+        return history_list
+    }
+}
+
+
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////++++ Redirect function +++++++////////////////////////////
@@ -251,7 +344,7 @@ export function Redirect(url){
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////++++ Quick Link function +++++++////////////////////////////
-export function ToolTip(elem, text){
+export async function ToolTip(elem, text){
     var coordinate = elem.getBoundingClientRect()
 
     var tip = document.createElement('p')
@@ -259,11 +352,64 @@ export function ToolTip(elem, text){
     tip.id = 'tool-tip'
     tip.style.top = coordinate.top + elem.clientHeight + 'px'
     
+    await delay(300)
+
     document.body.appendChild(tip)
     tip.style.left = coordinate.left - (tip.clientWidth/2) + (elem.clientWidth/2) + 'px'
 }
 
-export function hideToolTip(){
-    var tip = document.getElementById('tool-tip')
-    document.body.removeChild(tip)
+export async function hideToolTip(){
+    await delay(300)
+    if(document.getElementById('tool-tip')){
+        var tip = document.getElementById('tool-tip')
+        document.body.removeChild(tip)
+    }
+}
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////++++ queryparameter function +++++++////////////////////////////
+export function get_queryparams(KEY){
+    try {
+        // get the current url
+        var currentUrl = location.href
+        // split the url at point of '?'
+        var queryparams = currentUrl.split('?')[1]
+        // split at the point '&'
+        queryparams = queryparams.split('&')
+        
+        // create an empty dict
+        var queryparams_dict = {}
+
+        for(var i=0; i<queryparams.length; i++){
+            var key = queryparams[i].split('=')[0]
+            var value = queryparams[i].split('=')[1]
+            queryparams_dict[key] = value
+        }
+        
+        if(queryparams_dict[KEY]){
+            return queryparams_dict[KEY]
+        }else{
+            return null
+        }
+    } catch (error) {
+        return null   
+    }
+}
+
+
+
+export function slugify_username(username){
+    var broken = username.split('_')
+    var slugified = ""
+    for(var i=0; i<broken.length; i++){
+        if(i == (broken.length - 1)){
+            slugified +=  broken[i].toLowerCase()
+        }else{
+            slugified +=  broken[i].toLowerCase() + '-'
+        }
+    } 
+    return slugified
 }

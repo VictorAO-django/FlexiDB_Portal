@@ -2,8 +2,12 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import status
 
+from django.shortcuts import redirect
+from django.urls import reverse
+
 from core.models import DatabaseConfig, Permission
 from permissions import DatabasePermission
+
 
 def ensure_db_permission(permission_type):
     def my_decorator(func):
@@ -36,5 +40,18 @@ def ensure_db_permission(permission_type):
             except Permission.DoesNotExist:
                 return Response({'detail':'No permission on this database'}, status=status.HTTP_403_FORBIDDEN)
         
+        return wrapper
+    return my_decorator
+
+
+def ensure_login(nextURL):
+    def my_decorator(func):
+        def wrapper(request, *args, **kwargs):
+            if request.user != None:                
+                return func(request, *args, **kwargs)
+            else:
+                url = reverse('login')
+                url = (url + f'?next={nextURL}') if nextURL != "" else url
+                return redirect(url)
         return wrapper
     return my_decorator

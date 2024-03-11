@@ -22,7 +22,8 @@ from .views import *
 urlpatterns = [
     path('login/', LoginView, name='login'),
     path('register/', RegistrationView, name='signup'),
-    path('dashboard/', HomeView, name='signup'),
+    path('dashboard/', DashboardView, name='dashboard'),
     path('profile/', ProfileView, name='profile'),
+    path('profile/<slug:slug>/', OtherProfileView, name='other-profile'),
     path('notification/', NotificationView, name='notification'),
 ]

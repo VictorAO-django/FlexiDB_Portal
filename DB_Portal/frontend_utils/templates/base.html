@@ -10,7 +10,9 @@
         <link rel="stylesheet" href="{% static 'css/utilities.css' %}">
         {% block more_css %}
         {% endblock more_css %}
+
         <script defer type="module" role="application" src="{% static 'javascript/base.js' %}"></script>
+        <script role="application" src="{% static 'javascript/utilities.js' %}"></script>
         {% block more_js %}
         {% endblock more_js %}
     </head>
@@ -24,7 +26,7 @@
                 <div class="center-top">
                     <div class="account">
                         <img src="{% static 'png/account.svg' %}" alt="">
-                        <p> {{ username }} <br><span id="role">{{ role }}</span></p>
+                        <p> {{ name }} <br><span id="role">{{ role }}</span></p>
                         <img src="{% static 'png/dropdown.svg' %}" alt="">
                     </div>
                     <a href="/portal/dashboard/">Dashboard</a>
@@ -38,17 +40,16 @@
                         <span id="filter-key">first_name</span>
                     </div>
                     <img src="{% static 'png/search.svg' %}" alt="Search">
-                    <input id="filter-value" type="search" placeholder="search....">
+                    <input id="filter-value" type="search" autocomplete="off" placeholder="Search for people here...">
                     {% csrf_token %}
                 </div>
                 <div class="notification">
                     <img src="{% static 'png/notification.svg' %}">
                     <a id="unread-count">13</a>
                 </div>
-                <a href="">Logout</a>
+                <a id="signout">Sign out</a>
             </div>
         </div>
-        
         {% block body %}
         {% endblock body %}
 

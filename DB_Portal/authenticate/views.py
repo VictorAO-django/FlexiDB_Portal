@@ -117,6 +117,23 @@ class LoginView(APIView):
             data["detail"] = "No user found with this email"
             return Response(data, status=status.HTTP_404_NOT_FOUND)
         
+        
+        
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated, IpIsValid]
+    
+    @swagger_auto_schema(
+        operation_summary="Signout Endpoint",
+        operation_id="signout",
+        responses={
+            200: "Signed out",
+        }
+    )
+    def delete(self, request, *args, **kwargs):
+        token = Token.objects.get(user=request.user)
+        token.delete()
+        return Response({'detail': "Signed out"}, status=status.HTTP_200_OK)
+
 
 class IpAccess(APIView):
     permission_classes = [AllowAny]
@@ -294,7 +311,7 @@ class ChangePasswordView(APIView):
         
 class DeleteAccountView(APIView):
     authentication_classes = [BearerTokenAuthentication]
-    permission_classes = [IsAuthenticated, IsVerified, IpIsValid]
+    permission_classes = [IsAuthenticated, IpIsValid]
     
     @swagger_auto_schema(
         operation_summary="Delete Account Endpoint",

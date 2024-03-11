@@ -13,6 +13,17 @@ body{
     background-color: #ffffff;
 }
 
+::-webkit-scrollbar{
+    width: 12px;
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb{
+    background-color: #ccccccab;
+    border-radius: 6px;
+    box-shadow: inset 0 0 6px #0000004f;
+}
+
 div[class='top']{
     display: flex;
     flex-flow: row nowrap;
@@ -72,7 +83,7 @@ div[class='account']>p{
     text-transform: capitalize;
     font-family: MontserratMedium;
     font-size: 13px;
-    line-height: 11px;
+    line-height: 12px;
     margin: 0 15px;
     color: #344968;
 }
@@ -114,10 +125,16 @@ div[class='search']>div>span{
     border-radius: 4px;
     padding: 1px 2px;
     font-size: 12px;
+    width: 80px;
+    margin-right: 5px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 
 div[class='search']>img{
-    transform: translate(10px, 0px);   
+    width: 18px;
+    transform: translate(5px, 0px);   
 }
 
 div[class='search']>input{
@@ -127,6 +144,8 @@ div[class='search']>input{
     border: 1px solid #969696da;
     border-radius: 8px;
     margin-left: -18px;
+    font-family: MontserratRegular;
+    font-size: 12px;
 }
 
 div[class='search']>input:focus{
@@ -135,7 +154,7 @@ div[class='search']>input:focus{
 
 div[class='notification']{
     display: flex;
-    width: 30px;
+    width: 26px;
     justify-content: space-around;
     align-items: center;
     cursor: pointer;
@@ -151,6 +170,20 @@ div[class='notification']>a{
     border-radius: 100%;
     padding: 2px 4px;
     font-family: MontserratRegular;
-    font-size: 10px;
+    font-size: 9px;
     transform: translate(-15px, -7px);
+}
+
+a[id="signout"]{
+    text-decoration: none;
+    font-family: MontserratRegular;
+    font-size: 13px;
+    padding: 2px 8px 3px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 8px;
+    background-color: #121212;
+    color: #fff;
+    cursor: pointer;
 }

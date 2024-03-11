@@ -50,6 +50,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware', #added
     'corsheaders.middleware.CorsMiddleware', #added
@@ -59,6 +60,8 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'middleware.TokenInclusionMiddleware', #custom
+    'middleware.TokenAuthenticationMiddleware', #custom
 ]
 
 ROOT_URLCONF = 'DB_Portal.urls'

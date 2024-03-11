@@ -20,6 +20,7 @@ from .views import *
 urlpatterns = [
     path('register/', RegistrationView.as_view()),
     path('login/', LoginView.as_view()),
+    path('signout/', LogoutView.as_view()),
     path('forget-password/', ForgetPasswordView.as_view()),
     path('reset-password/<str:encoded_id>/<str:token>/', PasswordResetView.as_view()),
     path('change-password/', ChangePasswordView.as_view()),

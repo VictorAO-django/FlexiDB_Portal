@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded",function(){
     const fromYearSelect = document.getElementById('from-year')
     var option1 = document.createElement('option')
     option1.value=""
-    option1.innerText = "------------"
+    option1.innerText = "Year"
     fromYearSelect.appendChild(option1)
     for(let i=2024; i<=currentYear; i++){
         const option = document.createElement('option')
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded",function(){
     const toYearSelect = document.getElementById('to-year')
     var option1 = document.createElement('option')
     option1.value=""
-    option1.innerText = "------------"
+    option1.innerText = "Year"
     toYearSelect.appendChild(option1)
     for(let i=2024; i<=currentYear; i++){
         const option = document.createElement('option')
