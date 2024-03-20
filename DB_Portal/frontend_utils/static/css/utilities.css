@@ -7,6 +7,18 @@
     src: url('fonts/Montserrat-Regular.ttf') format('truetype');
 }
 
+
+/*******POPUP ON SCROLL*******/
+.pop-up-on-scroll{
+    animation: pop-up 1s ease-in-out forwards;
+}
+
+@keyframes pop-up{
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+
 /**********DROPDOWN***********/
 div[id='dropdown']{
     display: flex;
@@ -56,7 +68,7 @@ ul[id='dropdown-list']>li>a{
 }
 
 ul[id='dropdown-list']>li>a:hover{
-    color: #121212;
+    color: #ff582a;
 }
 
 ul[id='dropdown-list']>li>img{

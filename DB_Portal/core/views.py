@@ -74,7 +74,11 @@ class Connect_To_DB(APIView):
     def post(self, request):
         data = {}
         serializer = ConnectionSerializer(data=request.data)
-        database_id = serializer.validated_data['database_id']
+        
+        if serializer.is_valid():
+            database_id = serializer.validated_data['database_id']
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
         #get the user instance
         user = Token.objects.get(key=request.auth).user 
@@ -82,7 +86,7 @@ class Connect_To_DB(APIView):
             #get the database url
             database = DatabaseConfig.objects.get(user=user, database_id=database_id).url
             
-            connect_db(database).try_connect() #try connecting to the database
+            connect_db(database, engine=database.engine).try_connect() #try connecting to the database
             
             data['detail'] = "Connection Successful"
             return Response(data, status=status.HTTP_200_OK)
@@ -231,36 +235,36 @@ class DatabaseTablesList(APIView):
         user = kwargs['user'] #get the user instance
         database = kwargs['database'] #get the database instance
         
-        connect = connect_db(database.url).retrieve_table_names()
+        connect = connect_db(database.url, engine=database.engine).retrieve_table_names()
         data['detail'] = connect
         return Response(data, status=status.HTTP_200_OK)
     
     
 
 
-class TableData(APIView):
+class DatabaseTableData(APIView):
     authentication_classes = [BearerTokenAuthentication]
     permission_classes = [IsAuthenticated, IsVerified, IpIsValid]
     
     @swagger_auto_schema(
-        operation_summary="Retrieve Tables Endpoint",
+        operation_summary="Retrieve Table Data",
         operation_id="tables",
         request_body=openapi.Schema(
             type=openapi.TYPE_OBJECT,
             properties={
-                'developer': openapi.Schema(type=openapi.TYPE_STRING),
-                'database': openapi.Schema(type=openapi.TYPE_STRING),
-                'permission': openapi.Schema(type=openapi.TYPE_STRING),
+                'database_id': openapi.Schema(type=openapi.TYPE_STRING),
+                'table': openapi.Schema(type=openapi.TYPE_STRING),
             },
-            required=['developer', 'database', 'permission'],
+            required=['database_id', 'table'],
         ),
     )
     @ensure_db_permission('read')
-    def get(self, request,*args, **kwargs):
+    def post(self, request,*args, **kwargs):
         data = {}
         user = kwargs['user'] #get the user instance
         database = kwargs['database'] #get the database instance
         
-        connect = connect_db(database.url).retrieve_data_from_table()
+        connect = connect_db(database.url, engine=database.engine, table=request.data['table']).retrieve_data_from_table()
         data['detail'] = connect
         return Response(data, status=status.HTTP_200_OK)
+    

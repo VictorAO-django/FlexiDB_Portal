@@ -123,7 +123,7 @@ div[class='search']>div>span{
     margin-left: 5px;
     border: 1px solid #969696da;
     border-radius: 4px;
-    padding: 1px 2px;
+    padding: 3px 0px;
     font-size: 12px;
     width: 80px;
     margin-right: 5px;
@@ -178,12 +178,37 @@ a[id="signout"]{
     text-decoration: none;
     font-family: MontserratRegular;
     font-size: 13px;
-    padding: 2px 8px 3px 8px;
+    padding: 4px 10px 5px 10px;
     display: flex;
     align-items: center;
     justify-content: space-around;
-    border-radius: 8px;
-    background-color: #121212;
+    border-radius: 5px;
+    background-color: #415674;
     color: #fff;
     cursor: pointer;
+}
+
+
+
+/***** DIRECTORY *****/
+section[id='directory']{
+    display: flex;
+    padding: 0px 10px;
+    background-color: #61738d;
+}
+
+section[id='directory']>p{
+    margin: 10px 5px;
+    font-family: MontserratRegular;
+    font-size: 13px;
+    color: #ebebeb;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+section[id='directory']>p>img{
+    width: 10px;
+    transform: translate(0px, 1px);
+    margin: 3px;
 }

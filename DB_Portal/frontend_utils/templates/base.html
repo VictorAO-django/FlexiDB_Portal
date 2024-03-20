@@ -50,7 +50,24 @@
                 <a id="signout">Sign out</a>
             </div>
         </div>
+
+        <section id="directory">
+            <p>
+                <a>Ayomide Victor</a>
+                <img src="{% static 'png/right-pointer.svg' %}">
+            </p>
+            <p>
+                <a href="/portal/dashboard/">Dashboard</a>
+                <img id="dashboard-directory" src="{% static 'png/right-pointer.svg' %}">
+            </p>
+            <p>
+                <a>Babayducts Workspace</a>
+                <img src="{% static 'png/right-pointer.svg' %}">    
+            </p>
+        </section>
+
         {% block body %}
+        
         {% endblock body %}
 
     </body>

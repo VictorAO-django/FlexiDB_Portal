@@ -4,6 +4,20 @@ function searchFilter(value){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////++++ Pop up animation Function +++++++////////////////////////////
+function onIntersection(entries){
+    var entriesLength = entries.length;
+    for (var i=0; i<entriesLength; i++){
+        var entry = entries[i]
+        if(entry.isIntersecting){
+            entry.target.classList.add('pop-up-on-scroll')
+        }
+    }
+}
+
+export var observer = new IntersectionObserver(onIntersection)
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////++++ DropDown Function +++++++////////////////////////////
 export function CloseDropDown(){
     if(document.getElementById('dropdown')){
@@ -12,14 +26,17 @@ export function CloseDropDown(){
     }
 }
 
-export function DropDown(elem, fields, image, search_filter){
+
+export function DropDown(elem, fields, image, include_href){
     this.elem = elem;
     this.fields = fields || {};
     this.image = image || false;
-    this.search_filter = search_filter || false;
+    this.include_href = include_href || false;
 
     var coordinate = this.elem.getBoundingClientRect()
     
+    this.dropdown_elements = []
+
     this.open = function(){
         try {
             var dropdown = document.getElementById('dropdown')
@@ -46,15 +63,10 @@ export function DropDown(elem, fields, image, search_filter){
                 var Anchor = document.createElement('a')
                 Anchor.innerHTML = key
 
-                if(this.search_filter == false){
+                if(this.include_href == true){
                     Anchor.href = '/' + value
-                }else{
-                    Anchor.addEventListener('click', function(){
-                        var filter_key = document.getElementById('filter-key')
-                        filter_key.innerText = this.innerText
-                        CloseDropDown()
-                    })
                 }
+                this.dropdown_elements = this.dropdown_elements.concat(Anchor)
 
                 List.appendChild(Anchor)
                 DropDownList.appendChild(List)
@@ -66,6 +78,7 @@ export function DropDown(elem, fields, image, search_filter){
             DropDown.style.left = coordinate.left - (DropDown.clientWidth/2) + (this.elem.clientWidth/2) + "px"
             DropDown.style.top =  coordinate.top + (this.elem.clientHeight) + "px"
         }
+        return this.dropdown_elements
     }
 }
 
@@ -88,7 +101,7 @@ export function CustomAlert(message, color){
         box.appendChild(message)
         document.body.appendChild(box)
 
-        setTimeout(this.close, 4000)
+        setTimeout(this.close, 5000)
     }
 
     this.close = function(){
@@ -102,6 +115,12 @@ export function CustomAlert(message, color){
 ////////////////////////////++++ Assertion Function +++++++////////////////////////////
 export function Assert(subject, verb, object, message){
 
+    if(verb == ''){
+        if(subject == true){
+            return true
+        }
+    }
+
     if (verb == 'is'){
         if (subject == object){
             return true
@@ -114,8 +133,45 @@ export function Assert(subject, verb, object, message){
         }
     }
 
+    if (verb == 'in'){
+        if(object.includes(subject)){
+            return true
+        }
+    }
+
+    if (verb == 'not_in'){
+        if(!object.includes(subject)){
+            return true
+        }
+    }
+
+    if(verb == 'greater_than'){
+        if (subject > object){
+            return true
+        }
+    }
+
+    if(verb == 'less_than'){
+        if (subject < object){
+            return true
+        }
+    }
+
+    if(verb == 'greater=than'){
+        if (subject >= object){
+            return true
+        }
+    }
+
+    if(verb == 'less=than'){
+        if (subject <= object){
+            return true
+        }
+    }
+
     var customAlert = new CustomAlert(message)
     customAlert.raise()
+    throw new Error()
 }
 
 

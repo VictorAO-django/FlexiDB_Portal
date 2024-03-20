@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<head>
+    <title>Signup on FlexiBb</title>
+        <meta charset="UTF-8">
+        <meta name="viewport", content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+        <link rel="stylesheet" href="{% static 'css/utilities.css' %}">
+        <script defer type="module" role="application" src="{% static 'javascript/signup.js' %}"></script>
+        
+</head>
+<body>
+    <main class="content-box">
+        <section class="signup-section">
+            <img src="{% static 'png/logo.svg' %}" alt="Logo">
+            <p>Sign up</p>
+            <p>Enter your details below to create your account and get started</p>
+
+            <form id="signup-form">
+                <div>
+                    <label for="first_name">First name</label>
+                    <input name="first_name" type="text" placeholder="enter...">
+
+                    <label for="email">Email</label>
+                    <input name="email" type="email" placeholder="enter...">
+
+                    <label for="role">Role</label>
+                    <div>
+                        <input name="role" type="text" placeholder="-----------" readonly>
+                        <img id="role-dropdown" class="dropdown" src="{% static 'png/down-pointer-black.svg' %}" alt="">
+                    </div>
+
+                    <label for="password">Password</label>
+                    <div>
+                        <input name="password" type="password" placeholder="enter...">
+                        <img id="password-toggle" class="toggle" src="{% static 'png/password-close.svg' %}" alt="">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="last_name">Last name</label>
+                    <input name="last_name" type="text" placeholder="enter...">
+
+                    <label for="gender">Gender</label>
+                    <div>
+                        <input name="gender" type="text" placeholder="-----------" readonly>
+                        <img id="gender-dropdown" class="dropdown" src="{% static 'png/down-pointer-black.svg' %}" alt="">
+                    </div>
+
+                    <label for="organization">Organization</label>
+                    <input name="organization" type="text" placeholder="enter..." readonly>
+                    
+                    <label for="password2">Confirm password</label>
+                    <div>
+                        <input name="password2" type="password" placeholder="enter...">
+                        <img id="password2-toggle" class="toggle" src="{% static 'png/password-close.svg' %}" alt="">
+                    </div>
+                </div>
+                {% csrf_token %}
+            </form>
+
+            <div class="terms">
+                <input type="checkbox" name="terms" id="terms">
+                <label for="terms">Agree to <a id="terms">terms and condition</a></label>
+            </div>
+
+            <a id="signup-button">Sign up</a>
+        </section>
+        <section id="img-section">
+            <img src="{% static 'png/sign-up.svg' %}">
+        </section>
+    </main>
+</body>
+</html>

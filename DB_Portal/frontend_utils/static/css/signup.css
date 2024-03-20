@@ -1,0 +1,149 @@
+body{
+    margin: 0px;
+    border: 0px;
+}
+
+main{
+    background-color: #FAFFFB;
+    height: 100vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-image: url(/static/png/background.svg);
+    opacity: 0;
+}
+
+section[class='signup-section']{
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    margin-left: 120px;
+}
+
+section[class='signup-section']>img{
+    width: 120px;
+    margin-bottom: 10px;
+}
+
+section[class='signup-section']>p:first-of-type{
+    margin: 2px 10px;
+    font-family: MontserratMedium;
+    font-size: 25px;
+    color: #1d3b77;
+}
+
+section[class='signup-section']>p:last-of-type{
+    font-family: MontserratMedium;
+    font-size: 12px;
+    margin: 0px 10px;
+    color: #121212ab;
+}
+
+form{
+    display: flex;
+    flex-flow: row nowrap;
+    background-color: #FAFFFB;
+}
+
+form>div{
+    display: flex;
+    flex-flow: column nowrap;
+    flex-grow: 1;
+    margin: 5px;
+}
+
+form>div>div{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+form>div>div>label, form>div>label{
+    margin: 10px 0px;
+    font-family: MontserratMedium;
+    font-size: 13px;
+}
+
+form>div>div>input, form>div>input{
+    margin: 0px 0px 5px 0px;
+    height: 10px;
+    font-family: MontserratRegular;
+    font-size: 12px;
+    border: 1px solid #1D3B77;
+    border-radius: 3px;
+    padding: 5px;
+    width: 220px;
+}
+
+input:focus{
+    outline: none;
+}
+
+img[class='dropdown']{
+    width: 12px;
+    transform: translate(-20px, -2px);
+    cursor: pointer;
+}
+
+img[class='toggle']{
+    width: 14px;
+    transform: translate(-20px, -2px);
+    cursor: pointer;
+}
+
+a[id='signup-button']{
+    width: 50%;
+    margin-top: 20px;
+    padding: 4px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 3px;
+    font-family: MontserratRegular;
+    font-size: 13px;
+    color: #fff;
+    background-color: #f97450;
+    cursor: pointer;
+}
+
+a[id='signup-button']:hover{
+    background-color: #e93200;
+}
+
+div[class="terms"]{
+    padding: 0px 10px;
+    display: flex;
+    align-items: center;
+}
+
+div[class="terms"]>input{
+    margin-left: 0px;
+}
+
+div[class="terms"]>label{
+    margin-right: auto;
+    font-family: MontserratRegular;
+    font-size: 13px;
+}
+
+div[class="terms"]>label>a{
+    color: #f97450;
+    cursor: pointer;
+}
+
+div[class="terms"]>label>a:hover{
+    color: #e93200;
+}
+
+section[id="img-section"]{
+    width: 50%;
+    height: 100vh;
+    overflow: hidden;
+    padding: 0px 30px;
+}
+
+section[id="img-section"]>img{
+    width: 600px;
+    transform: translate(-20px, -120px);
+}

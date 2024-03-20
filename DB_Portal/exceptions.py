@@ -20,7 +20,11 @@ class CannotConnect(APIException):
 class NoSuchDatabase(APIException):
     status_code = status.HTTP_404_NOT_FOUND
     default_detail = "you do not have such database registered"
-    
+
+class InvalidTable(APIException):
+    status_code = status.HTTP_400_BAD_REQUEST
+    default_detail = "Table is invalid"
+
 class RegisteredByYou(APIException):
     status_code = status.HTTP_409_CONFLICT
     default_detail = "you have registered an exact database with same details"

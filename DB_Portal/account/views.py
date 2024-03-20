@@ -8,15 +8,13 @@ from authenticate.models import Profile
 from decorator import ensure_login
 
 
-def RegistrationView(request):
-    template = 'email_templates/ip.html'
-    context = {
-        'title':'registration',
-        'recipent_name': 'HayWhy',
-        'subject': 'Unknow Ip address',
-        'message': 'An unknown device tried to login to your account. Was it you?\n Kindly grant or ban this device'
-    }
-    return render(request, template, context=context)
+def SignupView(request):
+    template = 'signup.html'
+    return render(request, template)
+
+def LoginView(request):
+    template = 'login.html'
+    return render(request, template)
 
 
 @ensure_login('portal/dashboard/')
@@ -30,12 +28,8 @@ def DashboardView(request):
     }
     return render(request, template, context=context)
     
-   
-
-def LoginView(request):
-    template = 'login.html'
-    return render(request, template)
-
+    
+@ensure_login('portal/notification/')
 def NotificationView(request):
     template = 'child_templates/notification_center.html'
     return render(request, template)
@@ -68,7 +62,7 @@ def ProfileView(request):
     return render(request, template, context=context)
 
 
-@ensure_login('portal/profile/')
+@ensure_login('portal/dashboard/')
 def OtherProfileView(request, slug):
     template = 'child_templates/profile.html'
     user = request.user

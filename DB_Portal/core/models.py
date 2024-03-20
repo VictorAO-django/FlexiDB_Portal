@@ -24,8 +24,8 @@ class DatabaseConfig(models.Model):
     port = models.IntegerField()
     database = models.CharField(max_length=50, blank=True, null=True)
     parameters = models.CharField(max_length=50, blank=True, null=True)
-    base_url = models.URLField(blank=False, unique=True)
-    url = models.URLField(blank=False, unique=True)
+    base_url = models.CharField(blank=False, max_length=255)
+    url = models.CharField(blank=False, unique=True, max_length=255)
 
     table_whitelist = models.JSONField(blank=True, null=True)
               

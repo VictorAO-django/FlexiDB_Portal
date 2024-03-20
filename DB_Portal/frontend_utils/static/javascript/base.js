@@ -177,7 +177,7 @@ document.addEventListener("DOMContentLoaded",function(){
             'Billing' : 'portal/billing/',
             'Delete': 'portal/account/delete/'
         }
-        var dropdown = new DropDown(this, fields, true)
+        var dropdown = new DropDown(this, fields, true, true)
         dropdown.open()
     })
 
@@ -193,8 +193,15 @@ document.addEventListener("DOMContentLoaded",function(){
             'email' : 'email',
             'organization': 'organization'
         }
-        var dropdown = new DropDown(this, fields, false, true)
-        dropdown.open()
+        var dropdown = new DropDown(this, fields, false, false)
+        var dropdown_elements = dropdown.open()
+        for(var i=0; i<dropdown_elements.length; i++){
+            dropdown_elements[i].addEventListener('click', function(){
+                var filter_key = document.getElementById('filter-key')
+                filter_key.innerText = this.innerText
+                CloseDropDown()
+            })
+        }
     })
 
     var search = document.getElementById('filter-value');
@@ -235,6 +242,7 @@ document.addEventListener("DOMContentLoaded",function(){
         await delay(2000)
         Redirect('http://localhost:8000/portal/login/')
     })
+
 
 
     //EVENT HANDLER THAT MAKEs POPUP TO DISAPEAR WHEN CLICK OUTSIDE OF IT
