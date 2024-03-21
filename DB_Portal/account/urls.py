@@ -21,7 +21,8 @@ from .views import *
 
 urlpatterns = [
     path('signup/', SignupView, name='signup'),
-    path('login/', LoginView, name='login'),
+    path('signin/', LoginView, name='login'),
+    path('reset-password/', ResetPasswordView, name='resetpassword'),
     path('dashboard/', DashboardView, name='dashboard'),
     path('profile/', ProfileView, name='profile'),
     path('profile/<slug:slug>/', OtherProfileView, name='other-profile'),

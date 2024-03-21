@@ -59,8 +59,8 @@ function SearchBox(elem, data){
             var lowerParent = parentest.querySelector('.search_username')
             var profile = lowerParent.innerText.split('@')[1].toLowerCase()
 
-            var history = new SearchHistoryManager(profile)
-            history.add_to_history()
+            // var history = new SearchHistoryManager(profile)
+            // history.add_to_history()
 
             Redirect('http://localhost:8000/portal/profile/'+ profile +'/')  
         })
@@ -169,16 +169,17 @@ function HistoryBox(elem){
 
 
 document.addEventListener("DOMContentLoaded",function(){
-    var account = document.getElementsByClassName('account')[0];
+
+    var account = document.getElementById('account-dropdown');
     account.addEventListener('click', function(){
-        var fields = {
-            'Account': 'portal/account/',
-            'Profile': 'portal/profile/',
-            'Billing' : 'portal/billing/',
-            'Delete': 'portal/account/delete/'
-        }
-        var dropdown = new DropDown(this, fields, true, true)
-        dropdown.open()
+            var fields = {
+                'My Profile': 'portal/profile/?tab=My profile',
+                'Security': 'portal/profile/?tab=Security',
+                'Databases': 'portal/profile/?tab=Databases',
+                'Settings': 'portal/profile/?tab=settings',
+            }
+            var dropdown = new DropDown(this.parentElement, fields, true, true)
+            dropdown.open()
     })
 
     var filter_key = document.getElementById('search-filter');
@@ -240,7 +241,7 @@ document.addEventListener("DOMContentLoaded",function(){
         alerting.raise()
 
         await delay(2000)
-        Redirect('http://localhost:8000/portal/login/')
+        Redirect('http://localhost:8000/portal/signin/')
     })
 
 
@@ -248,7 +249,7 @@ document.addEventListener("DOMContentLoaded",function(){
     //EVENT HANDLER THAT MAKEs POPUP TO DISAPEAR WHEN CLICK OUTSIDE OF IT
     document.addEventListener('click', function(event){
         //account element
-        var account = document.getElementsByClassName('account')[0]
+        var account = document.getElementById('account-dropdown')
         //filter key element
         var filter_key = document.getElementById('search-filter')
         //search-bar element

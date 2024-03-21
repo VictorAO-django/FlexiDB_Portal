@@ -1,4 +1,4 @@
-import {observer, DropDown, CloseDropDown, Consumer, Assert} from './utilities.js'
+import {observer, DropDown, CloseDropDown, Consumer, Assert, Redirect, CustomAlert, DeleteAuthToken} from './utilities.js'
 
 function showErr(msg,URL,lineNum,columnNo,error){
     var errWin = window.open("","osubWin","width=650px,height=600px")
@@ -51,10 +51,41 @@ function Validator(){
     Assert(first_name, 'not_in', password, "Your password should not consist of your first name")
     Assert(last_name, 'not_in', password, "Your password should not consist of your last name")
     Assert(password.length, 'greater_than', 0, 'Please Provide a password')
-    Assert(password, 'is', password2, "Your password are not corresponding")
+    Assert(password, 'is', password2, "Your password are not matching")
     Assert(hasSpecialCharacter(password), '', '', "Your password must contain a special character like [!@#$%^&*()_+\-[]{};':\"\\|,.<>\/?]")
     Assert(terms, '', '', 'Please agree with the terms and condition')
 }
+
+
+function Verification(){
+    var verification_msg = document.createElement('div')
+    verification_msg.id = 'verification-msg'
+
+    var verification = document.createElement('p')
+    verification.id = 'verification'
+    verification.innerText = 'Verification link is on the way!'
+
+    var verification_statement = document.createElement('p')
+    verification_statement.id = 'verification-statement'
+    verification_statement.innerHTML = "For security reasons, we've sent you an email that <br>contains a link to verify your account."
+
+    var read_docs = document.createElement('a')
+    read_docs.id = 'read-docs'
+    read_docs.innerText = 'Read FlexiBb Portal Docs'
+    read_docs.addEventListener('click', function(){
+        Redirect('http://localhost:8000/portal/docs/')
+    })
+
+    verification_msg.appendChild(verification)
+    verification_msg.appendChild(verification_statement)
+    verification_msg.appendChild(read_docs)
+
+    document.getElementsByClassName('signup-section')[0].removeChild(document.getElementById('signup'))
+    document.getElementsByClassName('signup-section')[0].appendChild(verification_msg)
+
+}
+
+
 
 document.addEventListener("DOMContentLoaded",function(){
 
@@ -95,15 +126,6 @@ document.addEventListener("DOMContentLoaded",function(){
             dropdown_elements[i].addEventListener('click', function(){
                 role_value.value = this.innerText
                 CloseDropDown()
-
-                var organization = document.getElementById('signup-form').elements['organization']
-                if(role_value.value == 'organization'){
-                    organization.removeAttribute('readonly')
-
-                }else{
-                    organization.value = ""
-                    organization.setAttribute('readonly', true)
-                }
             })
         }
     })
@@ -132,6 +154,11 @@ document.addEventListener("DOMContentLoaded",function(){
         }
     })
 
+    var signIn = document.getElementById('sign-in');
+    signIn.addEventListener('click', function(){
+        Redirect('http://localhost:8000/portal/signin/')
+    })
+
     var sign_up = document.getElementById('signup-button')
     sign_up.addEventListener('click', async function(){
         Validator()
@@ -148,16 +175,18 @@ document.addEventListener("DOMContentLoaded",function(){
             'organization' : organization,
             'password' : signup_form.elements['password'].value,
             'password2' : signup_form.elements['password2'].value,
+            'accept_term': document.getElementById('terms').checked
         }   
-        
-        // var endpoint = new Consumer('http://localhost:8000/portal/auth/register/', payload, 'POST', true, true)
-        // var response = await endpoint.fetch_response()
-        
-        // var alert = new CustomAlert(response['detail'], 'green')
-        // alert.raise()
 
-        // await delay(2000)
-        // Redirect('http://localhost:8000/portal/login/')
+        DeleteAuthToken()
+
+        var endpoint = new Consumer('http://localhost:8000/portal/auth/register/', payload, 'POST', false, true)
+        var response = await endpoint.fetch_response()
+
+        var alert = new CustomAlert(response['detail'], '#1d3b77')
+        alert.raise()
+
+        Verification()
     })
 
 

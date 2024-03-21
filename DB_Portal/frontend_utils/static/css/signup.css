@@ -20,19 +20,25 @@ section[class='signup-section']{
     margin-left: 120px;
 }
 
-section[class='signup-section']>img{
-    width: 120px;
-    margin-bottom: 10px;
+div[id='signup']{
+    height: 100%;
+    display: flex;
+    flex-flow: column;
 }
 
-section[class='signup-section']>p:first-of-type{
+section[class='signup-section']>img{
+    width: 120px;
+    margin-bottom: 0px;
+}
+
+div[id='signup']>p:first-of-type{
     margin: 2px 10px;
     font-family: MontserratMedium;
     font-size: 25px;
     color: #1d3b77;
 }
 
-section[class='signup-section']>p:last-of-type{
+div[id='signup']>p:nth-of-type(2){
     font-family: MontserratMedium;
     font-size: 12px;
     margin: 0px 10px;
@@ -136,6 +142,22 @@ div[class="terms"]>label>a:hover{
     color: #e93200;
 }
 
+p[id='have-account']{
+    margin-top: auto;
+    font-family: MontserratRegular;
+    font-size: 13px;
+    margin-top: auto;
+}
+
+a[id="sign-in"]{
+    color: #f97450;
+    cursor: pointer;
+}
+
+a[id="sign-in"]:hover{
+    color: #e93200;
+}
+
 section[id="img-section"]{
     width: 50%;
     height: 100vh;
@@ -146,4 +168,47 @@ section[id="img-section"]{
 section[id="img-section"]>img{
     width: 600px;
     transform: translate(-20px, -120px);
+}
+
+
+
+
+/***********EMAIL VERIFICATION********/
+div[id="verification-msg"]{
+    background-color: #fff;
+    border-radius: 8px;
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+    padding: 20px;
+    margin-top: 50px;
+}
+
+p[id="verification"]{
+    font-family: MontserratMedium;
+    font-size: 22px;
+    margin-bottom: 3px;
+}
+
+p[id="verification-statement"]{
+    font-family: MontserratRegular;
+    font-size: 16px;
+    margin-top: 0px;
+    color: #121212ab;
+}
+
+a[id="read-docs"]{
+    background-color: #f97450;
+    color: #fff;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+    font-family: MontserratMedium;
+    font-size: 14px;
+    margin-top: 20px
+}
+
+a[id="read-docs"]:hover{
+    background-color: #e93200;
+    color: #fff;
 }

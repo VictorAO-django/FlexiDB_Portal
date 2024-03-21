@@ -21,11 +21,16 @@ urlpatterns = [
     path('register/', RegistrationView.as_view()),
     path('login/', LoginView.as_view()),
     path('signout/', LogoutView.as_view()),
+    path('account-verification/<str:encoded_id>/<str:token>/', AccountVerificationView.as_view()),
+    path('verification-link/', VerificationLinkView.as_view()),
     path('forget-password/', ForgetPasswordView.as_view()),
     path('reset-password/<str:encoded_id>/<str:token>/', PasswordResetView.as_view()),
     path('change-password/', ChangePasswordView.as_view()),
     path('delete-account/', DeleteAccountView.as_view()),
     path('details/', RetrieveDataView.as_view()),
+    
+    #avatar
+    path('avatar/', AvatarView.as_view()),
     
     #ip actions
     path('ip/', IpAccess.as_view()),

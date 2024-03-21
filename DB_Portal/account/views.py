@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.shortcuts import redirect, render
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from django.urls import reverse
@@ -16,6 +16,18 @@ def LoginView(request):
     template = 'login.html'
     return render(request, template)
 
+def ResetPasswordView(request):
+    template = 'reset-password.html'
+    encoded_id = request.GET.get('encodedId', None)
+    token = request.GET.get('token', None)
+    try:
+        assert encoded_id is not None
+        assert token is not None
+        return render(request, template)
+        
+    except AssertionError:
+        return redirect('http://localhost:8000/portal/page-not-found/')
+
 
 @ensure_login('portal/dashboard/')
 def DashboardView(request):
@@ -26,6 +38,10 @@ def DashboardView(request):
         'username': user.username,
         'role': 'developer' if user.is_developer else 'organization',
     }
+    #set the search history cookie
+    response = HttpResponse()
+    response.set_cookie('searchhistory', user.recent_search, max_age=3600)
+    
     return render(request, template, context=context)
     
     
@@ -88,7 +104,17 @@ def OtherProfileView(request, slug):
             'twitter': profile.twitter,
             'stackoverflow': profile.stackoverflow
         }   
-        return render(request, template, context=context)
+        
+        if slug not in user.recent_search:
+            user.recent_search = f'{user.recent_search}&{slug}'
+            print(user.recent_search)
+            user.save()
+            
+        #set the search history cookie
+        response = render(request, template, context=context)
+        response.set_cookie('searchhistory', f'{user.recent_search}', max_age=3600)
+        
+        return response
     
     except Profile.DoesNotExist:
         return redirect('login')

@@ -1,27 +1,30 @@
 {% load static %}
 <!DOCTYPE html>
 <head>
-    <title>Login to FlexiBb</title>
+    <title>Signin to FlexiBb</title>
         <meta charset="UTF-8">
         <meta name="viewport", content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="/static/png/favicon.svg">
         <link rel="stylesheet" href="{% static 'css/login.css' %}">
         <link rel="stylesheet" href="{% static 'css/utilities.css' %}">
         <script defer type="module" role="application" src="{% static 'javascript/login.js' %}"></script>
 </head>
 <body>
-    <main>
+    <main class="content-box">
         <section class="login-section">
             <img src="{% static 'png/logo.svg' %}" alt="FlexiDb">
             <div>
                 <p id="statement">Welcome back</p>
                 <span id="statement-span">Please enter your details</span>
+                <!-- <a id="resend-link">Resend verification link</a> -->
                 <form id="login-form">
                     {% csrf_token %}
                     <label for="email">Email</label>
                     <input type="text" name="email" placeholder="Enter your email">
 
                     <label for="password">Password</label>
-                    <input type="password"  name="password">
+                    <input class="password" type="password"  name="password">
+                    <img id="password-toggle" class="toggle" src="{% static 'png/password-close.svg' %}" alt="">
 
                     <div>
                         <p><input type="checkbox" name="" id="">Remember for 30days</p>
@@ -41,9 +44,10 @@
             </div>
             <p class="bottom-statment">visualize & manage data</p>
         </section>
-        <!---<section class="show-image">
-            <img src="{% static 'png/visualize.png' %}" alt="visualize">
-        </section>-->
+
+        <section id="img-section">
+            <img src="{% static 'png/sign-in.svg' %}">
+        </section>
     </main>
 </body>
 </html>

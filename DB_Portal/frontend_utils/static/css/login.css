@@ -16,19 +16,25 @@ body{
 main{
     display: flex;
     flex-flow: row nowrap;
+    justify-content: space-between;
     width: 100%;
     background-color: #FAFFFB;
     overflow: hidden;
     filter: drop-shadow(0px 0px 8px #96969642);
     height: 100vh;
+    background-image: url(/static/png/background.svg);
+    opacity: 0;
 }
 
 section[class='login-section']{
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
-    width:100%;
-    padding: 20px;
+    align-items: flex-start;
+    height: 100%;
+    margin-left: 120px;
+    flex-grow: 1;
+
 }
 
 section[class='login-section']>img{
@@ -38,26 +44,28 @@ section[class='login-section']>img{
 section[class='login-section']>div{
     display: flex;
     flex-flow: column nowrap;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     transform: translate(0px, -80px);
 }
 
 section[class='login-section']>div>p{
     font-family: MontserratMedium;
-    font-size: 18px;
+    font-size: 25px;
     margin-bottom: 0px;
+    color: #1d3b77;
 }
 
 section[class='login-section']>div>span{
     font-family: MontserratRegular;
     font-size: 13px;
-    color: #466543;
+    color: #121212ab;
 }
 
 form[id='login-form']{
     display: flex;
     flex-flow: column nowrap;
+    background-color: #fff;
 }
 
 form[id='login-form']>div{
@@ -69,16 +77,15 @@ form[id='login-form']>div{
 
 label{
     font-family: MontserratMedium;
-    margin: 20px 0px 0px 0px;
+    margin: 20px 0px 10px 0px;
     font-size: 13px;
-    color: rgb(70, 101, 67);
 }
 
 input{
     font-family: MontserratRegular;
-    border: 1px solid #466543;
+    border: 1px solid #1D3B77;
     border-radius: 5px;
-    padding: 5px 2px;
+    padding: 5px;
 }
 
 input:focus{
@@ -98,8 +105,19 @@ form[id='login-form']>div>a{
     font-family: MontserratRegular;
     font-size: 12px;
     text-decoration: none;
-    color: #466543;
+    color: #f97450;
     cursor: pointer;
+}
+
+form[id='login-form']>div>a:hover{
+    color: #e93200;
+}
+
+img[class='toggle']{
+    width: 14px;
+    transform: translate(270px, -20px);
+    cursor: pointer;
+    margin-bottom: -14px;
 }
 
 a[id='submit']{
@@ -110,28 +128,36 @@ a[id='submit']{
     justify-content: space-around;
     text-decoration: none;
     border: 1px solid transparent;
-    background-color: #466543;
+    background-color: #f97450;
     color: #fff;
     padding: 5px 0px;
     border-radius: 5px;
     cursor: pointer;
 }
 
+a[id='submit']:hover{
+    background-color: #e93200;
+}
+
 #no-account{
     font-family: MontserratRegular;
     font-size: 12px;
+    color: #121212;
 }
 
 body p[id='no-account']>a{
     font-family: MontserratRegular;
-    color: #466543;
+    color: #f97450;
     cursor: pointer;
+}
+
+body p[id='no-account']>a:hover{
+    color: #e93200;
 }
 
 p[class='bottom-statment']{
     font-family: MontserratRegular;
     font-size: 12px;
-    color: #466543;
     justify-self: flex-end;
 }
 
@@ -152,7 +178,9 @@ section[class='show-image']>img{
 form[id='forgotPW-form']{
     width: 300px;
     display: flex;
-    flex-flow: column nowrap
+    flex-flow: column nowrap;
+    background-color: #fff;
+    border-radius: 5px; 
 }
 
 form[id='forgotPW-form']>a{
@@ -164,9 +192,40 @@ form[id='forgotPW-form']>a{
     justify-content: space-around;
     text-decoration: none;
     border: 1px solid transparent;
-    background-color: #466543;
+    background-color: #f97450;
     color: #fff;
     padding: 5px 0px;
     border-radius: 5px;
     cursor: pointer;
+}
+
+form[id='forgotPW-form']>a:hover{
+    background-color: #e93200;
+}
+
+
+section[id="img-section"]{
+    width: 50%;
+    height: 100vh;
+    overflow: hidden;
+    padding: 0px 30px;
+}
+
+section[id="img-section"]>img{
+    width: 600px;
+    transform: translate(20px, -120px);
+}
+
+a[id='resend-link']{
+    background-color: #f97450;
+    font-family: MontserratRegular;
+    margin-top: 20px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #fff;
+}
+
+a[id='resend-link']:hover{
+    background-color: #e93200;
 }

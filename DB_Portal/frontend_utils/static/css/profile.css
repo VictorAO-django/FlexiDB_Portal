@@ -12,8 +12,195 @@
 }
 
 
+p[id='page-title']{
+    font-family: MontserratMedium;
+    font-size: 17px;
+    margin: 20px 50px 10px 50px;
+}
 
-section[id='profile-body']{
+main{
+    display: flex;
+    background-color: #fff;
+    width: 95%;
+    margin: auto;
+    border-radius: 15px;
+    overflow: hidden;
+    filter: drop-shadow(0px 0px 1px #96969621); 
+}
+
+section[id="side-bar"]{
+    display: flex;
+    flex-flow: column nowrap;
+    background-color: #fff;
+    filter: drop-shadow(0px 0px 2px #96969623); 
+}
+
+section[id="side-bar"]>ul{
+    display: flex;
+    width: 170px;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+    list-style-type: none;
+    padding: 0px;
+    margin: 10px 20px;
+}
+
+body li[class='tab']{
+    background-color: #92bef894;
+    color: #fff;
+}
+
+section[id="side-bar"]>ul>li{
+    padding: 10px;
+    margin: 5px 0px;
+    font-family: MontserratMedium;
+    font-size: 13px;
+    border-radius: 20px;
+    color: #12121296;
+    cursor: pointer;
+}
+
+section[id="side-bar"]>ul>li:hover{
+    color: #1d3b77;
+}
+
+section[id="content"]{
+    margin-left: 20px;
+    padding: 15px 20px;
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+    flex-grow: 1;
+}
+
+section[id="content"]>p{
+    font-size: 15px;
+    font-family: MontserratMedium;
+    margin: 0px 0px 5px 0px;
+}
+
+section[id="content"]>p{
+    font-size: 15px;
+    font-family: MontserratMedium;
+}
+
+section[id="content"]>div{
+    background-color: #fff;
+    filter: drop-shadow(0px 0px 2px #9696962a); 
+    width: 95%;
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+section[id="content"]>div>p{
+    font-family: MontserratMedium;
+    font-size: 13px;
+    margin: 0px;
+}
+
+div[id="picture-name"]{
+    display: flex;
+    align-items: center;
+}
+
+div[id="picture-name"]>div:first-of-type{
+    width: 130px;
+    height: 130px;
+    border-radius: 100%;
+    border: 3px solid #1d3b77;
+    overflow: hidden;
+}
+
+div[id="picture-name"]>div:first-of-type>img:first-of-type{
+    max-width: 100%;
+}
+
+img[id='photo']{
+    width: 30px;
+    position: absolute;
+    left: 130px;
+    top: 100px;
+    filter: drop-shadow(0px 0px 2px #9696968c); 
+    cursor: pointer;
+}
+
+div[id="picture-name"]>div:last-of-type{
+    display: flex;
+    flex-flow: column;
+    margin-left: 10px;
+}
+
+div[id="picture-name"]>div:last-of-type>p{
+    margin: 0px 0px;
+    margin-left: 10px;
+}
+
+div[id="picture-name"]>div:last-of-type>p:first-of-type{
+    font-size: 14px;
+    font-family: MontserratMedium;
+}
+
+div[id="picture-name"]>div:last-of-type>p:nth-of-type(2){
+    font-size: 13px;
+    opacity: 50%;
+    font-family: MontserratRegular;
+}
+
+div[id="picture-name"]>div:last-of-type>p:nth-of-type(3){
+    font-size: 12px;
+    opacity: 50%;
+    font-family: MontserratRegular;
+}
+
+div[id="picture-name"]>div:last-of-type>p:nth-of-type(4){
+    font-size: 13px;
+    opacity: 50%;
+    font-family: MontserratRegular;
+}
+
+section[id="personal-info"], div[id='address'], div[id='links']{
+    display: flex;
+}
+
+section[id="personal-info"]>div, div[id='address']>div, div[id='links']>div{
+    min-width: 300px;
+    max-width: 350px;
+}
+
+section[id="personal-info"]>div>div>p:first-of-type, div[id='address']>div>div>p:first-of-type, div[id='links']>div>div>p:first-of-type{
+    font-family: MontserratRegular;
+    font-size: 13px;
+    opacity: 50%;
+    margin: 20px 0px 0px 0px;
+}
+
+section[id="personal-info"]>div>div>p:last-of-type, div[id='address']>div>div>p:last-of-type, div[id='links']>div>div>p:last-of-type{
+    font-family: MontserratRegular;
+    font-size: 13px;
+    margin: 5px 0px;
+}
+
+div[id='skills']{
+    display: flex;
+    flex-flow: row wrap;
+    margin: 20px 0px;
+    width: 80%;
+}
+
+div[id='skills']>p{
+    padding: 10px;
+    background-color: #f97450;
+    margin: 10px 10px 10px 0px;
+    font-family: MontserratRegular;
+    font-size: 13px;
+    border-radius: 20px;
+    color: #fff;
+}
+
+
+
+/* section[id='profile-body']{
     display: flex;
     flex-flow: row nowrap;
     justify-content: flex-start;
@@ -163,7 +350,6 @@ div[id="database"]{
     display: flex;
     flex-flow: column nowrap;
     align-items: flex-start;
-    /* background-color: #12121207; */
     margin-bottom: 15px;
     width: 95%;
     margin-right: auto;
@@ -228,4 +414,4 @@ div[id="contributors"]>div>p{
 
 p[id="contibuting"]{
     margin-top: 50px;
-}
+} */

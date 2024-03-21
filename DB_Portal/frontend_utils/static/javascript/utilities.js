@@ -87,7 +87,7 @@ export function DropDown(elem, fields, image, include_href){
 ////////////////////////////++++ CustomAlert Function +++++++////////////////////////////
 export function CustomAlert(message, color){
     this.message = message || ''
-    this.color = color || 'red'
+    this.color = color || '#f97450'
 
     this.raise = function(){
         var box = document.createElement('div')
@@ -227,6 +227,7 @@ export function Consumer(url, payload, method, authenticate, preload, parent){
     this.method = method
     this.authenticte = authenticate || true
     this.preload = preload || false
+    this.delay = delay || false
     this.parent = document.getElementById(parent) || document.body
     
     this.csrf_token = document.querySelector('input[name=csrfmiddlewaretoken]').value
@@ -255,9 +256,11 @@ export function Consumer(url, payload, method, authenticate, preload, parent){
             }
             const response = await fetch(this.url, this.options) //consume the endpoint
             const data = await response.json() //get the response data
-            if(!response.ok){
-                throw new Error(data.detail) //throw an error if the status is not 200
+            if(!response.ok ){
+                const key = Object.keys(data)[0]
+                throw new Error(data[key]) //throw an error if the status is not 200
             }
+
             this.close_effect() //close the preload effect
             return data //return the response data
             
@@ -267,7 +270,8 @@ export function Consumer(url, payload, method, authenticate, preload, parent){
                 this.close_effect() //close the preload effect
             }
             var customAlert = new CustomAlert(error) //create the alert instance
-            customAlert.raise(error.detail) //raise the alert
+            customAlert.raise() //raise the alert
+            throw new Error(error)
         }
     }
 

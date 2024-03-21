@@ -8,6 +8,7 @@
         <meta name="viewport", content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="{% static 'css/base.css' %}">
         <link rel="stylesheet" href="{% static 'css/utilities.css' %}">
+        <link rel="icon" href="/static/png/favicon.svg">
         {% block more_css %}
         {% endblock more_css %}
 
@@ -27,7 +28,7 @@
                     <div class="account">
                         <img src="{% static 'png/account.svg' %}" alt="">
                         <p> {{ name }} <br><span id="role">{{ role }}</span></p>
-                        <img src="{% static 'png/dropdown.svg' %}" alt="">
+                        <img id="account-dropdown" src="{% static 'png/dropdown.svg' %}" alt="">
                     </div>
                     <a href="/portal/dashboard/">Dashboard</a>
                     <a href="">Transition</a>
@@ -40,7 +41,7 @@
                         <span id="filter-key">first_name</span>
                     </div>
                     <img src="{% static 'png/search.svg' %}" alt="Search">
-                    <input id="filter-value" type="search" autocomplete="off" placeholder="Search for people here...">
+                    <input id="filter-value" type="search" autocomplete="off" placeholder="Search here...">
                     {% csrf_token %}
                 </div>
                 <div class="notification">

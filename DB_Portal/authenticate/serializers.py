@@ -1,13 +1,13 @@
 import random
 from rest_framework import serializers
-from .models import User
+from .models import User, Profile
 
 class RegistrationSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(style={ "input_type":"password"}, write_only=True)
 
     class Meta:
         model = User
-        fields = ["email", "first_name", "last_name", "gender", "is_developer", "organization", "password", "password2"]
+        fields = ["email", "first_name", "last_name", "gender", "is_developer", "organization", "password", "password2", "accept_term"]
         extra_kwargs = {
             "password" : {"write_only": True}
         }
@@ -24,29 +24,37 @@ class RegistrationSerializer(serializers.ModelSerializer):
         ip_address = self.validated_data["ip_address"]
         password1 = self.validated_data["password"]
         password2 = self.validated_data["password2"]
+        accept_term = self.validated_data["accept_term"]
     
-        if User.objects.filter(email=email).exists(): #if the email already exist in database
-            raise serializers.ValidationError({"error": "email in use, please check your mail to verify account"}) #raise validation errow
+        try:
+            assert User.objects.filter(email=email).exists() == False, "email in use, please check your mail to verify account"
+            
+            if organization != "":
+                assert User.objects.filter(organization=organization).exists() == False, "This organization exists"
+            
+            assert password1 == password2, "Password and confirm Password does not match"
+            
+            assert accept_term == True, "Please accept terms and condition"
+            
+            #if every condition is passed, create the User instance
+            user = User(
+                username=username, 
+                email=email,
+                first_name=first_name, 
+                last_name=last_name, 
+                gender=gender,
+                is_developer=is_developer,
+                organization=organization,
+                ip_address = ip_address,
+                accept_term = accept_term
+            ) 
+            user.set_password(password1)
+            user.save()
+            return user
+            
+        except AssertionError as err:
+            raise serializers.ValidationError({"detail": str(err)})
         
-        if User.objects.filter(organization=organization).exists(): #if the email already exist in database
-            raise serializers.ValidationError({"error": "This organization exists"}) #raise validation errow
-        
-        if password1 != password2: #check if password correlate
-            raise serializers.ValidationError({"error": "Password and confirm Password does not match"})
-    
-        user = User(#if every condition is passed, create the User instance
-            username=username, 
-            email=email,
-            first_name=first_name, 
-            last_name=last_name, 
-            gender=gender,
-            is_developer=is_developer,
-            organization=organization,
-            ip_address = ip_address,
-        ) 
-        user.set_password(password1)
-        user.save()
-        return user
     
     
 class PasswordResetSerializer(serializers.Serializer):
@@ -60,15 +68,29 @@ class DeleteAccountSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
     
+class ProfileDataSerializer(serializers.ModelSerializer):
+    email = serializers.CharField(source='user.email', read_only = True)
+    first_name = serializers.CharField(source='user.first_name', read_only = True)
+    last_name = serializers.CharField(source='user.last_name', read_only = True)
+    username = serializers.CharField(source='user.last_name', read_only = True)
+    gender = serializers.CharField(source='user.gender', read_only = True)
+    organization = serializers.CharField(source='user.organization', read_only = True)
+    is_developer = serializers.CharField(source='user.is_developer', read_only = True)
+    class Meta:
+        model = Profile
+        fields = [
+            "email", "first_name", "last_name", "username", "gender", "organization", "is_developer", 
+            'bio', 'website', 'linkedIn', 'github', 'twitter', 'stackoverflow', 'skills','country', 
+            'city', 'postal_code'
+        ]
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["email", "first_name", "last_name", "username", "gender", "organization", "is_developer", "organization"]
+        fields = ["email", "first_name", "last_name", "username", "gender", "organization", "is_developer"]
         
     def save(self, *args, **kwargs):
-        first_name = self.validated_data["first_name"]
-        last_name = self.validated_data["last_name"]
-        self.validated_data["username"] = f"{first_name}-{last_name}-{random.randint(5643, 55573)}"
+        self.validated_data.pop('username')
         
         return super(UserSerializer, self).save(*args, **kwargs)
 
@@ -76,3 +98,8 @@ class SearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['user_id', 'username']
+        
+class AvatarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['avatar',]

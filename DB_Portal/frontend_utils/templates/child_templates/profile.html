@@ -9,12 +9,144 @@
 <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 {% endblock more_css %}
 
-{% block more_js %}
-<!-- <script defer type="module" role="application" src="{% static 'javascript/notification.js' %}"></script> -->
+{% block more_js%}
+<script role="application" src="{% static 'javascript/profile.js' %}"></script>
 {% endblock more_js %}
 
 {% block body %}
-    <section id="profile-body">
+    <p id="page-title">Account Settings</p>
+    <main>
+        <section id="side-bar">
+            <ul>
+                <li id="my-profile" class="tab">My Profile</li>
+                <li id="edit-profile">Edit Profile</li>
+                <li id="security">Security</li>
+                <li id="databases">Databases</li>
+                <li id="data-export">Data Export</li>
+                <li id="delete-account">Delete Account</li>
+            </ul>
+        </section>
+
+        <section id="content">
+            <p id="content-title">My Profile</p>
+            <div id="picture-name">
+                <div>
+                    <img src="{% static 'png/collins.jpg' %}" alt="">
+                </div>
+                <img id='photo' src="{% static 'png/photo.svg' %}" alt="">
+                <div>
+                    <p>Olusola Ayomide</p>
+                    <p>ayomide-bamidele-36600</p>
+                    <p>he/him</p>
+                    <p>Nigeria</p>
+                </div>
+            </div>
+
+            <div>
+                <p>Personal Information</p>
+                <section id="personal-info">
+                    <div>
+                        <div>
+                            <p>First name</p>
+                            <p>Olusola</p>
+                        </div>
+                        <div>
+                            <p>Email address</p>
+                            <p>Ayomideolusola5002@gmail.com</p>
+                        </div>
+                        <div>
+                            <p>Bio</p>
+                            <p>I am a backend developer</p>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div>
+                            <p>Last name</p>
+                            <p>Ayomide</p>
+                        </div>
+                        <div>
+                            <p>Phone</p>
+                            <p>+2347063475466</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div>
+                <p>Address</p>
+                <div id="address">
+                    <div>
+                        <div>
+                            <p>Country</p>
+                            <p>Nigeria</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            <p>Postal code</p>
+                            <p>311016</p>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div>
+                            <p>City</p>
+                            <p>Lagos</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <p>Links</p>
+                <div id="links">
+                    <div>
+                        <div>
+                            <p>Website</p>
+                            <p>Nigeria</p>
+                        </div>
+                        <div>
+                            <p>LinkedIn</p>
+                            <p>311016</p>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div>
+                            <p>Github</p>
+                            <p>Lagos</p>
+                        </div>
+                        <div>
+                            <p>Twitter</p>
+                            <p>Lagos</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            <p>Stackoverflow</p>
+                            <p>Stackoverflow</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <p>Skills</p>
+                <div id="skills">
+                    <p>Backend developer</p>
+                    <p>FullStack developer</p>
+                    <p>Data analysis</p>
+                    <p>Database management</p>
+                    <p>Machine Learning</p>
+                    <p>Machine Learning</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- <section id="profile-body">
         <section id="profile-section">
             <div class="img-name">
                 <div>{{ prop_image }}</div>
@@ -147,5 +279,5 @@
                 </div>
             </div>
         </section>
-    </section>
+    </section> -->
 {% endblock body%}

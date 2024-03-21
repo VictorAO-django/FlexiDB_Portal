@@ -23,6 +23,7 @@ from permissions import IsVerified, IpIsValid
 from authentication import BearerTokenAuthentication
 from exceptions import *
 from mailer import portal_send_mail, Mailer
+from cloudinary_service import CloudinaryManager
 
 
 class RegistrationView(APIView): 
@@ -49,12 +50,41 @@ class RegistrationView(APIView):
             
             data["status"]='success'
             data["detail"]=f'{user.first_name}, mail is sent to your email address for your account verification'
-            return Response(data,status=status.HTTP_201_CREATED)
+            return Response(data,status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_403_FORBIDDEN)
         
+
+class AccountVerificationView(APIView):
+    permission_classes=[AllowAny,]
+    
+    @swagger_auto_schema(
+        operation_summary="Account Email Verification Endpoint",
+        operation_description="This is to verify user email, the link to this endpoint will be generated after signing up to create an account. \nThis endpoint will therefore perform a url redirect to the landing page is verificatin is successful",
+        operation_id="email-verification",
+    )
+    def get(self, request, encoded_id, token):
+        unique_id = str(urlsafe_base64_decode(encoded_id), encoding="utf-16") #decode back the user_id
+        try:
+            user = User.objects.get(id=unique_id) #check if the user with the id exist
+            emailToken = EmailVerificationToken.objects.get(user=user) #get the user verification token
+            
+            #if the userToken correlates with the token obtained from url
+            assert token == emailToken.token, "Invalid email token" 
+            
+            user.is_verified = True #This toogles to True
+            user.is_active = True #This activates the user
+            user.save()
+            emailToken.delete()
+            return redirect(f'http://localhost:8000/portal/signin/') #redirect to onboarding page
         
-        
+        except AssertionError as err:
+            return redirect('http://localhost:8000/portal/page-not-found/')
+            
+        except User.DoesNotExist:
+            return render(f'http://localhost:8000/portal/signup/')        
+
+  
         
 class LoginView(APIView):
     permission_classes=[AllowAny,] 
@@ -109,7 +139,7 @@ class LoginView(APIView):
                     return Response(data,status=status.HTTP_200_OK)
                 else:
                     data["detail"] = "please verify your email"     
-                    return Response(data,status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION)
+                    return Response(data,status=status.HTTP_200_OK)
             else:
                 data["detail"] = "Wrong Password"
                 return Response(data,status= status.HTTP_400_BAD_REQUEST)
@@ -117,7 +147,46 @@ class LoginView(APIView):
             data["detail"] = "No user found with this email"
             return Response(data, status=status.HTTP_404_NOT_FOUND)
         
+
+
+class VerificationLinkView(APIView):
+    permission_classes = [AllowAny,]
+    
+    @swagger_auto_schema(
+        operation_summary="Verfication Link Endpoint",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'email': openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_EMAIL),
+            },
+            required=['email'],
+        ),
+        operation_id="verification-link",
+        responses={
+            200: "Verification link has been sent",
+            404: "No user found with this email",
+            403: "provide a valid email || This email has been verified"
+        }
+    )
+    def post(self, request, *args, **kwargs):
+        email = request.data.get('email', None)
+        try:
+            assert email is not None, 'Provide a valid email'
+            user = User.objects.get(email=email)
+            assert user.is_verified == False, 'This email has been verified'
+            
+            Mailer([email]).email_verification()
+            
+            return Response({'detail': 'Verification link has been sent'}, status=status.HTTP_200_OK)
         
+        except AssertionError as err:
+            return Response({'detail': str(err)}, status=status.HTTP_403_FORBIDDEN)
+        
+        except User.DoesNotExist as err:
+            return Response({'detail': 'No user found with this email'}, status=status.HTTP_404_NOT_FOUND)
+        
+
+
         
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated, IpIsValid]
@@ -214,7 +283,7 @@ class ForgetPasswordView(APIView):
             encoded_id = urlsafe_base64_encode(bytes(str(user.pk),encoding="utf-16"))#encode the user PK for transfer over url
 
             #set the url for password reset
-            reset_url = f'https://localhost:8000/portal/reset-password?encodedId={encoded_id}&token={token}'
+            reset_url = f'http://localhost:8000/portal/reset-password?encodedId={encoded_id}&token={token}'
 
             #send the reset url via email
             subject = 'BabyDuct Account Password Reset'
@@ -354,19 +423,83 @@ class DeleteAccountView(APIView):
 class RetrieveDataView(RetrieveUpdateAPIView):
     authentication_classes = [BearerTokenAuthentication]
     permission_classes = [IsAuthenticated, IsVerified, IpIsValid]
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+    queryset = Profile.objects.all()
+    serializer_class = ProfileDataSerializer
     http_method_names = ['get', 'patch']
     
     def get_object(self):
-        user = Token.objects.get(key=self.request.auth).user
-        return user
+        profile = Profile.objects.get(user=self.request.user)
+        return profile
+    
+    def patch(self, request, *args, **kwargs):
+        profile = Profile.objects.get(user=self.request.user)
+        #get the user profile serializer instance
+        profile_serializer = ProfileDataSerializer(profile, data=request.data)
+        #get the user serializer instance
+        user_serializer = UserSerializer(request.user, data=request.data)
+        
+        #confirm that profile serializer is valid
+        if profile_serializer.is_valid():
+            pass
+        else:
+            return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        #confirm that user serializer is valid
+        if user_serializer.is_valid():
+            pass
+        else:
+            return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        #save the serializers
+        profile_serializer.save()
+        user_serializer.save()
+        
+        return Response(request.data, status=status.HTTP_200_OK)
+        
 
+
+class AvatarView(APIView):
+    authentication_classes = [BearerTokenAuthentication]
+    permission_classes = [IsAuthenticated, IsVerified, IpIsValid]
+    
+    @swagger_auto_schema(
+        operation_summary="Avatar Upload",
+        operation_description="Upload avatar endpoint",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'avatar': openapi.Schema(type=openapi.TYPE_FILE, description='avatar document'),
+            },
+            required=['avatar']
+        ),
+        responses={
+            200: openapi.Response('Avatar upload successful', AvatarSerializer),
+        },
+    )
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        if 'avatar' in request.data:
+            avatar = request.FILES['avatar']
+            avatar = CloudinaryManager.upload_image(avatar, 'avatar')
+            #mutate request data
+            request.data['avatar'] = avatar
+            
+        serializer = AvatarSerializer(user, data=request.data)
+        if serializer.is_valid():
+            #if the user has an avatar before
+            if user.avatar != "":
+                #detele the previous avatar
+                CloudinaryManager.delete_image(user.avatar)
+            #save the new avatar
+            serializer.save()
+            return Response({'detail': 'succesfully updated', 'avatar':avatar}, status=status.HTTP_200_OK)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SearchUser(ListAPIView):
-    #authentication_classes = [BearerTokenAuthentication]
-    #permission_classes = [IsAuthenticated, IsVerified, IpIsValid]
+    authentication_classes = [BearerTokenAuthentication]
+    permission_classes = [IsAuthenticated, IsVerified, IpIsValid]
     queryset = User.objects.all()
     serializer_class = SearchSerializer
     
