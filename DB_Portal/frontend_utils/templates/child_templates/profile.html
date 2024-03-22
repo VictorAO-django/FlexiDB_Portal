@@ -7,18 +7,19 @@
 
 {% block more_css %}
 <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+<link rel="stylesheet" href="{% static 'css/edit_profile.css' %}">
+<link rel="stylesheet" href="{% static 'css/utilities.css' %}">
 {% endblock more_css %}
 
 {% block more_js%}
-<script role="application" src="{% static 'javascript/profile.js' %}"></script>
+<script defer type="module" role="application" src="{% static 'javascript/profile.js' %}"></script>
 {% endblock more_js %}
 
 {% block body %}
-    <p id="page-title">Account Settings</p>
-    <main>
+    <main class="content-box">
         <section id="side-bar">
             <ul>
-                <li id="my-profile" class="tab">My Profile</li>
+                <li id="my-profile">My Profile</li>
                 <li id="edit-profile">Edit Profile</li>
                 <li id="security">Security</li>
                 <li id="databases">Databases</li>
@@ -28,256 +29,28 @@
         </section>
 
         <section id="content">
-            <p id="content-title">My Profile</p>
-            <div id="picture-name">
-                <div>
-                    <img src="{% static 'png/collins.jpg' %}" alt="">
-                </div>
-                <img id='photo' src="{% static 'png/photo.svg' %}" alt="">
-                <div>
-                    <p>Olusola Ayomide</p>
-                    <p>ayomide-bamidele-36600</p>
-                    <p>he/him</p>
-                    <p>Nigeria</p>
-                </div>
-            </div>
-
-            <div>
-                <p>Personal Information</p>
-                <section id="personal-info">
-                    <div>
-                        <div>
-                            <p>First name</p>
-                            <p>Olusola</p>
-                        </div>
-                        <div>
-                            <p>Email address</p>
-                            <p>Ayomideolusola5002@gmail.com</p>
-                        </div>
-                        <div>
-                            <p>Bio</p>
-                            <p>I am a backend developer</p>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <div>
-                            <p>Last name</p>
-                            <p>Ayomide</p>
-                        </div>
-                        <div>
-                            <p>Phone</p>
-                            <p>+2347063475466</p>
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <div>
-                <p>Address</p>
-                <div id="address">
-                    <div>
-                        <div>
-                            <p>Country</p>
-                            <p>Nigeria</p>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div>
-                            <p>Postal code</p>
-                            <p>311016</p>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <div>
-                            <p>City</p>
-                            <p>Lagos</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <p>Links</p>
-                <div id="links">
-                    <div>
-                        <div>
-                            <p>Website</p>
-                            <p>Nigeria</p>
-                        </div>
-                        <div>
-                            <p>LinkedIn</p>
-                            <p>311016</p>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <div>
-                            <p>Github</p>
-                            <p>Lagos</p>
-                        </div>
-                        <div>
-                            <p>Twitter</p>
-                            <p>Lagos</p>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div>
-                            <p>Stackoverflow</p>
-                            <p>Stackoverflow</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <p>Skills</p>
-                <div id="skills">
-                    <p>Backend developer</p>
-                    <p>FullStack developer</p>
-                    <p>Data analysis</p>
-                    <p>Database management</p>
-                    <p>Machine Learning</p>
-                    <p>Machine Learning</p>
-                </div>
-            </div>
+            {% block content %}
+            {% endblock content %}
         </section>
     </main>
-    <!-- <section id="profile-body">
-        <section id="profile-section">
-            <div class="img-name">
-                <div>{{ prop_image }}</div>
-                <div class="names">
-                    <p>{{ profile_name }}</p>
-                    <p>@{{ profile_username }}</p>
-                    <p>{{ pronoun }}</p>
-                </div>
+
+    <!-- <div id="avatar-edit-container">
+        <div>
+            <p>Edit photo <img class="cancel" src="{% static 'png/cancel.svg' %}" alt=""></p>
+            <div id="avatar-edit">
+                <img id="avatar" src="{% static 'png/collins.jpeg' %}">
+                <div id="drag-selection"></div>
             </div>
-
-            <p id="bio">{{ bio }}</p>
-
-            {% if owner %}
-            <a href="" id="edit-profile">Edit profile</a>
-            {% endif %}
-
-            <ul id="media-details">
-                {% if country != "" %}
-                <li>
-                    <img src="{% static 'png/mail.svg' %}" alt="">
-                    <a>{{ country }}</a>
-                </li>
-                {% endif %}
-
-                {% if email != "" %}
-                <li>
-                    <img src="{% static 'png/mail.svg' %}" alt="">
-                    <a href="{{ email }}">{{ email }}</a>
-                </li>
-                {% endif %}
-
-                {% if website != "" %}
-                <li>
-                    <img src="{% static 'png/website.svg' %}" alt="">
-                    <a href="{{ website }}">{{ website }}</a>
-                </li>
-                {% endif %}
-                
-                {% if linkedin != "" %}
-                <li>
-                    <img src="{% static 'png/linkedin.svg' %}" alt="">
-                    <a href="{{ linkedin }}">{{ linkedin }}</a>
-                </li>
-                {% endif %}
-                
-                {% if github != "" %}
-                <li>
-                    <img src="{% static 'png/github.svg' %}" alt="">
-                    <a href="{{ github }}">{{ github }}</a>
-                </li>
-                {% endif %}
-
-                {% if twitter != "" %}
-                <li>
-                    <img src="{% static 'png/twitter.svg' %}" alt="">
-                    <a href="{{ twitter }}">{{ twitter }}</a>
-                </li>
-                {% endif %}
-
-                {% if stackoverflow != "" %}
-                <li>
-                    <img src="{% static 'png/stack-overflow.svg' %}" alt="">
-                    <a href="{{ stackoverflow }}">{{ stackoverflow }}</a>
-                </li>
-                {% endif %}
-                
-            </ul>
-        </section>
-
-
-        <section id="database-section">
-            <p>Databases</p>
-            <div id="database-list">
-                <p>Owned</p>
-                <div id="database">
-                    <div>
-                        <p id="database-name">Babyduct inventory</p>
-                        <p id="database-type">postgres</p>
-                    </div>
-                    <div id="contributors">
-                        <div>
-                            <p>AV</p>
-                            <p>BO</p>
-                            <p>AJ</p>
-                            <p>AT</p>
-                            <p>AV</p>
-                            <p>BO</p>
-                            <p>AJ</p>
-                            <p>AT</p>
-                        </div>
-                    </div>
+            <div id="control">
+                <div id="zoom">
+                    <img src="{% static 'png/zoom-out.svg' %}" alt="zoom out">
+                    <input type="range" min="100" max="180" value="0" id="zoomer">
+                    <img src="{% static 'png/zoom-in.svg' %}" alt="zoom in">
                 </div>
-                <div id="database">
-                    <div>
-                        <p id="database-name">Babyduct inventory</p>
-                        <p id="database-type">postgres</p>
-                    </div>
-                    <div id="contributors">
-                        <div>
-                            <p>AV</p>
-                            <p>BO</p>
-                            <p>AJ</p>
-                            <p>AT</p>
-                            <p>AV</p>
-                            <p>BO</p>
-                            <p>AJ</p>
-                            <p>AT</p>
-                        </div>
-                    </div>
-                </div>
-
-                <p id="contibuting">Contributing</p>
-                <div id="database">
-                    <div>
-                        <p id="database-name">Babyduct inventory</p>
-                        <p id="database-type">postgres</p>
-                    </div>
-                    <div id="contributors">
-                        <div>
-                            <p>AV</p>
-                            <p>BO</p>
-                            <p>AJ</p>
-                            <p>AT</p>
-                            <p>AV</p>
-                            <p>BO</p>
-                            <p>AJ</p>
-                            <p>AT</p>
-                        </div>
-                    </div>
-                </div>
+                <img src="{% static 'png/rotate-left.svg' %}" alt="rotate-left">
+                <img src="{% static 'png/rotate-right.svg' %}" alt="rotate-right">
+                <a href="">Save</a>
             </div>
-        </section>
-    </section> -->
+        </div>
+    </div> -->
 {% endblock body%}

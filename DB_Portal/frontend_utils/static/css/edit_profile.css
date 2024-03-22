@@ -1,0 +1,186 @@
+@font-face {
+    font-family: 'MontserratMedium';
+    src: url('fonts/Montserrat-Medium.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'MontserratRegular';
+    src: url('fonts/Montserrat-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'MontserratSemi';
+    src: url('fonts/Montserrat-SemiBold.ttf') format('truetype');
+}
+
+div[id="detail_edit"]{
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    margin-top: 20px;
+}
+
+div[id="detail_edit"]>section{
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+}
+
+section[id="detail_edit_side_1"]{
+    width: 450px;
+}
+
+section[id="detail_edit_side_2"]{
+    flex-grow: 1;
+}
+
+div[id="the-avatar"]{
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+}
+
+div[id="the-avatar"]>div{
+    width: 150px;
+    max-height: 150px;
+    border-radius: 100%;
+    overflow: hidden;
+    border: 3px solid #1d3b77;
+}
+
+div[id="the-avatar"]>div>img{
+    max-width: 100%;
+}
+
+img[id='edit-avatar']{
+    width: 30px;
+    position: relative;
+    left: -30px;
+    top: 50px;
+    filter: drop-shadow(0px 0px 2px #9696968c); 
+    cursor: pointer;
+}
+
+div[id="edit-detail"]{
+    width: 90%;
+    margin: 20px 0px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    filter: drop-shadow(0px 0px 2px #96969638); 
+}
+
+div[id="edit-detail"]>p{
+    font-family: MontserratMedium;
+    font-size: 13px;
+    border-bottom: 1px solid #9696961e;
+    margin: 0px;
+    padding-bottom: 5px;
+    color: #1d3b77;
+}
+
+div[id="edit-detail"]>div{
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: stretch;
+}
+
+div[id="edit-detail"]>div>label{
+    font-family: MontserratRegular;
+    font-size: 13px;
+    margin: 20px 0px 5px 0px;
+    opacity: 0.5;
+}
+
+body div[id="edit-detail"]>div>p{
+    margin: 0px;
+    display: flex;
+    align-items: center;
+}
+body div[id="edit-detail"]>div>p>span{
+    position: absolute;
+    font-size: 13px;
+    padding-right: 4px;
+    padding-left: 2px;
+    border-right: 1px solid #12121296;
+    font-family: MontserratRegular;
+}
+body div[id="edit-detail"]>div>p>img{
+    position: absolute;
+    width: 20px;
+    margin-left: 5px;
+}
+body div[id="edit-detail"]>div>p>img[class='dropdown']{
+    margin-left: auto;
+    width: 12px;
+    transform: translate(340px, 0px);
+    cursor: pointer;
+}
+body div[id="edit-detail"]>div>p>input{
+    width: 100%;
+    padding-left: 38px;
+}
+
+div[id="edit-detail"]>div>input, div[id="edit-detail"]>div>textarea, div[id="edit-detail"]>div>p>input{
+    font-family: MontserratRegular;
+    font-size: 13px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    background-color: #f6f6f6;
+    padding: 0px 8px;
+}
+
+div[id="edit-detail"]>div>input, div[id="edit-detail"]>div>p>input{
+    height: 25px;
+}
+
+div[id="edit-detail"]>div>input:focus, div[id="edit-detail"]>div>textarea:focus ,div[id="edit-detail"]>div>p>input:focus{
+    outline: none;
+}
+
+body div[id="new-skill"]{
+    margin: 20px 0px;
+}
+
+div[id="new-skill"]>a{
+    background-color: #1d3b77;
+    border-radius: 5px;
+    margin-top: 15px;
+    padding: 3px;
+    color: #fff;
+    font-family: MontserratRegular;
+    font-size: 13px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+body div[id="skills-list"]{
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #f6f6f6;
+    padding: 20px 0px;
+    border-radius: 5px;
+}
+
+body div[id="skills-list"]>p[id='skill']{
+    padding: 5px 10px;
+    background-color: #f97450;
+    font-family: MontserratRegular;
+    font-size: 13px;
+    border-radius: 5px;
+    margin: 5px 10px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+
+body div[id="skills-list"]>p>img[class='remove-skill']{
+    position: inherit;
+    width: 8px;
+    cursor: pointer;
+    margin-left: 5px;
+    transform: translate(6px, -4px);
+}

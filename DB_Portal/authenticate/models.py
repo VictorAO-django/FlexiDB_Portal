@@ -59,7 +59,8 @@ class User(AbstractUser):
     
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    bio = models.TextField()
+    bio = models.TextField(blank=True)
+    phone = models.CharField(max_length=20, blank=True)
     website = models.URLField(blank=True)
     linkedIn = models.URLField(blank=True)
     github = models.URLField(blank=True)

@@ -34,7 +34,7 @@ def DashboardView(request):
     template = 'base.html'
     user = request.user
     context = {
-        'name': f'{user.first_name} {user.last_name}'.capitalize(),
+        'full_name': f'{user.first_name} {user.last_name}'.capitalize(),
         'username': user.username,
         'role': 'developer' if user.is_developer else 'organization',
     }
@@ -53,27 +53,18 @@ def NotificationView(request):
 
 @ensure_login('portal/profile/')
 def ProfileView(request):
-    template = 'child_templates/profile.html'
+    template = 'child_templates/profile_children/my_profile.html'
     user = request.user
     profile = Profile.objects.get(user=user)
     
     context = {
-        'owner': True,
-        'prop_image': f'{user.first_name[0]}{user.last_name[0]}'.upper(),
-        'name': f'{user.first_name} {user.last_name}'.capitalize(),
-        'username': user.username,
-        'profile_name': f'{user.first_name} {user.last_name}'.capitalize(),
-        'profile_username': user.username,
+        'user' : user,
+        'profile': profile,
         'pronoun': 'he/him' if user.gender == 'Male' else 'she/her',
         'role': 'developer' if user.is_developer else 'organization',
-        'bio': profile.bio,
-        'country': profile.country,
-        'email': user.email,
-        'website': profile.website,
-        'linkedin': profile.linkedIn,
-        'github': profile.github,
-        'twitter': profile.twitter,
-        'stackoverflow': profile.stackoverflow
+        'full_name': f'{user.first_name} {user.last_name}'.capitalize(),
+        'prop_avatar': f'{user.first_name[0]}{user.last_name[0]}'.upper(),
+        'skills': profile.skills.split(',')
     }   
     return render(request, template, context=context)
 
@@ -118,3 +109,22 @@ def OtherProfileView(request, slug):
     
     except Profile.DoesNotExist:
         return redirect('login')
+    
+    
+
+
+def EditProfileView(request):
+    template = 'child_templates/profile_children/edit_profile.html'
+    user = request.user
+    profile = Profile.objects.get(user=user)
+    
+    context = {
+        'user' : user,
+        'profile': profile,
+        'pronoun': 'he/him' if user.gender == 'Male' else 'she/her',
+        'role': 'developer' if user.is_developer else 'organization',
+        'full_name': f'{user.first_name} {user.last_name}'.capitalize(),
+        'prop_avatar': f'{user.first_name[0]}{user.last_name[0]}'.upper(),
+        'skills': profile.skills.split(',')
+    }   
+    return render(request, template, context)

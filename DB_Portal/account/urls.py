@@ -26,5 +26,6 @@ urlpatterns = [
     path('dashboard/', DashboardView, name='dashboard'),
     path('profile/', ProfileView, name='profile'),
     path('profile/<slug:slug>/', OtherProfileView, name='other-profile'),
+    path("edit-profile/", EditProfileView, name='edit-profile'),
     path('notification/', NotificationView, name='notification'),
 ]

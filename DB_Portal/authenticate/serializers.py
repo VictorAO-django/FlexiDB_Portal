@@ -13,9 +13,9 @@ class RegistrationSerializer(serializers.ModelSerializer):
         }
 
     def save(self):
-        email = self.validated_data["email"]
-        first_name = self.validated_data["first_name"]
-        last_name = self.validated_data["last_name"]
+        email = self.validated_data["email"].lower()
+        first_name = self.validated_data["first_name"].lower()
+        last_name = self.validated_data["last_name"].lower()
         gender = self.validated_data["gender"]
         is_developer = self.validated_data["is_developer"]
         organization = self.validated_data["organization"]
@@ -73,14 +73,15 @@ class ProfileDataSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(source='user.first_name', read_only = True)
     last_name = serializers.CharField(source='user.last_name', read_only = True)
     username = serializers.CharField(source='user.last_name', read_only = True)
+    avatar = serializers.CharField(source='user.avatar', read_only = True)
     gender = serializers.CharField(source='user.gender', read_only = True)
     organization = serializers.CharField(source='user.organization', read_only = True)
     is_developer = serializers.CharField(source='user.is_developer', read_only = True)
     class Meta:
         model = Profile
         fields = [
-            "email", "first_name", "last_name", "username", "gender", "organization", "is_developer", 
-            'bio', 'website', 'linkedIn', 'github', 'twitter', 'stackoverflow', 'skills','country', 
+            "email", "first_name", "last_name", "username", "avatar", "gender", "organization", "is_developer", 
+            'bio', 'phone', 'website', 'linkedIn', 'github', 'twitter', 'stackoverflow', 'skills','country', 
             'city', 'postal_code'
         ]
 

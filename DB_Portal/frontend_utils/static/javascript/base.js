@@ -173,8 +173,8 @@ document.addEventListener("DOMContentLoaded",function(){
     var account = document.getElementById('account-dropdown');
     account.addEventListener('click', function(){
             var fields = {
-                'My Profile': 'portal/profile/?tab=My profile',
-                'Security': 'portal/profile/?tab=Security',
+                'My Profile': 'portal/profile/',
+                'Security': 'portal/edit-profile/',
                 'Databases': 'portal/profile/?tab=Databases',
                 'Settings': 'portal/profile/?tab=settings',
             }
@@ -237,7 +237,7 @@ document.addEventListener("DOMContentLoaded",function(){
         var response = await endpoint.fetch_response()
         DeleteAuthToken()
         
-        var alerting = new CustomAlert(response['detail'], 'green')
+        var alerting = new CustomAlert(response['detail'], '#1d3b77')
         alerting.raise()
 
         await delay(2000)

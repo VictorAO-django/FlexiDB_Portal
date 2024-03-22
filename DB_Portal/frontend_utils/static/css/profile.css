@@ -11,6 +11,10 @@
     src: url('fonts/Montserrat-SemiBold.ttf') format('truetype');
 }
 
+body{
+    width: 100vw;
+    overflow-x: hidden;
+}
 
 p[id='page-title']{
     font-family: MontserratMedium;
@@ -22,10 +26,12 @@ main{
     display: flex;
     background-color: #fff;
     width: 95%;
-    margin: auto;
+    margin: 10px auto;
     border-radius: 15px;
     overflow: hidden;
     filter: drop-shadow(0px 0px 1px #96969621); 
+    min-height: 100vh;
+    opacity: 0;
 }
 
 section[id="side-bar"]{
@@ -67,24 +73,22 @@ section[id="side-bar"]>ul>li:hover{
 section[id="content"]{
     margin-left: 20px;
     padding: 15px 20px;
-    display: flex;
-    flex-flow: column;
-    align-items: flex-start;
     flex-grow: 1;
 }
 
-section[id="content"]>p{
+div[id="my-profile"]{
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+}
+
+p[id='content-title']{
     font-size: 15px;
     font-family: MontserratMedium;
     margin: 0px 0px 5px 0px;
 }
 
-section[id="content"]>p{
-    font-size: 15px;
-    font-family: MontserratMedium;
-}
-
-section[id="content"]>div{
+div[class='details-display']{
     background-color: #fff;
     filter: drop-shadow(0px 0px 2px #9696962a); 
     width: 95%;
@@ -93,7 +97,7 @@ section[id="content"]>div{
     border-radius: 10px;
 }
 
-section[id="content"]>div>p{
+div[class='details-display']>p{
     font-family: MontserratMedium;
     font-size: 13px;
     margin: 0px;
@@ -102,6 +106,7 @@ section[id="content"]>div>p{
 div[id="picture-name"]{
     display: flex;
     align-items: center;
+    margin: 20px 10px
 }
 
 div[id="picture-name"]>div:first-of-type{
@@ -114,15 +119,6 @@ div[id="picture-name"]>div:first-of-type{
 
 div[id="picture-name"]>div:first-of-type>img:first-of-type{
     max-width: 100%;
-}
-
-img[id='photo']{
-    width: 30px;
-    position: absolute;
-    left: 130px;
-    top: 100px;
-    filter: drop-shadow(0px 0px 2px #9696968c); 
-    cursor: pointer;
 }
 
 div[id="picture-name"]>div:last-of-type{
@@ -159,26 +155,33 @@ div[id="picture-name"]>div:last-of-type>p:nth-of-type(4){
     font-family: MontserratRegular;
 }
 
-section[id="personal-info"], div[id='address'], div[id='links']{
+div[id="personal-info"], div[id='links']{
     display: flex;
 }
 
-section[id="personal-info"]>div, div[id='address']>div, div[id='links']>div{
-    min-width: 300px;
-    max-width: 350px;
+div[id="personal-info"]>div, div[id='links']>div{
+    width: 330px;
+    margin-right: 40px;
 }
 
-section[id="personal-info"]>div>div>p:first-of-type, div[id='address']>div>div>p:first-of-type, div[id='links']>div>div>p:first-of-type{
+div[id="personal-info"]>div>div>p:first-of-type, div[id='links']>div>div>p:first-of-type{
     font-family: MontserratRegular;
     font-size: 13px;
     opacity: 50%;
     margin: 20px 0px 0px 0px;
 }
 
-section[id="personal-info"]>div>div>p:last-of-type, div[id='address']>div>div>p:last-of-type, div[id='links']>div>div>p:last-of-type{
+div[id="personal-info"]>div>div>p:last-of-type, div[id='links']>div>div>p:last-of-type{
     font-family: MontserratRegular;
     font-size: 13px;
-    margin: 5px 0px;
+    margin: 0px 0px;
+    display: flex;
+    align-self: center;
+}
+
+div[id="personal-info"]>div>div>p:last-of-type>img{
+    width: 20px;
+    margin-right: 5px;
 }
 
 div[id='skills']{
@@ -200,218 +203,133 @@ div[id='skills']>p{
 
 
 
-/* section[id='profile-body']{
+
+
+
+
+/* Edit Avatar*/
+div[id="avatar-edit-container"]{
+    position: fixed;
+    top: 0px;
+    width: 100vw;
+    height: 100vh;
     display: flex;
-    flex-flow: row nowrap;
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding: 10px 10px;
-    margin-top: 30px;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #1212121c;
+    overflow: hidden;
 }
 
-section[id="profile-section"]{
+div[id="avatar-edit-container"]>div{
     display: flex;
     flex-flow: column nowrap;
-    justify-content: flex-start;
-    align-items: flex-start;
-    flex-basis: 40%;   
-    padding: 10px 0px;
     background-color: #fff;
+    align-items: center;
+    padding: 15px;
+    border-radius: 10px;
+    min-width: 300px;
 }
 
-div[class="img-name"]{
+div[id="avatar-edit-container"]>div>p{
+    margin: 0px 0px 5px 0px;
+    width: 100%;
+    font-family: MontserratRegular;
+    font-size: 13px;
     display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-around;
     align-items: center;
-    margin-left: 30px;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    background-color: #fff;
+    border-bottom: 1px solid #96969625;
+    opacity: 60%;
 }
 
-div[class="img-name"]>div:first-of-type{
+img[class="cancel"]{
+    width: 15px;
+    cursor: pointer;
+}
+
+div[id="avatar-edit"]{
+    width: 200px;
+    height: 200px;
+    position: relative;
+    margin: 10px 0px;
     display: flex;
-    justify-content: space-around;
     align-items: center;
-    width: 150px;
-    height: 150px;
-    background-color: #121212;
-    color: #fff;
-    font-size: 60px;
-    font-family: MontserratMedium;
+    overflow: hidden;
+    background-color: #dddddd81;
+}
+
+img[id="avatar"]{
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    cursor: move;
+    -webkit-user-drag: none;
+    -moz-user-drag: none;
+    -ms-user-drag: none;
+}
+
+div[id="drag-selection"]{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    border: 2px solid #f97450;
+    width: 97%;
+    height: 97%;
+    background-color: #dddddd81;
     border-radius: 100%;
-    margin-right: 15px;
 }
 
-div[class="names"]{
+div[id="control"]{
+    width: 100%;
     display: flex;
-    flex-flow: column nowrap;
-    align-items: flex-start;
-    justify-content: space-around;
-}
-
-div[class="names"]>p:first-of-type{
-    font-family: MontserratMedium;
-    font-size: 15px;
-    margin: 2px;
-}
-
-div[class="names"]>p:nth-of-type(2){
-    font-family: MontserratRegular;
-    font-size: 12px;
-    margin: 0px;
-}
-
-div[class="names"]>p:last-of-type{
-    font-family: MontserratRegular;
-    font-size: 12px;
-    margin: 0px;
-}
-
-p[id="bio"]{
-    font-family: MontserratRegular;
-    font-size: 13px;
-    width: 90%;
-    margin-left: 30px;
-}
-
-a[id="edit-profile"]{
-    border: 1px solid #12121259;
-    border-radius: 5px;
-    margin-left: 30px;
-    text-decoration: none;
-    font-family: MontserratRegular;
-    width: 70%;
-    padding: 2px 0px;
-    display: flex;
-    justify-content: space-around;
     align-items: center;
-    font-size: 13px;
-    background-color: #12121238;
-    color: #121212;
+    justify-content: space-around;
+    margin-top: 10px;
+    border-top: 1px solid #96969625;
+    padding-top: 10px;
 }
 
-ul[id="media-details"]{
-    list-style-type: none;
+div[id="zoom"]{
     display: flex;
-    flex-flow: column nowrap;
-    padding: 0px;
-    margin-left: 30px;
-    margin-top: 20px;
-}
-
-ul[id="media-details"]>li{
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: flex-start;
     align-items: center;
-    margin: 5px 0px;
-}
-
-ul[id="media-details"]>li>img{
+    cursor: pointer;
     margin-right: 10px;
-    width: 25px;
 }
 
-ul[id="media-details"]>li>a{
-    font-family: MontserratRegular;
-    font-size: 13px;
+div[id="zoom"]>input{
+    cursor: pointer;
+}
+
+
+div[id="zoom"]>img{
+    width: 15px;
+    cursor: pointer;
+    background-color: #fff;
+    padding: 4px;
+    border-radius: 100px;
+    filter: drop-shadow(0px 0px 2px #9696968c); 
+    margin: 0px 5px;
+}
+
+div[id="control"]>img{
+    width: 15px;
+    padding: 4px;
+    border-radius: 100px;
+    cursor: pointer;
+    background-color: #fff;
+    filter: drop-shadow(0px 0px 2px #9696968c); 
+    margin: 0px 5px;
+}
+
+div[id="control"]>a{
+    background-color: #f97450;
+    padding: 5px 10px;
+    border-radius: 4px;
     text-decoration: none;
-    color: #121212;
-}
-
-
-section[id="database-section"]{
-    margin-left: 15px;
-    width: 45%;
-    overflow: hidden;
-}
-
-section[id="database-section"]>p{
     font-family: MontserratRegular;
-    margin-bottom: 5px;
-    margin-left: 5px;
-    font-size: 14px;
-}
-
-div[id="database-list"]{
-    border: 1px solid #12121217;
-    border-radius: 2px;
-}
-
-div[id="database-list"]>p{
-    font-family: MontserratRegular;
-    font-size: 13px;
-    background-color: #12121223;
-    padding: 3px 8px;
-    color: #121212;
-}
-
-div[id="database"]{
-    padding-left: 10px;
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: flex-start;
-    margin-bottom: 15px;
-    width: 95%;
-    margin-right: auto;
-    margin-left: auto;
-    padding: 20px;
-}
-
-div[id="database"]>img{
-    width: 30px;
-    margin-left: 20px;
-}
-
-div[id="database"]>div:first-of-type{
-    display: flex;
-    flex-flow: column nowrap;
-}
-
-p[id="database-name"]{
-    font-family: MontserratMedium;
-    margin: 5px 0px;
-    font-size: 15px;
-}
-
-p[id="database-type"]{
-    font-family: MontserratRegular;
-    margin: 0px;
-    font-size: 13px;
-}
-
-div[id="contributors"]{
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: space-around;
-    align-items: center;
-    width: 200px;
-    overflow: hidden;
-    border-radius: 5px;
-    margin: 5px 0px;
-}
-
-div[id="contributors"]>div{
-    display: flex;
-    flex-flow: row nowrap;
-    overflow-x: scroll;
-    width: 200px;
-    transform: translate(0px, 15.5px);
-}
-
-div[id="contributors"]>div>p{
-    font-family: MontserratRegular;
-    padding: 6px;
-    font-size: 11px;
-    background-color: #121212;
     color: #fff;
-    border-radius: 100%;
-    margin: 5px 3px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+    font-size: 13px;
+    margin-left: 10px;
 }
-
-
-p[id="contibuting"]{
-    margin-top: 50px;
-} */

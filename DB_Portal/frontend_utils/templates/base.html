@@ -27,7 +27,7 @@
                 <div class="center-top">
                     <div class="account">
                         <img src="{% static 'png/account.svg' %}" alt="">
-                        <p> {{ name }} <br><span id="role">{{ role }}</span></p>
+                        <p> {{ full_name }} <br><span id="role">{{ role }}</span></p>
                         <img id="account-dropdown" src="{% static 'png/dropdown.svg' %}" alt="">
                     </div>
                     <a href="/portal/dashboard/">Dashboard</a>
@@ -54,7 +54,7 @@
 
         <section id="directory">
             <p>
-                <a>Ayomide Victor</a>
+                <a>{{ full_name }}</a>
                 <img src="{% static 'png/right-pointer.svg' %}">
             </p>
             <p>

@@ -1,0 +1,130 @@
+{% extends 'child_templates/profile.html' %}
+{% load static %}
+
+{% block content %}
+<div id="my-profile">
+        <!-- <p id="content-title">My Profile</p> -->
+        <div id="picture-name">
+            <div>
+                <img src="{% static 'png/collins.jpg' %}" alt="">
+            </div>
+            <div>
+                <p>{{ full_name }}</p>
+                <p>{{ user.username }}</p>
+                <p>{{ pronoun }}</p>
+                <p>{{ profile.country }}</p>
+            </div>
+        </div>
+
+        <div class='details-display'>
+            <p>Personal Information</p>
+            <div id="personal-info">
+                <div>
+                    <div>
+                        <p>First name</p>
+                        <p style="text-transform: capitalize;">{{ user.first_name }}</p>
+                    </div>
+                    <div>
+                        <p>Email address</p>
+                        <p>{{ user.email }}</p>
+                    </div>
+                    <div>
+                        <p>Bio</p>
+                        {% if profile.bio == "" %}
+                        <p>------------</p>
+                        {% else %}
+                        <p>{{ profile.bio }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div>
+                    <div>
+                        <p>Last name</p>
+                        <p style="text-transform: capitalize;">{{ user.last_name }}</p>
+                    </div>
+
+                    <div>
+                        <p>Country</p>
+                        {% if profile.country == "" %}
+                        <p>------------</p>
+                        {% else %}
+                        <p><img id="current_flag" src="" alt="flag">{{ profile.country }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <p>Phone</p>
+                        {% if profile.phone == "" %}
+                        <p>------------</p>
+                        {% else %}
+                        <p>{{ profile.phone }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class='details-display'>
+            <p>Links</p>
+            <div id="links">
+                <div>
+                    <div>
+                        <p>Website</p>
+                        {% if profile.website == "" %}
+                        <p>------------</p>
+                        {% else %}
+                        <p>{{ profile.website }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <p>LinkedIn</p>
+                        {% if profile.linkedIn == "" %}
+                        <p>------------</p>
+                        {% else %}
+                        <p>{{ profile.linkedIn }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <p>Stackoverflow</p>
+                        {% if profile.stackoverflow == "" %}
+                        <p>------------</p>
+                        {% else %}
+                        <p>{{ profile.stackoverflow }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                        
+                <div>
+                    <div>
+                        <p>Github</p>
+                        {% if profile.github == "" %}
+                        <p>------------</p>
+                        {% else %}
+                        <p>{{ profile.github }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <p>Twitter</p>
+                        {% if profile.twitter == "" %}
+                        <p>------------</p>
+                        {% else %}
+                        <p>{{ profile.twitter }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class='details-display'>
+            <p>Skills</p>
+            <div id="skills">
+                {% for skill in skills %}
+                    <p> {{ skill }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div> 
+{% endblock content %}

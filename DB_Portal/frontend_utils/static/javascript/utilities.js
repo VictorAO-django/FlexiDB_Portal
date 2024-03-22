@@ -5,7 +5,7 @@ function searchFilter(value){
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////++++ Pop up animation Function +++++++////////////////////////////
-function onIntersection(entries){
+export function onIntersection(entries){
     var entriesLength = entries.length;
     for (var i=0; i<entriesLength; i++){
         var entry = entries[i]
@@ -14,8 +14,6 @@ function onIntersection(entries){
         }
     }
 }
-
-export var observer = new IntersectionObserver(onIntersection)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////++++ DropDown Function +++++++////////////////////////////
@@ -227,7 +225,6 @@ export function Consumer(url, payload, method, authenticate, preload, parent){
     this.method = method
     this.authenticte = authenticate || true
     this.preload = preload || false
-    this.delay = delay || false
     this.parent = document.getElementById(parent) || document.body
     
     this.csrf_token = document.querySelector('input[name=csrfmiddlewaretoken]').value
@@ -275,11 +272,28 @@ export function Consumer(url, payload, method, authenticate, preload, parent){
         }
     }
 
+    this.fetchResponse = async function(){
+        try {
+            const response = await fetch(this.url, this.options) //consume the endpoint
+            const data = await response //get the response data
+            if(!response.ok ){
+                const key = Object.keys(data.json())[0]
+                throw new Error(data.json()[key]) //throw an error if the status is not 200
+            }
+            return data //return the raw response, maily for cache operation
+            
+        } catch (error) {
+            var customAlert = new CustomAlert(error) //create the alert instance
+            customAlert.raise() //raise the alert
+            throw new Error(error)
+        }
+    }
+
     this.show_effect = function(){
         var preloader = document.createElement('div')
         preloader.id ='preloader'
         var img = document.createElement('img')
-        img.src = '/static/png/preloader.svg'
+        img.src = '/static/png/preloading.svg'
         
         preloader.appendChild(img)
         this.parent.appendChild(preloader)
@@ -458,6 +472,129 @@ export function get_queryparams(KEY){
         return null   
     }
 }
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////++++ Create elements on the fly +++++++////////////////////////////
+export function CREATE_ElEMENT(elem, attributes){
+    var Elem = document.createElement(elem)
+    if(attributes['id']){
+        Elem.id = attributes['id']
+    }
+    if(attributes['class']){
+        Elem.className = attributes['class']
+    }
+    if(attributes['innerText']){
+        Elem.innerText = attributes['innerText']
+    }
+    if(attributes['innerHtml']){
+        Elem.innerHTML = attributes['innerHtml']
+    }
+
+
+    if(elem == 'a'){
+        if(attributes['href']){
+            Elem.href = attributes['href']
+        }
+    }
+
+    if(elem == 'img'){
+        if(attributes['src']){
+            Elem.src = attributes['src']
+        }
+        if(attributes['alt']){
+            Elem.alt = attributes['alt']
+        }
+    }
+    
+    return Elem
+}
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////++++ Convert to TitleCase +++++++////////////////////////////
+export function titleCase(str){
+    let newStr = ""
+    let isUppercase = true
+
+    if (str.indexOf(' ') != -1){
+        var words = str.split(' ')
+        for(var i=0; i<words.length; i++){
+            var word = words[i]
+            var first_letter = word[0].toUpperCase()
+            var other_letters = word.substring(1, word.length).toLowerCase()
+
+            var new_word = first_letter + other_letters + " "
+            newStr += new_word
+        }
+
+    }else{
+        var first_letter = str[0].toUpperCase()
+        var other_letters = str.substring(1, str.length).toLowerCase()
+
+        var new_word = first_letter + other_letters + " "
+        newStr += new_word
+    }
+
+    return newStr
+}
+
+
+
+
+export function COUNTRIES_DETAIL(data){
+    this.data = data
+    this.country = ""
+
+    this.countries = function(){
+        alert(this.data[0]['name']['common'])
+        var response = {}
+        for(var i=0; i<this.data.length; i++){ 
+            var sub_response = {}   
+            sub_response['country'] = this.data[i]['name']['common']
+            sub_response['flag'] = this.data[i]['flags']['svg']
+
+            response = response.concat(sub_response)
+        }
+        return response
+    }
+
+    this.countries_dict = function(){
+        var response = {}
+        for(var i=0; i<this.data.length; i++){ 
+            response[this.data[i]['name']['common']] = this.data[i]['name']['common']
+        }
+        return response
+    }
+
+    this.country_code = function(){
+        var oCountry_code
+        for(var i=0; i<this.data.length; i++){ 
+            if(this.data[i]['name']['common'] == this.country){
+                oCountry_code = this.data[i]['idd']
+                let root = oCountry_code['root']
+                let suffixes = oCountry_code['suffixes'][0]
+                oCountry_code = root + suffixes
+                return oCountry_code
+            }
+        }
+    }
+
+    this.flag = function(){
+        for(var i=0; i<this.data.length; i++){ 
+            if(this.data[i]['name']['common'].includes(this.country)){
+                var flag = this.data[i]['flags']['svg']
+                return flag   
+            }
+        }
+    }
+}
+
+
 
 
 

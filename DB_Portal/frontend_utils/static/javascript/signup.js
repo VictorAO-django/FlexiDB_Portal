@@ -1,4 +1,4 @@
-import {observer, DropDown, CloseDropDown, Consumer, Assert, Redirect, CustomAlert, DeleteAuthToken} from './utilities.js'
+import {DropDown,onIntersection, CloseDropDown, Consumer, Assert, Redirect, CustomAlert, DeleteAuthToken} from './utilities.js'
 
 function showErr(msg,URL,lineNum,columnNo,error){
     var errWin = window.open("","osubWin","width=650px,height=600px")
@@ -88,7 +88,7 @@ function Verification(){
 
 
 document.addEventListener("DOMContentLoaded",function(){
-
+    var observer = new IntersectionObserver(onIntersection)
     var content_boxes = document.querySelectorAll('.content-box')
     for(var i=0; i<content_boxes.length; i++){
         var box = content_boxes[i]

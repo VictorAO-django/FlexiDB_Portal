@@ -1,4 +1,4 @@
-import {Consumer, SetAuthToken, DeleteAuthToken, CustomAlert, Redirect, delay, get_queryparams, observer, Assert} from './utilities.js'
+import {Consumer, SetAuthToken, DeleteAuthToken,onIntersection, CustomAlert, Redirect, delay, get_queryparams, Assert} from './utilities.js'
 
 
 // function showErr(msg,URL,lineNum,columnNo,error){
@@ -135,6 +135,7 @@ function forgotPasswordForm(){
 
 
 document.addEventListener("DOMContentLoaded",function(){
+    var observer = new IntersectionObserver(onIntersection)
     var content_boxes = document.querySelectorAll('.content-box')
     for(var i=0; i<content_boxes.length; i++){
         var box = content_boxes[i]

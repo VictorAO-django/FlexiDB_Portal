@@ -1,0 +1,128 @@
+{% extends 'child_templates/profile.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Edit Profile</title>
+{% endblock title%}
+
+{% block content %}
+<div id="my-profile">
+    <div id="detail_edit">
+        <section id="detail_edit_side_1">
+            <div id="the-avatar">
+                <div>
+                    <img src="{% static 'png/collins.jpg' %}" alt="">
+                </div>
+                <img id='edit-avatar' src="{% static 'png/photo.svg' %}" alt="edit-avatar">
+            </div>
+
+            <div id="edit-detail">
+                <p>Nationality</p>
+                <div>
+                    <label for="country">Country</label>
+                    <p>
+                        <img id="edit-current-flag" src="" alt="flag">
+                        <input id="country" type="text" readonly value="{{ profile.country }}" name="country">
+                        <img id="country-dropdown" class="dropdown" src="{% static 'png/down-pointer-black.svg' %}" alt="">
+                    </p>
+                </div>
+                <div>
+                    <label for="phone">Phone</label>                   
+                    <p>
+                        <span id="code">+234</span>
+                        <input id="phone" type="text" value="{{ profile.phone }}" name="phone">
+                    </p>
+                </div>
+            </div>
+
+            <div id="edit-detail">
+                <p>Links</p>
+                <div>
+                    <label for="website">Website</label>
+                    {% if profile.website == "" %}
+                    <input id="website" type="text" placeholder="------------" name="website">
+                    {% else %}
+                    <input id="website" type="text" value="{{ profile.website }}" name="website">
+                    {% endif %}
+                </div>
+                <div>
+                    <label for="github">Github</label>
+                    {% if profile.github == "" %}
+                    <input id="github" type="text" placeholder="------------" name="github">
+                    {% else %}
+                    <input id="github" type="text" value="{{ profile.github }}" name="github">
+                    {% endif %}
+                </div>
+                <div>
+                    <label for="linkedIn">LinkedIn</label>
+                    {% if profile.linkedIn == "" %}
+                    <input id="linkedIn" type="text" placeholder="------------" name="linkedIn">
+                    {% else %}
+                    <input id="linkedIn" type="text" value="{{ profile.linkedIn }}" name="linkedIn">
+                    {% endif %}
+                </div>
+                <div>
+                    <label for="twitter">Twitter</label>
+                    {% if profile.twitter == "" %}
+                    <input id="twitter" type="text" placeholder="------------" name="twitter">
+                    {% else %}
+                    <input id="twitter" type="text" value="{{ profile.twitter }}" name="twitter">
+                    {% endif %}
+                </div>
+                <div>
+                    <label for="stackoverflow">Stackoverflow</label>
+                    {% if profile.stackoverflow == "" %}
+                    <input id="stackoverflow" type="text" placeholder="------------" name="stackoverflow">
+                    {% else %}
+                    <input id="stackoverflow" type="text" value="{{ profile.stackoverflow }}" name="stackoverflow">
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+
+        <section id="detail_edit_side_2">
+            <div id="edit-detail">
+                <p>Personal Information</p>
+                <div>
+                    <label for="first_name">First name</label>
+                    <input style="text-transform: capitalize;" id="first_name" type="text" value="{{ user.first_name }}" name="first_name">
+                </div>
+                <div>
+                    <label for="last_name">Last name</label>
+                    <input style="text-transform: capitalize;" id="last_name" type="text" value="{{ user.last_name }}" name="last_name">
+                </div>
+                <div>
+                    <label for="email">Email</label>
+                    <input id="email" type="text" value="{{ user.email }}" name="last_name" readonly>
+                </div>
+                <div>
+                    <label for="gender">Gender</label>
+                    <input id="gender" type="text" value="{{ user.gender }}" name="gender">
+                </div>
+                <div>
+                    <label for="bio">Bio</label>
+                    <textarea name="bio" id="bio" cols="30" rows="10">{{ profile.bio }}</textarea>
+                </div>
+            </div>
+
+            <div id="edit-detail">
+                <p>Skills</p>
+                <input style="display: none;" id="skill-value" type="text" value="backend developer, fullstack developer, data analysis, database management, machine learning">
+                <div id="new-skill">
+                    <input type="text" name="new-skill-value" id="new-skill-value">
+                    <a>Add New Skill</a>
+                </div>
+                <div id="skills-list">
+                    {% for skill in skills %}
+                    <p id="skill"> {{ skill }} <img class="remove-skill" src="{% static '/png/cancel_white.svg' %}" alt="remove"></p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <section>
+                <a>Save</a> 
+            </section>
+        </section>
+
+    </div>
+{% endblock content %}
