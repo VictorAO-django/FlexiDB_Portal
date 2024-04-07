@@ -252,6 +252,8 @@ document.addEventListener("DOMContentLoaded",function(){
         var account = document.getElementById('account-dropdown')
         //filter key element
         var filter_key = document.getElementById('search-filter')
+        //country element 
+        var country_dropdown = document.getElementById('country-dropdown')
         //search-bar element
         var search_bar = document.getElementById('filter-value')
         try {
@@ -276,12 +278,13 @@ document.addEventListener("DOMContentLoaded",function(){
                 //if the event is not targetted to the dropdown
                 if(!dropdown.contains(event.target)){
                     //if the target element is not the filter=key and account 
-                    if((event.target !== filter_key) && (event.target !== account)){
+                    if((event.target !== filter_key) && (event.target !== account) && (event.target !== country_dropdown)){
                         //close the dropdown
                         CloseDropDown()
                     }
                 }
             }
+            
 
         } catch (error) {
             return true

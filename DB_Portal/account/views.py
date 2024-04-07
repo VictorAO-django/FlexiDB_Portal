@@ -39,16 +39,28 @@ def DashboardView(request):
         'role': 'developer' if user.is_developer else 'organization',
     }
     #set the search history cookie
-    response = HttpResponse()
-    response.set_cookie('searchhistory', user.recent_search, max_age=3600)
-    
-    return render(request, template, context=context)
+    response = render(request, template, context=context)
+    response.set_cookie('searchhistory', f'{user.recent_search}', max_age=3600)
+    return response
     
     
 @ensure_login('portal/notification/')
 def NotificationView(request):
     template = 'child_templates/notification_center.html'
-    return render(request, template)
+    user = request.user
+    try:
+        profile = Profile.objects.get(user=user)
+        context = {
+            'full_name': f'{user.first_name} {user.last_name}'.capitalize(),
+            'username': user.username,
+            'role': 'developer' if user.is_developer else 'organization',
+        }
+        response = render(request, template, context=context)
+        response.set_cookie('searchhistory', f'{user.recent_search}', max_age=3600)
+        return response
+        
+    except profile.DoesNotExist:
+        return redirect('login')
 
 
 @ensure_login('portal/profile/')
@@ -66,7 +78,9 @@ def ProfileView(request):
         'prop_avatar': f'{user.first_name[0]}{user.last_name[0]}'.upper(),
         'skills': profile.skills.split(',')
     }   
-    return render(request, template, context=context)
+    response = render(request, template, context=context)
+    response.set_cookie('searchhistory', f'{user.recent_search}', max_age=3600)
+    return response
 
 
 @ensure_login('portal/dashboard/')
@@ -104,7 +118,6 @@ def OtherProfileView(request, slug):
         #set the search history cookie
         response = render(request, template, context=context)
         response.set_cookie('searchhistory', f'{user.recent_search}', max_age=3600)
-        
         return response
     
     except Profile.DoesNotExist:
@@ -112,19 +125,24 @@ def OtherProfileView(request, slug):
     
     
 
-
+@ensure_login('portal/edit-profile/')
 def EditProfileView(request):
     template = 'child_templates/profile_children/edit_profile.html'
     user = request.user
-    profile = Profile.objects.get(user=user)
-    
-    context = {
-        'user' : user,
-        'profile': profile,
-        'pronoun': 'he/him' if user.gender == 'Male' else 'she/her',
-        'role': 'developer' if user.is_developer else 'organization',
-        'full_name': f'{user.first_name} {user.last_name}'.capitalize(),
-        'prop_avatar': f'{user.first_name[0]}{user.last_name[0]}'.upper(),
-        'skills': profile.skills.split(',')
-    }   
-    return render(request, template, context)
+    try:
+        profile = Profile.objects.get(user=user)
+        
+        context = {
+            'user' : user,
+            'profile': profile,
+            'pronoun': 'he/him' if user.gender == 'Male' else 'she/her',
+            'role': 'developer' if user.is_developer else 'organization',
+            'full_name': f'{user.first_name} {user.last_name}'.capitalize(),
+            'prop_avatar': f'{user.first_name[0]}{user.last_name[0]}'.upper(),
+            'skills': profile.skills.split(','),
+        }   
+        response = render(request, template, context=context)
+        response.set_cookie('searchhistory', f'{user.recent_search}', max_age=3600)
+        return response
+    except Profile.DoesNotExist:
+        return redirect('login')

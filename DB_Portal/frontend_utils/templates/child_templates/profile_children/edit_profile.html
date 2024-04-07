@@ -6,12 +6,17 @@
 {% endblock title%}
 
 {% block content %}
+<input type="text" id="user-avatar" value="{{ user.avatar }}" style="display: none;">
 <div id="my-profile">
     <div id="detail_edit">
         <section id="detail_edit_side_1">
             <div id="the-avatar">
                 <div>
+                    {% if user.avatar == "" %}
                     <img src="{% static 'png/collins.jpg' %}" alt="">
+                    {% else %}
+                    <img src="{{ user.avatar }}" alt="">
+                    {% endif %}
                 </div>
                 <img id='edit-avatar' src="{% static 'png/photo.svg' %}" alt="edit-avatar">
             </div>
@@ -42,7 +47,7 @@
                     {% if profile.website == "" %}
                     <input id="website" type="text" placeholder="------------" name="website">
                     {% else %}
-                    <input id="website" type="text" value="{{ profile.website }}" name="website">
+                    <input id="website" type="text" placeholder="------------" value="{{ profile.website }}" name="website">
                     {% endif %}
                 </div>
                 <div>
@@ -50,7 +55,7 @@
                     {% if profile.github == "" %}
                     <input id="github" type="text" placeholder="------------" name="github">
                     {% else %}
-                    <input id="github" type="text" value="{{ profile.github }}" name="github">
+                    <input id="github" type="text" placeholder="------------" value="{{ profile.github }}" name="github">
                     {% endif %}
                 </div>
                 <div>
@@ -58,7 +63,7 @@
                     {% if profile.linkedIn == "" %}
                     <input id="linkedIn" type="text" placeholder="------------" name="linkedIn">
                     {% else %}
-                    <input id="linkedIn" type="text" value="{{ profile.linkedIn }}" name="linkedIn">
+                    <input id="linkedIn" type="text" placeholder="------------" value="{{ profile.linkedIn }}" name="linkedIn">
                     {% endif %}
                 </div>
                 <div>
@@ -66,7 +71,7 @@
                     {% if profile.twitter == "" %}
                     <input id="twitter" type="text" placeholder="------------" name="twitter">
                     {% else %}
-                    <input id="twitter" type="text" value="{{ profile.twitter }}" name="twitter">
+                    <input id="twitter" type="text" placeholder="------------" value="{{ profile.twitter }}" name="twitter">
                     {% endif %}
                 </div>
                 <div>
@@ -74,7 +79,7 @@
                     {% if profile.stackoverflow == "" %}
                     <input id="stackoverflow" type="text" placeholder="------------" name="stackoverflow">
                     {% else %}
-                    <input id="stackoverflow" type="text" value="{{ profile.stackoverflow }}" name="stackoverflow">
+                    <input id="stackoverflow" type="text" placeholder="------------" value="{{ profile.stackoverflow }}" name="stackoverflow">
                     {% endif %}
                 </div>
             </div>
@@ -97,20 +102,23 @@
                 </div>
                 <div>
                     <label for="gender">Gender</label>
-                    <input id="gender" type="text" value="{{ user.gender }}" name="gender">
+                    <p>
+                        <input id="gender" type="text" value="{{ user.gender }}" name="gender">
+                        <img id="gender-dropdown" class="dropdown" src="{% static 'png/down-pointer-black.svg' %}" alt="">
+                    </p>
                 </div>
                 <div>
                     <label for="bio">Bio</label>
-                    <textarea name="bio" id="bio" cols="30" rows="10">{{ profile.bio }}</textarea>
+                    <textarea name="bio" id="bio" cols="30" rows="10" spellcheck="false">{{ profile.bio }}</textarea>
                 </div>
             </div>
 
             <div id="edit-detail">
                 <p>Skills</p>
-                <input style="display: none;" id="skill-value" type="text" value="backend developer, fullstack developer, data analysis, database management, machine learning">
+                <input style="display: none;" id="skill-value" type="text" value="{{ profile.skills }}">
                 <div id="new-skill">
                     <input type="text" name="new-skill-value" id="new-skill-value">
-                    <a>Add New Skill</a>
+                    <a id="add-skill-btn">Add New Skill</a>
                 </div>
                 <div id="skills-list">
                     {% for skill in skills %}
@@ -118,11 +126,10 @@
                     {% endfor %}
                 </div>
             </div>
-
-            <section>
-                <a>Save</a> 
-            </section>
         </section>
-
     </div>
+    <section id="complete">
+        <a id="save">Save</a> 
+        <a id="discard">Discard changes</a>
+    </section>
 {% endblock content %}

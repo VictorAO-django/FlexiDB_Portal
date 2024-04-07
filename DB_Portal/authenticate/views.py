@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import redirect, render
 from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
@@ -492,9 +493,11 @@ class AvatarView(APIView):
                 CloudinaryManager.delete_image(user.avatar)
             #save the new avatar
             serializer.save()
-            return Response({'detail': 'succesfully updated', 'avatar':avatar}, status=status.HTTP_200_OK)
+            return Response({'detail': 'succesfully updated', 'avatar':'yeah'}, status=status.HTTP_200_OK)
+            #return Response({'detail': 'succesfully updated', 'avatar':request.data['avatar']}, status=status.HTTP_200_OK)
+        return Response({'detail': 'failed', 'avatar':'nah'}, status=status.HTTP_200_OK)
         
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        #return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SearchUser(ListAPIView):

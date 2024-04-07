@@ -13,6 +13,7 @@
 
 {% block more_js%}
 <script defer type="module" role="application" src="{% static 'javascript/profile.js' %}"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/fabric@latest/dist/fabric.min.js"></script> -->
 {% endblock more_js %}
 
 {% block body %}
@@ -36,21 +37,42 @@
 
     <!-- <div id="avatar-edit-container">
         <div>
-            <p>Edit photo <img class="cancel" src="{% static 'png/cancel.svg' %}" alt=""></p>
+            <p>Edit photo <a id="upload-avatar">Select</a> <img class="cancel" src="{% static 'png/cancel.svg' %}" alt=""></p>
             <div id="avatar-edit">
+                <input type="file" id="new-avatar" style="display: none;">
                 <img id="avatar" src="{% static 'png/collins.jpeg' %}">
                 <div id="drag-selection"></div>
             </div>
             <div id="control">
                 <div id="zoom">
                     <img src="{% static 'png/zoom-out.svg' %}" alt="zoom out">
-                    <input type="range" min="100" max="180" value="0" id="zoomer">
+                    <input type="range" min="100" max="300" value="0" id="zoomer">
                     <img src="{% static 'png/zoom-in.svg' %}" alt="zoom in">
                 </div>
-                <img src="{% static 'png/rotate-left.svg' %}" alt="rotate-left">
-                <img src="{% static 'png/rotate-right.svg' %}" alt="rotate-right">
+                <img id="rotate-left" src="{% static 'png/rotate-left.svg' %}" alt="rotate-left">
+                <img id="rotate-right" src="{% static 'png/rotate-right.svg' %}" alt="rotate-right">
                 <a href="">Save</a>
             </div>
         </div>
     </div> -->
+
+    <!-- <div>
+        <p>Edit photo <a id="upload-avatar">Select</a> <img class="cancel" src="{% static 'png/cancel.svg' %}" alt=""></p>
+        <div id="avatar-edit">
+            <input type="file" id="new-avatar" style="display: none;">
+            <canvas id="avatar"></canvas>
+            <div id="drag-selection"></div>
+        </div>
+        <div id="control">
+            <div id="zoom">
+                <img src="{% static 'png/zoom-out.svg' %}" alt="zoom out">
+                <input type="range" min="100" max="300" value="0" id="zoomer">
+                <img src="{% static 'png/zoom-in.svg' %}" alt="zoom in">
+            </div>
+            <img id="rotate-left" src="{% static 'png/rotate-left.svg' %}" alt="rotate-left">
+            <img id="rotate-right" src="{% static 'png/rotate-right.svg' %}" alt="rotate-right">
+            <a href="">Save</a>
+        </div>
+    </div>
+</div> -->
 {% endblock body%}

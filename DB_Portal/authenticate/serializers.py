@@ -91,6 +91,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ["email", "first_name", "last_name", "username", "gender", "organization", "is_developer"]
         
     def save(self, *args, **kwargs):
+        self.validated_data.pop('email')
         self.validated_data.pop('username')
         
         return super(UserSerializer, self).save(*args, **kwargs)

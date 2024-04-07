@@ -73,8 +73,8 @@ export function DropDown(elem, fields, image, include_href){
             DropDown.appendChild(DropDownList)
             document.body.appendChild(DropDown)
             
-            DropDown.style.left = coordinate.left - (DropDown.clientWidth/2) + (this.elem.clientWidth/2) + "px"
-            DropDown.style.top =  coordinate.top + (this.elem.clientHeight) + "px"
+            DropDown.style.marginLeft = coordinate.left - (DropDown.clientWidth/2) + (this.elem.clientWidth/2) + window.scrollX + "px"
+            DropDown.style.top =  coordinate.top + (this.elem.clientHeight) +window.scrollY + "px"
         }
         return this.dropdown_elements
     }
@@ -167,9 +167,13 @@ export function Assert(subject, verb, object, message){
         }
     }
 
-    var customAlert = new CustomAlert(message)
-    customAlert.raise()
-    throw new Error()
+    if(message == ""){
+        return false
+    }else{
+        var customAlert = new CustomAlert(message)
+        customAlert.raise()
+        throw new Error()   
+    }
 }
 
 
@@ -215,21 +219,40 @@ export function delay(ms){
 }
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////++++ Preloading effect function +++++++////////////////////////////
+export function openPreloadEffect(){
+    var preloader = document.createElement('div')
+    preloader.id ='preloader'
+    var img = document.createElement('img')
+    img.src = '/static/png/preloading.svg'
+        
+    preloader.appendChild(img)
+    document.body.appendChild(preloader)
+}
+
+export function closePreloadEffect(){
+    if(document.getElementById('preloader')){
+        document.getElementById('preloader').remove()
+    }
+}
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////++++ Endpoint Consumer function +++++++////////////////////////////
-export function Consumer(url, payload, method, authenticate, preload, parent){
+export function Consumer(url, payload, method, authenticate, preload,type, parent){
     this.url = url || ''
     this.payload = payload || {}
     this.method = method
     this.authenticte = authenticate || true
     this.preload = preload || false
+    this.type = type || 'application/json'
     this.parent = document.getElementById(parent) || document.body
     
     this.csrf_token = document.querySelector('input[name=csrfmiddlewaretoken]').value
     this.headers = {
-        'Content-Type': 'application/json',
+        'Content-Type': this.type,
         'X-CSRFToken': this.csrf_token,
     }
 
@@ -290,19 +313,11 @@ export function Consumer(url, payload, method, authenticate, preload, parent){
     }
 
     this.show_effect = function(){
-        var preloader = document.createElement('div')
-        preloader.id ='preloader'
-        var img = document.createElement('img')
-        img.src = '/static/png/preloading.svg'
-        
-        preloader.appendChild(img)
-        this.parent.appendChild(preloader)
+        openPreloadEffect()
     }
 
     this.close_effect = function(){
-        if(document.getElementById('preloader')){
-            document.getElementById('preloader').remove()
-        }
+        closePreloadEffect()
     }
 }
 
@@ -414,6 +429,10 @@ export function Redirect(url){
     window.location.href = url
 }
 
+export function Reload(){
+    location.reload()
+}
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -424,12 +443,12 @@ export async function ToolTip(elem, text){
     var tip = document.createElement('p')
     tip.innerText = text
     tip.id = 'tool-tip'
-    tip.style.top = coordinate.top + elem.clientHeight + 'px'
+    tip.style.top = coordinate.top + elem.clientHeight + window.scrollY + 'px'
     
     await delay(300)
 
     document.body.appendChild(tip)
-    tip.style.left = coordinate.left - (tip.clientWidth/2) + (elem.clientWidth/2) + 'px'
+    tip.style.left = coordinate.left - (tip.clientWidth/2) + (elem.clientWidth/2) + window.scrollX + 'px'
 }
 
 export async function hideToolTip(){
@@ -568,7 +587,13 @@ export function COUNTRIES_DETAIL(data){
         for(var i=0; i<this.data.length; i++){ 
             response[this.data[i]['name']['common']] = this.data[i]['name']['common']
         }
-        return response
+        const sortedKeys = Object.keys(response).sort()
+
+        var new_response = {}
+        for(var key of sortedKeys){
+            new_response[key] = response[key]
+        }
+        return new_response
     }
 
     this.country_code = function(){

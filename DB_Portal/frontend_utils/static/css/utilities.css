@@ -44,7 +44,8 @@ ul[id='dropdown-list']{
     padding: 5px;
     border-radius: 7px;
     background-color: #fff;
-    
+    max-height: 250px;
+    overflow-y: scroll;
 }
 
 ul[id='dropdown-list']>li{
@@ -98,7 +99,7 @@ body li[class='focus']>a{
 
 /**********ALERT***********/
 div[id='alert']{
-    position: absolute;
+    position: fixed;
     top: 0px;
     width: 100%;
     display: flex;

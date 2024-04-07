@@ -6,7 +6,11 @@
         <!-- <p id="content-title">My Profile</p> -->
         <div id="picture-name">
             <div>
+                {% if user.avatar == "" %}
                 <img src="{% static 'png/collins.jpg' %}" alt="">
+                {% else %}
+                <img src="{{ user.avatar }}" alt="">
+                {% endif %}
             </div>
             <div>
                 <p>{{ full_name }}</p>
