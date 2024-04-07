@@ -1,0 +1,104 @@
+{% extends 'child_templates/profile.html' %}
+{% load static %}
+
+{% block title %}
+<title>Security</title>
+{% endblock title %}
+
+{% block more_sub_css %}
+<link rel="stylesheet" href="{% static 'css/security.css' %}">
+{% endblock more_sub_css %}
+
+{% block more_sub_js %}
+<script defer type="module" role="application" src="{% static 'javascript/security.js' %}"></script>
+{% endblock more_sub_js %}
+
+{% block page %}
+<input type="text" id="page" value="security" style="display: none;">
+{% endblock page %}
+
+{% block content %}
+<div id="security">
+    <section id="change-pwd">
+        <div>
+            <img src="{% static 'png/security.svg' %}" alt="security">
+        </div>
+        <p id="change">Change Password</p>
+        <p id="statement">
+            To change your password, please fill in the field below<br>
+            Your password must contain at least 8-characters, it must also include at<br> 
+            least one upper case letter, one lower case letter, one number, and one<br> 
+            special character.
+        </p>
+
+        <form id="change-pwd-form">
+            <label for="current-pwd">Current Password</label>
+            <p>
+                <input name="current-pwd" type="password" placeholder="Current Password"> 
+                <img src="{% static 'png/locked.svg' %}" alt="locked">
+                <img class="toggle" src="{% static 'png/password-close.svg' %}" alt="toggle">
+            </p>
+            <label for="new-pwd">New Password</label>
+            <p>
+                <input name="new-pwd" type="password" placeholder="New Password"> 
+                <img src="{% static 'png/locked.svg' %}" alt="locked">
+                <img class="toggle" src="{% static 'png/password-close.svg' %}" alt="toggle">
+            </p>
+            <label for="confirm-pwd">Confirm Password</label>
+            <p>
+                <input name="confirm-pwd" type="password" placeholder="Confirm Password"> 
+                <img src="{% static 'png/locked.svg' %}" alt="locked">
+                <img class="toggle" src="{% static 'png/password-close.svg' %}" alt="toggle">
+            </p>
+
+            <a id="submit">Change Password</a>
+        </form>
+    </section>
+
+    <section id="devices">
+        <div>
+            <img src="{% static 'png/desktop.svg' %}" alt="desktop">
+        </div>
+        <p id="dev">Your Devices</p>
+        <p id="dev-statement">
+            Your devices linked to this account in ED analytics
+        </p>
+        <a id="logout-from-all">Log Out From All Devices</a>
+
+        <div id="devices">
+            <div id="device">
+                <img src="{% static 'png/desktop.svg' %}">
+                <div id="device-detail">
+                    <input type="text" value="Deji 24" readonly>
+                    <p>London Uk - May 12, 2023 at 2:30</p>
+                </div>
+                <img src="{% static 'png/signout.svg' %}" alt="">
+            </div>
+            <div id="device">
+                <img src="{% static 'png/desktop.svg' %}">
+                <div id="device-detail">
+                    <input type="text" value="Deji 24" readonly>
+                    <p>London Uk - May 12, 2023 at 2:30</p>
+                </div>
+                <img src="{% static 'png/signout.svg' %}" alt="">
+            </div>
+            <div id="device">
+                <img src="{% static 'png/desktop.svg' %}">
+                <div id="device-detail">
+                    <input type="text" value="Deji 24" readonly>
+                    <p>London Uk - May 12, 2023 at 2:30</p>
+                </div>
+                <img class="sign-device-out" src="{% static 'png/signout.svg' %}" alt="">
+            </div>
+            <div id="device">
+                <img src="{% static 'png/desktop.svg' %}">
+                <div id="device-detail">
+                    <input type="text" value="Deji 24" readonly>
+                    <p>London Uk - May 12, 2023 at 2:30</p>
+                </div>
+                <img src="{% static 'png/signout.svg' %}" alt="">
+            </div>
+        </div>
+    </section>
+</div> 
+{% endblock content %}

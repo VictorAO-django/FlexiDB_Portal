@@ -1,4 +1,4 @@
-import {DropDown,onIntersection, CloseDropDown, Consumer, Assert, Redirect, CustomAlert, DeleteAuthToken} from './utilities.js'
+import {DropDown,onIntersection, hasSpecialCharacter, isStrongPassword, passwordToggle, CloseDropDown, Consumer, Assert, Redirect, CustomAlert, DeleteAuthToken} from './utilities.js'
 
 function showErr(msg,URL,lineNum,columnNo,error){
     var errWin = window.open("","osubWin","width=650px,height=600px")
@@ -17,11 +17,6 @@ function showErr(msg,URL,lineNum,columnNo,error){
     return true;
 }
 window.onerror = showErr
-
-function hasSpecialCharacter(password){
-    const specialCharRegex = /[!@#$%^&*()_+\-\[\]{};':"\\|,.<>\/?]/
-    return specialCharRegex.test(password)
-}
 
 function Validator(){
     var signup_form = document.getElementById('signup-form')
@@ -52,6 +47,7 @@ function Validator(){
     Assert(last_name, 'not_in', password, "Your password should not consist of your last name")
     Assert(password.length, 'greater_than', 0, 'Please Provide a password')
     Assert(password, 'is', password2, "Your password are not matching")
+    Assert(isStrongPassword(newPwd.value), '', '', 'Password must cotain at least one number and one capital letter')
     Assert(hasSpecialCharacter(password), '', '', "Your password must contain a special character like [!@#$%^&*()_+\-[]{};':\"\\|,.<>\/?]")
     Assert(terms, '', '', 'Please agree with the terms and condition')
 }
@@ -130,28 +126,16 @@ document.addEventListener("DOMContentLoaded",function(){
         }
     })
 
-    var password_toggle = this.getElementById('password-toggle')
+    var password_toggle = document.getElementById('password-toggle')
     password_toggle.addEventListener('click', function(){
         var thisInput = this.parentElement.querySelector('input')
-        if(thisInput.type == 'text'){
-            thisInput.type = 'password'
-            this.src = '/static/png/password-close.svg'
-        }else{
-            thisInput.type = 'text'
-            this.src = '/static/png/password-view.svg'
-        }
+        passwordToggle(thisInput, this)
     })
 
-    var password2_toggle = this.getElementById('password2-toggle')
+    var password2_toggle = document.getElementById('password2-toggle')
     password2_toggle.addEventListener('click', function(){
         var thisInput = this.parentElement.querySelector('input')
-        if(thisInput.type == 'text'){
-            thisInput.type = 'password'
-            this.src = '/static/png/password-close.svg'
-        }else{
-            thisInput.type = 'text'
-            this.src = '/static/png/password-view.svg'
-        }
+        passwordToggle(thisInput, this)
     })
 
     var signIn = document.getElementById('sign-in');

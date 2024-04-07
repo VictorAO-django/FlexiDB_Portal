@@ -81,6 +81,31 @@ export function DropDown(elem, fields, image, include_href){
 }
 
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////++++ Password Function +++++++////////////////////////////
+export function hasSpecialCharacter(password){
+    const specialCharRegex = /[!@#$%^&*()_+\-\[\]{};':"\\|,.<>\/?]/
+    return specialCharRegex.test(password)
+}
+
+export function isStrongPassword(password){
+    const pattern = /(?=.*\d)(?=.*[A-Z])\w{8,}/;
+    return pattern.test(password)
+}
+
+export function passwordToggle(inputElem, toggler){
+    if(inputElem.type == 'text'){
+        inputElem.type = 'password'
+        toggler.src = '/static/png/password-close.svg'
+    }else{
+        inputElem.type = 'text'
+        toggler.src = '/static/png/password-view.svg'
+    }
+}
+
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////++++ CustomAlert Function +++++++////////////////////////////
 export function CustomAlert(message, color){

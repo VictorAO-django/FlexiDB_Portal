@@ -491,6 +491,14 @@ function loadEventHandler(){
     })
 }
 
+function pageIndicator(){
+    var pageid = document.getElementById('page')
+    var focus = document.getElementById(pageid.value)
+    focus.style.backgroundColor = '#2853A8'
+    focus.style.color = '#fff'
+    focus.style.opacity ='1'
+}
+
 
 
 document.addEventListener("DOMContentLoaded",async function(){
@@ -500,6 +508,8 @@ document.addEventListener("DOMContentLoaded",async function(){
         var box = content_boxes[i]
         observer.observe(box)
     }
+
+    pageIndicator()
 
     await LoadCountries()
 

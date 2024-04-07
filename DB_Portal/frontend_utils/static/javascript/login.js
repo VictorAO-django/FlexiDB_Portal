@@ -1,4 +1,4 @@
-import {Consumer, SetAuthToken, DeleteAuthToken,onIntersection, CustomAlert, Redirect, delay, get_queryparams, Assert} from './utilities.js'
+import {Consumer, passwordToggle, SetAuthToken, DeleteAuthToken, onIntersection, CustomAlert, Redirect, delay, get_queryparams, Assert} from './utilities.js'
 
 
 // function showErr(msg,URL,lineNum,columnNo,error){
@@ -145,13 +145,7 @@ document.addEventListener("DOMContentLoaded",function(){
     var password_toggle = this.getElementById('password-toggle')
     password_toggle.addEventListener('click', function(){
         var thisInput = this.parentElement.elements['password']
-        if(thisInput.type == 'text'){
-            thisInput.type = 'password'
-            this.src = '/static/png/password-close.svg'
-        }else{
-            thisInput.type = 'text'
-            this.src = '/static/png/password-view.svg'
-        }
+        passwordToggle(thisInput, this)
     })
 
     var login = document.getElementById('submit');

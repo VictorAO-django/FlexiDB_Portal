@@ -25,7 +25,7 @@ from authentication import BearerTokenAuthentication
 from connections import connect_db
 from exceptions import *
 from helper import generate
-from decorator import ensure_db_permission
+from decorators import ensure_db_permission
 
 
 

@@ -77,6 +77,23 @@ class Profile(models.Model):
         return self.user.email
     
 
+# class Devices(models.Model):
+#     DEVICES = (
+#         ('android','android'),
+#         ('iphone', 'iphone'),
+#         ('desktop', 'desktop')
+#     )
+#     name = models.CharField(choices=DEVICES, max_length=10)
+#     date_time = models.DateTimeField(auto_now_add=True)
+    
+#     def resolved(self):
+#         date = self.date_time.strftime()
+    
+#     def __str__(self):
+#         return self.name
+    
+
+
 class EmailVerificationToken(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, to_field='id')
     token = models.CharField(default=get_random_string(length=40), max_length=100,unique=True)

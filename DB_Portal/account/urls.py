@@ -27,5 +27,6 @@ urlpatterns = [
     path('profile/', ProfileView, name='profile'),
     path('profile/<slug:slug>/', OtherProfileView, name='other-profile'),
     path("edit-profile/", EditProfileView, name='edit-profile'),
+    path("security/", SecurityView, name='security'),
     path('notification/', NotificationView, name='notification'),
 ]

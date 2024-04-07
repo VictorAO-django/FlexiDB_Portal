@@ -7,12 +7,14 @@
 
 {% block more_css %}
 <link rel="stylesheet" href="{% static 'css/profile.css' %}">
-<link rel="stylesheet" href="{% static 'css/edit_profile.css' %}">
-<link rel="stylesheet" href="{% static 'css/utilities.css' %}">
+{% block more_sub_css %}
+{% endblock more_sub_css %}
 {% endblock more_css %}
 
 {% block more_js%}
 <script defer type="module" role="application" src="{% static 'javascript/profile.js' %}"></script>
+{% block more_sub_js %}
+{% endblock more_sub_js %}
 <!-- <script src="https://cdn.jsdelivr.net/npm/fabric@latest/dist/fabric.min.js"></script> -->
 {% endblock more_js %}
 
@@ -30,6 +32,9 @@
         </section>
 
         <section id="content">
+            {% block page %}
+            {% endblock page %}
+
             {% block content %}
             {% endblock content %}
         </section>

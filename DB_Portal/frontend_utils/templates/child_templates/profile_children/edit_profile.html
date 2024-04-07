@@ -2,8 +2,16 @@
 {% load static %}
 
 {% block title %}
-    <title>Edit Profile</title>
-{% endblock title%}
+<title>Edit Profile</title>
+{% endblock title %}
+
+{% block more_sub_css %}
+<link rel="stylesheet" href="{% static 'css/edit_profile.css' %}">
+{% endblock more_sub_css %}
+
+{% block page %}
+<input type="text" id="page" value="edit-profile"  style="display: none;">
+{% endblock page %}
 
 {% block content %}
 <input type="text" id="user-avatar" value="{{ user.avatar }}" style="display: none;">

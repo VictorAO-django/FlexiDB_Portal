@@ -1,6 +1,14 @@
 {% extends 'child_templates/profile.html' %}
 {% load static %}
 
+{% block title %}
+<title>My Profile</title>
+{% endblock title %}
+
+{% block page %}
+<input type="text" id="page" value="my-profile" style="display: none;">
+{% endblock page %}
+
 {% block content %}
 <div id="my-profile">
         <!-- <p id="content-title">My Profile</p> -->
@@ -130,5 +138,6 @@
                 {% endfor %}
             </div>
         </div>
-    </div> 
+</div> 
+
 {% endblock content %}
