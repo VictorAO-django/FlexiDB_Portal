@@ -15,6 +15,47 @@ export function onIntersection(entries){
     }
 }
 
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////++++ Create elements on the fly +++++++////////////////////////////
+export function CREATE_ElEMENT(elem, attributes){
+    var Elem = document.createElement(elem)
+    if(attributes['id']){
+        Elem.id = attributes['id']
+    }
+    if(attributes['class']){
+        Elem.className = attributes['class']
+    }
+    if(attributes['innerText']){
+        Elem.innerText = attributes['innerText']
+    }
+    if(attributes['innerHtml']){
+        Elem.innerHTML = attributes['innerHtml']
+    }
+
+
+    if(elem == 'a'){
+        if(attributes['href']){
+            Elem.href = attributes['href']
+        }
+    }
+
+    if(elem == 'img'){
+        if(attributes['src']){
+            Elem.src = attributes['src']
+        }
+        if(attributes['alt']){
+            Elem.alt = attributes['alt']
+        }
+    }
+    
+    return Elem
+}
+
+
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////++++ DropDown Function +++++++////////////////////////////
 export function CloseDropDown(){
@@ -107,34 +148,6 @@ export function passwordToggle(inputElem, toggler){
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////++++ CustomAlert Function +++++++////////////////////////////
-export function CustomAlert(message, color){
-    this.message = message || ''
-    this.color = color || '#f97450'
-
-    this.raise = function(){
-        var box = document.createElement('div')
-        box.id = 'alert'
-        box.style.backgroundColor = this.color
-
-        var message = document.createElement('p')
-        message.id = 'alertMessage'
-        message.innerText = this.message
-
-        box.appendChild(message)
-        document.body.appendChild(box)
-
-        setTimeout(this.close, 5000)
-    }
-
-    this.close = function(){
-        document.body.removeChild(document.getElementById('alert'))
-    }
-}
-
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////++++ Assertion Function +++++++////////////////////////////
 export function Assert(subject, verb, object, message){
 
@@ -200,6 +213,111 @@ export function Assert(subject, verb, object, message){
         throw new Error()   
     }
 }
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////++++ CustomAlert Function +++++++////////////////////////////
+export function CustomAlert(message, color){
+    this.message = message || ''
+    this.color = color || '#f97450'
+
+    this.raise = function(){
+        var box = document.createElement('div')
+        box.id = 'alert'
+        box.style.backgroundColor = this.color
+
+        var message = document.createElement('p')
+        message.id = 'alertMessage'
+        message.innerText = this.message
+
+        box.appendChild(message)
+        document.body.appendChild(box)
+
+        setTimeout(this.close, 5000)
+    }
+
+    this.close = function(){
+        document.body.removeChild(document.getElementById('alert'))
+    }
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////++++ Custom Dialog Function +++++++////////////////////////////
+export function CustomDialog(topic, subtopic, yes_key, no_key){
+    const ICON = {
+        'confirm': '/static/png/dialog.svg',
+        'success': '/static/png/success.svg',
+        'error': '/static/png/error.svg'
+    }
+
+    this.mode;
+    this.topic = topic || ''
+    this.subtopic = subtopic || ''
+    this.yes_key = yes_key || ''
+    this.no_key = no_key || ''
+    
+    this.prompt_elem;
+
+    this.create_prompt = function(){
+        var parentContainer = CREATE_ElEMENT('div', {'id': 'prompt'})
+        var innerContainer = CREATE_ElEMENT('div', {})
+        var messageContainer = CREATE_ElEMENT('div', {'id': 'prompt-message'})
+        var icon = CREATE_ElEMENT('img', {'src': ICON[this.mode]})
+        var topic = CREATE_ElEMENT('p', {'innerText': this.topic})
+        var subTopic = CREATE_ElEMENT('p', {'innerText': this.subtopic})
+        var promptButton = CREATE_ElEMENT('div', {'id': 'prompt-button'})
+
+        parentContainer.appendChild(innerContainer)
+        innerContainer.appendChild(messageContainer)
+        messageContainer.appendChild(icon)
+        messageContainer.appendChild(topic)
+        messageContainer.appendChild(subTopic)
+        innerContainer.appendChild(promptButton)
+
+        document.body.appendChild(parentContainer)
+        return promptButton
+    }
+
+    this.confirm = function(){
+        this.mode = 'confirm'
+        var promptButton = this.create_prompt()
+        var yesButton = CREATE_ElEMENT('a', {'innerText': this.yes_key})
+        var noButton = CREATE_ElEMENT('a', {'innerText': this.no_key})
+        promptButton.appendChild(yesButton)
+        promptButton.appendChild(noButton)
+
+        return [yesButton, noButton]
+    }
+
+    this.success = function(){
+        this.mode = 'success'
+        var promptButton = this.create_prompt()
+        var yesButton = CREATE_ElEMENT('a', {'innerText': this.yes_key})
+        promptButton.appendChild(yesButton)
+
+        return yesButton
+    }
+
+    this.error = function(){
+        this.mode = 'error'
+        var promptButton = this.create_prompt()
+        var yesButton = CREATE_ElEMENT('a', {'innerText': this.yes_key})
+        var noButton = CREATE_ElEMENT('a', {'innerText': this.no_key})
+        promptButton.appendChild(yesButton)
+        promptButton.appendChild(noButton)
+
+        return [yesButton, noButton]
+    }
+}
+
+export function CloseDialog(){
+    if(document.getElementById('prompt')){
+        document.body.removeChild(document.getElementById('prompt'))
+    }
+}
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -516,46 +634,6 @@ export function get_queryparams(KEY){
         return null   
     }
 }
-
-
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////++++ Create elements on the fly +++++++////////////////////////////
-export function CREATE_ElEMENT(elem, attributes){
-    var Elem = document.createElement(elem)
-    if(attributes['id']){
-        Elem.id = attributes['id']
-    }
-    if(attributes['class']){
-        Elem.className = attributes['class']
-    }
-    if(attributes['innerText']){
-        Elem.innerText = attributes['innerText']
-    }
-    if(attributes['innerHtml']){
-        Elem.innerHTML = attributes['innerHtml']
-    }
-
-
-    if(elem == 'a'){
-        if(attributes['href']){
-            Elem.href = attributes['href']
-        }
-    }
-
-    if(elem == 'img'){
-        if(attributes['src']){
-            Elem.src = attributes['src']
-        }
-        if(attributes['alt']){
-            Elem.alt = attributes['alt']
-        }
-    }
-    
-    return Elem
-}
-
 
 
 

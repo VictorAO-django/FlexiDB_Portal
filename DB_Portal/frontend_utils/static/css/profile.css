@@ -115,6 +115,21 @@ div[id="picture-name"]>div:first-of-type{
     border-radius: 100%;
     border: 3px solid #1d3b77;
     overflow: hidden;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+div[id="picture-name"]>div:first-of-type>p{
+    font-family: MontserratMedium;
+    font-size:70px;
+    min-width: 100%;
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #2853A8;
+    color: #fff;
 }
 
 div[id="picture-name"]>div:first-of-type>img:first-of-type{

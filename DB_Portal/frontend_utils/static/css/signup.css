@@ -3,6 +3,18 @@ body{
     border: 0px;
 }
 
+::-webkit-scrollbar{
+    width: 12px;
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb{
+    background-color: #ccccccab;
+    border-radius: 6px;
+    box-shadow: inset 0 0 6px #0000004f;
+}
+
+
 main{
     background-color: #FAFFFB;
     height: 100vh;
@@ -69,6 +81,7 @@ form>div>div>label, form>div>label{
     margin: 10px 0px;
     font-family: MontserratMedium;
     font-size: 13px;
+    opacity: 70%;
 }
 
 form>div>div>input, form>div>input{
@@ -76,14 +89,14 @@ form>div>div>input, form>div>input{
     height: 10px;
     font-family: MontserratRegular;
     font-size: 12px;
-    border: 1px solid #1D3B77;
+    border: 1px solid #1d3b7759;
     border-radius: 3px;
     padding: 5px;
     width: 220px;
 }
 
 input:focus{
-    outline: none;
+    outline: #2853A8;
 }
 
 img[class='dropdown']{

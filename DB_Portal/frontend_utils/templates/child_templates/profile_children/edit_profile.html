@@ -21,7 +21,7 @@
             <div id="the-avatar">
                 <div>
                     {% if user.avatar == "" %}
-                    <img src="{% static 'png/collins.jpg' %}" alt="">
+                    <p>{{ prop_avatar }}</p>
                     {% else %}
                     <img src="{{ user.avatar }}" alt="">
                     {% endif %}
@@ -129,9 +129,11 @@
                     <a id="add-skill-btn">Add New Skill</a>
                 </div>
                 <div id="skills-list">
-                    {% for skill in skills %}
-                    <p id="skill"> {{ skill }} <img class="remove-skill" src="{% static '/png/cancel_white.svg' %}" alt="remove"></p>
-                    {% endfor %}
+                    {% if skills|length != 1 %}
+                        {% for skill in skills %}
+                        <p id="skill"> {{ skill }} <img class="remove-skill" src="{% static '/png/cancel_white.svg' %}" alt="remove"></p>
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </div>
         </section>

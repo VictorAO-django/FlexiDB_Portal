@@ -1,23 +1,5 @@
-import {Consumer, CREATE_ElEMENT, onIntersection, COUNTRIES_DETAIL, DropDown, CloseDropDown, GetAuthToken, openPreloadEffect, closePreloadEffect, titleCase, CustomAlert, delay, Assert, Redirect, Reload, ToolTip, hideToolTip} from './utilities.js'
+import {Consumer, CustomDialog, CloseDialog, CREATE_ElEMENT, onIntersection, COUNTRIES_DETAIL, DropDown, CloseDropDown, GetAuthToken, openPreloadEffect, closePreloadEffect, titleCase, CustomAlert, delay, Assert, Redirect, Reload, ToolTip, hideToolTip} from './utilities.js'
 // import { fabric } from './fabrics.js'
-
-function showErr(msg,URL,lineNum,columnNo,error){
-    var errWin = window.open("","osubWin","width=650px,height=600px")
-    var winText = "<html><title>Error Window</title>"
-    winText += "<body> <p>MSG: " + msg + ".</p>"
-    winText += "<p>Document URL: " + URL + ".</p>"
-    winText += "<p>Document COLUMN: " + columnNo + ".</p>"
-    winText += "<p>Document ERROR: " + console.error(); + ".</p>"
-    winText += "<p>Line Number: " + lineNum + ".</p>"
-    winText += "</body></html>"
-                
-    errWin.document.write(winText);
-    var oWidth = ((screen.availWidth - 650)/2);
-    var oHeight = ((screen.availHeight - 600)/2);
-    errWin.moveTo(oWidth,oHeight);
-    return true;
-}
-window.onerror = showErr
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -326,6 +308,24 @@ function loadUserData(){
         this.data = response
     }
 
+    this.validate = function(){
+        if(website.value.trim() !== ''){
+            Assert('https://', 'in', website.value.trim(), "Provide a valid website")
+        }
+        if(github.value.trim() !== ''){
+            Assert('https://github.com/', 'in', github.value.trim(), "Provide a valid github account")
+        }
+        if(linkedIn.value.trim() != ''){
+            Assert('https://www.linkedin.com/in/', 'in', github.value.trim(), "Provide a valid linkedIn account")
+        }
+        if(twitter.value.trim() != ''){
+            Assert('https://twitter.com/', 'in', github.value.trim(), "Provide a valid twitter account")
+        }
+        if(stackoverflow.value.trim() != ''){
+            Assert('https://stackoverflow.com/users/', 'in', stackoverflow.value.trim(), "Provide a valid twitter account")
+        }
+    }
+
     this.changes_made = function(){
         let status = false
         if(Assert(country.value.trim(), 'is_not', this.data['country'].trim(), '')){
@@ -379,10 +379,32 @@ function loadUserData(){
         return status
     }
 
-    this.update = async function(){
+    this.discard = function(){
+        country.value = this.data['country']
+        phone.value = this.data['phone']
+        website.value = this.data['website']
+        github.value = this.data['github']
+        linkedIn.value = this.data['linkedIn']
+        twitter.value = this.data['twitter']
+        stackoverflow.value = this.data['stackoverflow']
+        first_name.value = this.data['first_name']
+        last_name.value = this.data['last_name']
+        gender.value = this.data['gender']
+        bio.value = this.data['bio']
+    }
+}
+var InitateUserData = new loadUserData()
+
+function Update(){
+    var dialog = new CustomDialog('Confirm','Are you sure you want to update', 'Update', 'Cancel').confirm()
+    var yesBtn = dialog[0]
+    var noBtn = dialog[1]
+    
+    yesBtn.addEventListener('click', async function(){
+        CloseDialog()
         var payload = {
-            'email': this.data['email'],
-            'username': this.data['username'],
+            'email': InitateUserData.data['email'],
+            'username': InitateUserData.data['username'],
             'country': country.value.trim(),
             'phone': phone.value.trim(),
             'website': website.value.trim(),
@@ -398,27 +420,19 @@ function loadUserData(){
         }
         var endpoint = new Consumer('http://localhost:8000/portal/auth/details/', payload, 'PATCH', true, true)
         var response = await endpoint.fetch_response()
-
-        this.data = response
-        alert(JSON.stringify(response))
-    }
-
-    this.discard = function(){
-        country.value = this.data['country']
-        phone.value = this.data['phone']
-        website.value = this.data['website']
-        github.value = this.data['github']
-        linkedIn.value = this.data['linkedIn']
-        twitter.value = this.data['twitter']
-        stackoverflow.value = this.data['stackoverflow']
-        first_name.value = this.data['first_name']
-        last_name.value = this.data['last_name']
-        gender.value = this.data['gender']
-        bio.value = this.data['bio']
-    }
+    
+        InitateUserData.data = response
+        
+        var success = new CustomAlert('Update successful', '#1d3b77')
+        success.raise()
+        //alert(JSON.stringify(response))
+    })
+    noBtn.addEventListener('click', function(){
+        CloseDialog()
+     })
 }
 
-var InitateUserData = new loadUserData()
+
 let has_listener = false
 function permitSaveOrDiscard(){
     var save = document.getElementById('save')
@@ -428,7 +442,8 @@ function permitSaveOrDiscard(){
         discard.style.opacity = 1
         if (has_listener == false){
             save.addEventListener('click', function(){
-                InitateUserData.update()
+                InitateUserData.validate()
+                Update()
             })
     
             discard.addEventListener('click', function(){
@@ -442,7 +457,8 @@ function permitSaveOrDiscard(){
         discard.style.opacity = 0.7
         if (has_listener == true){
             save.removeEventListener('click',function(){
-                InitateUserData.update()
+                InitateUserData.validate()
+                Update()
             })
     
             discard.removeEventListener('click', function(){

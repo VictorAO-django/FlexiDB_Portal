@@ -30,7 +30,7 @@ function showErr(msg,URL,lineNum,columnNo,error){
     errWin.moveTo(oWidth,oHeight);
     return true;
 }
-window.onerror = showErr
+//window.onerror = showErr
 
 
 function SearchBox(elem, data){

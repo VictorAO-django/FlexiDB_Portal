@@ -68,7 +68,21 @@
         </section>
 
         {% block body %}
-        
+        <main>
+            <section id="side">
+                <div>
+                    <p>Databases</p>
+                    <p><img src="{% static '' %}" alt="">New</p>
+                </div>
+                <input type="text" id="search-databases">
+                <div id="db-instance-list">
+                    <div>
+                        <img src="" alt="">
+                        <a>Babyducts Inventory</a>
+                    </div>
+                </div>
+            </section>
+        </main>
         {% endblock body %}
 
     </body>

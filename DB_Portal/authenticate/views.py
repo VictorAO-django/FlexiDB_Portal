@@ -17,6 +17,8 @@ from rest_framework.authtoken.models import Token
 from rest_framework.exceptions import AuthenticationFailed
 
 from .serializers import *
+from .signal import custom_post_save
+from .models import *
 from helper import *
 from authenticate.models import *
 
@@ -45,15 +47,22 @@ class RegistrationView(APIView):
         ip = get_client_ip(request)
         data = {}
         
-        if serializer.is_valid():
-            serializer.validated_data['ip_address'] = ip
-            user = serializer.save()
-            
-            data["status"]='success'
-            data["detail"]=f'{user.first_name}, mail is sent to your email address for your account verification'
-            return Response(data,status=status.HTTP_200_OK)
-        else:
-            return Response(serializer.errors, status=status.HTTP_403_FORBIDDEN)
+        try:
+            if serializer.is_valid():
+                assert request.data.get('country', None) is not None, "please provide your country"
+                assert request.data.get('country').strip() is not "", "country cannot be empty"
+                serializer.validated_data['ip_address'] = ip
+                user = serializer.save()
+                
+                custom_post_save.send(sender=User, instance=user, country=request.data['country'])
+                
+                data["status"]='success'
+                data["detail"]=f'{user.first_name}, mail is sent to your email address for your account verification'
+                return Response(data,status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors, status=status.HTTP_403_FORBIDDEN)
+        except AssertionError as err:
+            return Response({'detail': str(err)}, status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION)
         
 
 class AccountVerificationView(APIView):

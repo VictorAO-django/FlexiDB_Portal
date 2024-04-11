@@ -116,6 +116,82 @@ p[id='alertMessage']{
 }
 
 
+/********PROMPT********/
+div[id='prompt']{
+    display: flex;
+    flex-flow: column;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    justify-content: space-around;
+    align-items: center;
+    display: flex;
+    background-color: #1212121c;
+}
+
+div[id='prompt']>div{
+    width: 350px;
+    background-color: #fff;
+    border-radius: 8px;
+    filter: drop-shadow(0px 0px 2px #9696961e);
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    padding: 20px;
+}
+
+div[id="prompt-message"]{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+div[id="prompt-message"]>p:first-of-type{
+    font-family: MontserratMedium;
+    margin: 5px 0px;
+}
+
+div[id="prompt-message"]>p:last-of-type{
+    font-family: MontserratRegular;
+    margin: 5px;
+    font-size: 14px;
+}
+
+div[id="prompt-button"]{
+    margin: 15px 0px 10px 0px;
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+div[id="prompt-button"]>a{
+    flex-basis: 50%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-family: MontserratRegular;
+    padding: 10px 0px;
+    color: #fff;
+    cursor: pointer;
+}
+
+div[id="prompt-button"]>a:first-of-type{
+    background-color: #2853A8;
+    border-radius: 7px 0px 0px 7px;
+}
+div[id="prompt-button"]>a:first-of-type:hover{
+    background-color: #1d3b77;
+}
+
+div[id="prompt-button"]>a:last-of-type{
+    background-color: #f97450;
+    border-radius: 0px 7px 7px 0px;
+}
+div[id="prompt-button"]>a:last-of-type:hover{
+    background-color: #e93200;
+}
 
 
 /**********PRELOADER***********/

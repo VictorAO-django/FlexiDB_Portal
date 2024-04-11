@@ -1,4 +1,4 @@
-import {DropDown,onIntersection, hasSpecialCharacter, isStrongPassword, passwordToggle, CloseDropDown, Consumer, Assert, Redirect, CustomAlert, DeleteAuthToken} from './utilities.js'
+import {DropDown,onIntersection, COUNTRIES_DETAIL, hasSpecialCharacter, isStrongPassword, passwordToggle, CloseDropDown, Consumer, Assert, Redirect, CustomAlert, DeleteAuthToken} from './utilities.js'
 
 function showErr(msg,URL,lineNum,columnNo,error){
     var errWin = window.open("","osubWin","width=650px,height=600px")
@@ -18,38 +18,64 @@ function showErr(msg,URL,lineNum,columnNo,error){
 }
 window.onerror = showErr
 
+var countries_details;
+async function LoadCountries(){
+    var url = 'https://restcountries.com/v3.1/all?fields=name,flags,idd'
+    var data;
+    try {
+        const cache = await caches.open('countries-detail-cache')
+        const cachedResponse = await cache.match(url)
+        if(cachedResponse){
+            data = await cachedResponse.json()
+        }else{
+            var response = new Consumer(url, {}, 'GET', false, false)
+            data = await response.fetchResponse()
+            await cache.put(url, data)
+            data = data.json()
+        }
+        countries_details = new COUNTRIES_DETAIL(data)
+
+    } catch (error) {
+        alert(error)
+    }
+}
+
 function Validator(){
     var signup_form = document.getElementById('signup-form')
-    var email = signup_form.elements['email'].value
-    var first_name = signup_form.elements['first_name'].value
-    var last_name = signup_form.elements['last_name'].value
-    var gender = signup_form.elements['gender'].value
-    var role = signup_form.elements['role'].value
-    var organization = signup_form.elements['organization'].value
-    var password = signup_form.elements['password'].value
-    var password2 = signup_form.elements['password2'].value
-    var terms = document.getElementById('terms').checked
+    var email = signup_form.elements['email']
+    var first_name = signup_form.elements['first_name']
+    var last_name = signup_form.elements['last_name']
+    var gender = signup_form.elements['gender']
+    var country = signup_form.elements['country']
+    var role = signup_form.elements['role']
+    var organization = signup_form.elements['organization']
+    var password = signup_form.elements['password']
+    var password2 = signup_form.elements['password2']
+    var terms = document.getElementById('terms')
 
-    Assert('.com', 'in', email, 'Please provide a valid email')
-    Assert(first_name.length, 'greater_than', 0, 'Please provide your first name')
-    Assert(last_name.length, 'greater_than', 0, 'Please provide your last name')
-    Assert(gender.length, 'greater_than', 0, "Please select your gender")
-    Assert(gender, 'in', ['Male', 'Female'], "Provide a valid gender")
+    Assert('.com', 'in', email.value, 'Please provide a valid email')
+    Assert(first_name.value, 'is_not', '', 'Please provide your first name')
+    Assert(last_name.value, 'is_not', '', 'Please provide your last name')
+    Assert(gender.value, 'is_not', '', "Please select your gender")
+    Assert(gender.value, 'in', ['Male', 'Female'], "Provide a valid gender")
 
-    Assert(role.length, 'greater_than', 0, "Please select your role")
-    Assert(role, 'in', ['developer', 'organization'], "Provide a valid role")
+    Assert(country.value, 'is_not', '', "Please select your country")
+    //alert(Object.keys(countries_details.countries_dict()))
+    Assert(country.value, 'in', Object.keys(countries_details.countries_dict()), "Country does not exist")
+    Assert(role.value, 'is_not', '', "Please select your role")
+    Assert(role.value, 'in', ['developer', 'organization'], "Provide a valid role")
 
-    if (role == 'organization'){
-        Assert(organization.length, 'greater_than', 0, "Provide your organization name")
+    if (role.value == 'organization'){
+        Assert(organization.value, 'is_not', '', "Provide your organization name")
     }
 
-    Assert(first_name, 'not_in', password, "Your password should not consist of your first name")
-    Assert(last_name, 'not_in', password, "Your password should not consist of your last name")
-    Assert(password.length, 'greater_than', 0, 'Please Provide a password')
-    Assert(password, 'is', password2, "Your password are not matching")
-    Assert(isStrongPassword(newPwd.value), '', '', 'Password must cotain at least one number and one capital letter')
-    Assert(hasSpecialCharacter(password), '', '', "Your password must contain a special character like [!@#$%^&*()_+\-[]{};':\"\\|,.<>\/?]")
-    Assert(terms, '', '', 'Please agree with the terms and condition')
+    Assert(first_name.value, 'not_in', password.value, "Your password should not consist of your first name")
+    Assert(last_name.value, 'not_in', password.value, "Your password should not consist of your last name")
+    Assert(password.value, 'is_not', '', 'Please Provide a password')
+    Assert(password.value, 'is', password2.value, "Your password are not matching")
+    Assert(isStrongPassword(password.value), '', '', 'Password must cotain at least one number and one capital letter')
+    Assert(hasSpecialCharacter(password.value), '', '', "Your password must contain a special character like [!@#$%^&*()_+\-[]{};':\"\\|,.<>\/?]")
+    Assert(terms.checked, '', '', 'Please agree with the terms and condition')
 }
 
 
@@ -82,8 +108,7 @@ function Verification(){
 }
 
 
-
-document.addEventListener("DOMContentLoaded",function(){
+document.addEventListener("DOMContentLoaded",async function(){
     var observer = new IntersectionObserver(onIntersection)
     var content_boxes = document.querySelectorAll('.content-box')
     for(var i=0; i<content_boxes.length; i++){
@@ -91,6 +116,7 @@ document.addEventListener("DOMContentLoaded",function(){
         observer.observe(box)
     }
 
+    await LoadCountries()
 
     var gender = document.getElementById('gender-dropdown')
     gender.addEventListener('click', function(){
@@ -155,6 +181,7 @@ document.addEventListener("DOMContentLoaded",function(){
             'first_name' : signup_form.elements['first_name'].value,
             'last_name' : signup_form.elements['last_name'].value,
             'gender' : signup_form.elements['gender'].value,
+            'country' : signup_form.elements['country'].value,
             'is_developer' : is_developer,
             'organization' : organization,
             'password' : signup_form.elements['password'].value,
@@ -167,10 +194,27 @@ document.addEventListener("DOMContentLoaded",function(){
         var endpoint = new Consumer('http://localhost:8000/portal/auth/register/', payload, 'POST', false, true)
         var response = await endpoint.fetch_response()
 
-        var alert = new CustomAlert(response['detail'], '#1d3b77')
-        alert.raise()
+        var success = new CustomAlert(response['detail'], '#1d3b77')
+        success.raise()
 
         Verification()
+    })
+
+
+    var country_dropdown = document.getElementById('country-dropdown')
+    country_dropdown.addEventListener('click', function(){
+        var fields = countries_details.countries_dict()
+        var country_value = this.parentElement.querySelector('input')
+            
+        var dropdown = new DropDown(this.parentElement, fields, false, false)
+        var dropdown_elements = dropdown.open()
+         for(var i=0; i<dropdown_elements.length; i++){
+            dropdown_elements[i].addEventListener('click', function(){
+                country_value.value = this.innerText
+                CloseDropDown()
+                countries_details.country = this.innerText
+            })
+        }
     })
 
 
@@ -178,6 +222,7 @@ document.addEventListener("DOMContentLoaded",function(){
     document.addEventListener('click', function(event){
         var role_btn = document.getElementById('role-dropdown')
         var gender_btn = document.getElementById('gender-dropdown')
+        var country_btn = document.getElementById('country-dropdown')
         try {
             //if the dropdown popup exist
             if(document.getElementById('dropdown')){
@@ -186,7 +231,7 @@ document.addEventListener("DOMContentLoaded",function(){
                 //if the event is not targetted to the dropdown
                 if(!dropdown.contains(event.target)){
                     //if the target element is not the filter=key and account 
-                    if((event.target !== role_btn) && (event.target !== gender_btn)){
+                    if((event.target !== role_btn) && (event.target !== gender_btn) && (event.target !== country_btn)){
                         //close the dropdown
                         CloseDropDown()
                     }

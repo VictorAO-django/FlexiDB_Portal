@@ -16,6 +16,7 @@ div[id="detail_edit"]{
     justify-content: flex-start;
     align-items: stretch;
     margin-top: 20px;
+    width: 100%;
 }
 
 div[id="detail_edit"]>section{
@@ -44,6 +45,21 @@ div[id="the-avatar"]>div{
     border-radius: 100%;
     overflow: hidden;
     border: 3px solid #1d3b77;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+div[id="the-avatar"]>div>p{
+    font-family: MontserratMedium;
+    font-size:70px;
+    min-width: 100%;
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #2853A8;
+    color: #fff;
 }
 
 div[id="the-avatar"]>div>img{

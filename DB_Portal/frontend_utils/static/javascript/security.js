@@ -1,4 +1,4 @@
-import {ToolTip, hideToolTip, hasSpecialCharacter, isStrongPassword, passwordToggle, Consumer, Assert, CustomAlert} from './utilities.js'
+import {CustomDialog, CloseDialog, ToolTip, hideToolTip, hasSpecialCharacter, isStrongPassword, passwordToggle, Consumer, Assert, CustomAlert} from './utilities.js'
 
 function showErr(msg,URL,lineNum,columnNo,error){
     var errWin = window.open("","osubWin","width=650px,height=600px")
@@ -45,19 +45,30 @@ document.addEventListener('DOMContentLoaded', function(){
     var changePassword = document.getElementById('submit')
     changePassword.addEventListener('click', async function(){
         Validator()
-        const payload = {
-            "old_password": currentPwd.value,
-            "new_password": newPwd.value
-        }
-        var endpoint = new Consumer('http://localhost:8000/portal/auth/change-password/', payload, 'POST', true, true)
-        var response = await endpoint.fetch_response()
+        var dialog = new CustomDialog('Confirm','Are you sure you want to continue', 'Continue', 'Cancel').confirm()
+        var yesBtn = dialog[0]
+        var noBtn = dialog[1]
 
-        currentPwd = ''
-        newPwd = ''
-        confirmPwd = ''
+        yesBtn.addEventListener('click', async function(){
+            CloseDialog()
+            const payload = {
+                "old_password": currentPwd.value,
+                "new_password": newPwd.value
+            }
+            var endpoint = new Consumer('http://localhost:8000/portal/auth/change-password/', payload, 'POST', true, true)
+            var response = await endpoint.fetch_response()
+    
+            currentPwd.value = ''
+            newPwd.value = ''
+            confirmPwd.value = ''
+    
+            var alert = new CustomAlert(response['detail'], '#1d3b77')
+            alert.raise()
+        })
 
-        var alert = new CustomAlert(response['detail'], '#1d3b77')
-        alert.raise()
+        noBtn.addEventListener('click', function(){
+            CloseDialog()
+        })
     })
 
     var sign_device_out = document.getElementsByClassName("sign-device-out")[0]
